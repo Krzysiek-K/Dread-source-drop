@@ -1,0 +1,97 @@
+
+void RenderTestApp::ExportGraphics(FILE *fp)
+{
+	static const struct {
+		const char *name;
+		int			mode;
+	} GFXLIST[] = {
+//		{ "STBAR0",		0 },
+////		{ "STBAR2",		0 },
+//		{ "STTNUM0",	1 },
+//		{ "STTNUM1",	1 },
+//		{ "STTNUM2",	1 },
+//		{ "STTNUM3",	1 },
+//		{ "STTNUM4",	1 },
+//		{ "STTNUM5",	1 },
+//		{ "STTNUM6",	1 },
+//		{ "STTNUM7",	1 },
+//		{ "STTNUM8",	1 },
+//		{ "STTNUM9",	1 },
+//		{ "STTPRCNT",	1 },
+//		{ "STYSNUM0",	1 },
+//		{ "STYSNUM1",	1 },
+//		{ "STYSNUM2",	1 },
+//		{ "STYSNUM3",	1 },
+//		{ "STYSNUM4",	1 },
+//		{ "STYSNUM5",	1 },
+//		{ "STYSNUM6",	1 },
+//		{ "STYSNUM7",	1 },
+//		{ "STYSNUM8",	1 },
+//		{ "STYSNUM9",	1 },
+//		{ "STGNUM0",	1 },
+//		{ "STGNUM1",	1 },
+//		{ "STGNUM2",	1 },
+//		{ "STGNUM3",	1 },
+//		{ "STGNUM4",	1 },
+//		{ "STGNUM5",	1 },
+//		{ "STGNUM6",	1 },
+//		{ "STGNUM7",	1 },
+//		{ "STGNUM8",	1 },
+//		{ "STGNUM9",	1 },
+//		{ "STKEYS0",	1 },
+//		{ "STKEYS1",	1 },
+//		{ "STKEYS2",	1 },
+////		{ "STKEYS3",	1 },
+////		{ "STKEYS5",	1 },
+		{ NULL }
+	};
+
+	int bytes = 0;
+	for( int i=0; GFXLIST[i].name; i++ )
+	{
+		GfxTexture *gtex = gfx_converter.FindTexture(GFXLIST[i].name, -1);
+		if( !gtex ) continue;
+		DataTexture &tex = gtex->texture;
+
+		fprintf(fp, "\n__chip word GFX_%s[] = {\n", GFXLIST[i].name);
+
+		int maskoffs = (GFXLIST[i].mode&1) ? ((tex.width+15)/16)*tex.height*4 : 0;
+		fprintf(fp, "\t%4d,%4d,%4d,\n", tex.width, tex.height, maskoffs);
+
+		for( int pass=0; pass<=(GFXLIST[i].mode&1); pass++ )
+		{
+			if( pass )
+				fprintf(fp, "\t// Mask\n");
+
+			for( int y=0; y<tex.height; y++ )
+				for( int plane=0; plane<4; plane++ )
+				{
+					fprintf(fp, "\t");
+					for( int x0=0; x0<tex.width; x0+=16 )
+					{
+						word w = 0;
+						for( int x=0; x<16 && x0+x<tex.width; x++ )
+						{
+							DWORD col = tex.data[(x0+x)+y*tex.width];
+							word bits = 0;
+							if( pass==1 )
+								bits = COLOR_IS_TRANSPARENT(col) ? 0 : 1;			// prepare graphics mask
+							else if( !COLOR_IS_TRANSPARENT(col) )					// prepare graphics data
+							{
+								if( col&(0x0001<<plane) ) bits |= 1;
+							}
+							w |= bits<<(15-x);
+						}
+						fprintf(fp, "0x%04X,", w);
+						bytes += 2;
+					}
+					if( plane==0 )
+						fprintf(fp, "\t// %3d", y);
+					fprintf(fp, "\n");
+				}
+		}
+		fprintf(fp, "};\n");
+	}
+
+	printf("Export: %d graphics bytes.\n", bytes);
+}

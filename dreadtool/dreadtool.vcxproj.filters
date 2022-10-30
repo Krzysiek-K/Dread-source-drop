@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="App Text Scaler">
+      <UniqueIdentifier>{8c0398ef-0a2c-4cde-a2d6-85bca69e55d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Amiga Emulation">
+      <UniqueIdentifier>{c53937df-c336-4303-aada-50d7511155e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework">
+      <UniqueIdentifier>{99225691-d910-49d7-9495-163f98ce0f2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App Render Test">
+      <UniqueIdentifier>{707163ca-dc6a-4f50-b887-089899b6532a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Compiler">
+      <UniqueIdentifier>{074717a2-d5f1-47fc-a146-21947a41a8e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{79e1b8eb-4fab-447c-a9d4-3d13a8a27577}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Z Dread-assets">
+      <UniqueIdentifier>{347e1010-99bc-4ba8-90a7-e76f88777afb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App Render Test\Generated">
+      <UniqueIdentifier>{474f6487-2cd0-4ad8-81db-a6936553994b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\app_texscaler.cpp">
+      <Filter>App Text Scaler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\blitter.cpp">
+      <Filter>Amiga Emulation</Filter>
+    </ClCompile>
+    <ClCompile Include="src\menu.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\tex.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\texscaler.cpp">
+      <Filter>App Text Scaler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\textfile.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mtouch.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app_rendertest.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wad.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\wad_converter.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\e_init.c">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gfx_converter.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rp2_csg.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dread_mapgen.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\assembler.cpp">
+      <Filter>Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\instructions.cpp">
+      <Filter>Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\script_compiler.cpp">
+      <Filter>Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\script_parser.cpp">
+      <Filter>Compiler</Filter>
+    </ClCompile>
+    <ClCompile Include="src\defparser.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\func.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\errlog.cpp">
+      <Filter>Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gfx_palette.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\gfx_colorspaces.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\audio_engine.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asset_sound.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asset_gfx.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asset_group.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asset_animation.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asset_base.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dread_render.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\asset_flat.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\data_block.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dread_sim.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mod_manager.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\deflate.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dev_coltest.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mapdraw.cpp">
+      <Filter>App Render Test</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\app_texscaler.h">
+      <Filter>App Text Scaler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\blitter.h">
+      <Filter>Amiga Emulation</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app_rendertest.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\common.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\menu.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mtouch.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\texscaler.h">
+      <Filter>App Text Scaler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wad.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\e_defs.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\wad_converter.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\e_common.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gfx_converter.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rp2_csg.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dread_mapgen.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\assembler.h">
+      <Filter>Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\instructions.h">
+      <Filter>Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\script_compiler.h">
+      <Filter>Compiler</Filter>
+    </ClInclude>
+    <ClInclude Include="src\defparser.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\errlog.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gfx_palette.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\gfx_colorspaces.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\audio_engine.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asset_sound.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asset_gfx.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asset_group.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asset_animation.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asset_base.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dread_render.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\asset_flat.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\data_block.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dread_sim.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mod_manager.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\deflate.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dev_coltest.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+    <ClInclude Include="src\mapdraw.h">
+      <Filter>App Render Test</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\Games\Doom Builder 2\Configurations\KK_Dread.cfg" />
+    <None Include="..\Dread-assets\dread-main\project.cfg">
+      <Filter>Z Dread-assets</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\user.cfg">
+      <Filter>Z Dread-assets</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\_defs.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\mon_CPOS.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\mon_HEAD.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\mon_SPOS.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\pickups.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\weapons.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\app_data\render.fx" />
+    <None Include="..\..\..\Games\Doom Builder 2\Configurations\Includes\KK_Dread_texturesets.cfg" />
+    <None Include="gen\cheatnames.inc">
+      <Filter>App Render Test\Generated</Filter>
+    </None>
+    <None Include="gen\cheatselector.inc">
+      <Filter>App Render Test\Generated</Filter>
+    </None>
+    <None Include="gen\render2_cheatnames.inc">
+      <Filter>App Render Test\Generated</Filter>
+    </None>
+    <None Include="gen\render2_cheatselector.inc">
+      <Filter>App Render Test\Generated</Filter>
+    </None>
+    <None Include="..\..\..\Games\Doom Builder 2\Configurations\Includes\KK_Dread_linedefs.cfg" />
+    <None Include="..\..\..\Games\Doom Builder 2\Configurations\Includes\KK_Dread_misc.cfg" />
+    <None Include="..\..\..\Games\Doom Builder 2\Configurations\Includes\KK_Dread_sectors.cfg" />
+    <None Include="..\..\..\Games\Doom Builder 2\Configurations\Includes\KK_Dread_things.cfg" />
+    <None Include="..\Dread-assets\dread-main\dread\code\player.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\_enums.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\decoration.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\machines.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\fx.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\dread\code\pickups_mp.code">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="..\Dread-assets\dread-main\config.cfg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="doc\TODO.txt" />
+    <Text Include="..\Dread-assets\dread-main\dread\assets.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\statbar-st.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\weapons-sprites-hd.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\menu.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\sounds-freedoom.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\objects.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\monsters.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\weapons-st.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\statbar.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\menu-st.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\palette.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\test.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\palette-st.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\sounds.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\sounds-rendered.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+    <Text Include="..\Dread-assets\dread-main\dread\textures-new.txt">
+      <Filter>Z Dread-assets</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="src\script_parser.kp">
+      <Filter>Compiler</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

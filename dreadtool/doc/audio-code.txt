@@ -1,0 +1,54 @@
+
+
+
+* Common packet:
+
+
+						T1					delay_counter++
+	<delay>				T1 T2					Hold processing until delay_counter >= <delay>						// should be at least 1 for T1/T2 packets, to make sure T1 executes before T2
+	  clear_delay_bit	T2						Set:	delay_counter = 0
+	  stop_bit			T1 IRQ		[option]	Stop DMA & IRQ immediately
+	  end_bit			T1 IRQ		[option]	Set channel to FREE and stop all processing		(always set stop_bit with this one, as well)
+
+	<sample>			T2 IRQ		[option]	Write address & length of sample <nnnn>, remember its playback frequency
+	<volume_update>		T2 IRQ		[option]	Compute volume and write it
+	<freq_update>		T2 IRQ		[option]	Compute playback frequency and write it
+	<irq_block_chain>	T2			[option]	Set IRQ update block pointer, flush pending IRQs, enable IRQs
+	  play_bit			T2 IRQ		[option]	Enable DMA
+
+
+
+
+	1	S	DSPISTOL	64	+0				//	T1:		Stop DMA & IRQ			T2:		write DSPISTOL addr/len		write volume		write frequency			schedule next block for IRQ			enable DMA & IRQ
+	+	-	XXX			--  --				//	IRQ:	Queue ZeroSample																						schedule next block for IRQ
+	+	E	---			 0  --				//	IRQ:	Stop DMA & IRQ					write zero volume			set status to FREE
+
+    1   S   DSPISTOL    64  +0    // wait 1, 'S'top audio, program sample, volume 64, pitch +0c
+    +   -   XXX         --  --    // on interrupt (+), queue zero sample (XXX)
+    +   E   ---          0  --    // on next interrupt (+), 'E'nd sound completely, volume 0
+
+
+* Timer update packet:
+
+
+	<delay>				[T1]	[option]	Delay before the packet can be processed further. Counted in [T1].
+	  stop_bit			[T1]	[option]	Stop DMA & IRQ immediately
+	  active_bit		[T1]	[option]	Update channel status to FREE or BUSY
+
+	<sample>			[T2]	[option]	Write address & length of sample <nnnn>, remember its playback frequency
+	<volume_update>		[T2]	[option]	Compute volume and write it
+	<freq_update>		[T2]	[option]	Compute playback frequency and write it
+	<irq_block_chain>	[T2]	[option]	Set IRQ update block pointer, flush pending IRQs, enable IRQs
+	  play_bit			[T2]	[option]	Enable DMA
+
+
+
+* IRQ update packet:
+
+
+	  stop_bit			[irq]	[option]	Stop DMA & IRQ immediately
+	  active_bit		[irq]	[option]	Update channel status to FREE or BUSY
+	<sample>			[irq]	[option]	Write address & length of sample <nnnn>, remember its playback frequency
+	<volume_update>		[irq]	[option]	Compute volume and write it
+	<freq_update>		[irq]	[option]	Compute playback frequency and write it
+	  play_bit			[irq]	[option]	Enable DMA

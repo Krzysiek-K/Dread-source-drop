@@ -1,0 +1,11 @@
+/Debug
+/Release
+*.suo
+/dreadtool.VC.db
+/x64/Debug
+*.opendb
+/Release Tsak
+/Release Tsak KK
+/Release Alt
+/scripts/ccdlimits/.vs
+/scripts/linetestcases/.vs

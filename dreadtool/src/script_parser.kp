@@ -1,0 +1,249 @@
+
+
+Syntax -> TopList											%
+TopList -> TopElement										%
+TopList -> TopElement TopList								%
+
+TopElement -> `const Ident = Expr ;							% DeclareConst($2,$4);
+
+TopElement -> `enum EnumStart EnumList } ;					%
+EnumStart -> {												% enum_value_counter = 0;
+EnumList ->													%
+EnumList -> EnumElement										%
+EnumList -> EnumElement , EnumList							%
+EnumElement -> Ident										% DeclareConstValue($1,enum_value_counter++);
+EnumElement -> Ident = Expr									% enum_value_counter = EAImmValue($3); DeclareConstValue($1,enum_value_counter++);
+
+TopElement -> SizeType Ident ;								% DeclareVar($2, $1, IDM_GLOBAL_VAR);
+TopElement -> SizeType . Ident ;							% DeclareVar($3, $1, IDM_THING_VAR);
+SizeType -> `uint8											% $0=1;
+SizeType -> `uint16											% $0=2;
+SizeType -> `uint32											% $0=4;
+SizeType -> `int8											% $0=-1;
+SizeType -> `int16											% $0=-2;
+SizeType -> `int32											% $0=-4;
+
+TopElement -> ActorStart { ActorElements }					% EndActor();
+ActorStart -> `actor Ident * ActorBase						% StartActor($2,-1,0,$4);
+ActorStart -> `actor Ident Int ActorBase					% StartActor($2,$3,0,$4);
+ActorStart -> `actor Ident Int Frame ActorBase				% StartActor($2,$3,$4,$5);
+ActorBase ->												% $0=0;
+ActorBase -> `: Ident										% $0=$2;
+
+ActorElements -> ActorElement								%
+ActorElements -> ActorElement ActorElements					%
+
+
+ActorElement -> Ident : Int ;								% AddActorAnnotation_Int($1,$3);
+ActorElement -> Ident : String ;							% AddActorAnnotation_String($1,$3);
+
+ActorElement -> FuncStart { Sequence }						% EndFunction();
+FuncStart -> FuncType Ident									% StartFunction($2,(functype_t)$1);
+
+FuncType -> `callback										% $0=1;
+FuncType -> `func											% $0=2;
+FuncType -> `state											% $0=3;
+
+Sequence ->													%
+Sequence -> Instr Sequence									%
+
+Instr -> Ident ;											% FunctionCall($1,0);
+Instr -> Ident FnArgs ;										% FunctionCall($1,$2);
+Instr -> Assignment ;										%
+Instr -> `if ( JumpCondition ) Instr						% UpdateConditionalJump($3,false);
+Instr -> IfElsePart Instr									% UpdateJump($1);
+Instr -> `-> Ident ;										% SwitchToState($2);
+Instr -> { Sequence }										%
+
+Instr -> `frame Frame ;															% SetFrame($2);
+Instr -> `frame_none ;															% SetFrame(-1);
+Instr -> `frame Int Ident OptFrameOffset OptFrameSound OptSemicolon				% SetFrame($3);		fn_args.push_back(IntegerEA($2));	FunctionCall(FindIdent("delay"),1);
+Instr -> Frame ;																% SetFrame($1);
+Instr -> `weapon_frame Frame ;													% SetWeaponFrame($2);
+Instr -> `weapon_sprite Frame ;													% SetWeaponSprite($2);
+Instr -> `sound Sound ;															% StartSound($2,0);
+Instr -> `sound Sound FnArgs ;													% StartSound($2,$3);
+Instr -> `sound Sound , FnArgs ;												% StartSound($2,$4);
+Instr -> `become Ident ;														% BecomeActor($2);
+Instr -> `spawn_missile Ident ;													% SpawnActor($2);
+
+//Instr -> `#if 
+
+
+OptFrameOffset ->											%
+OptFrameOffset -> IntValue IntValue							% MoveAccumulateOp(IdentToEA(FindIdent("zp")),IntegerEA(($2*2) << 6),OP_MOVE);
+
+OptFrameSound ->											%
+OptFrameSound -> Sound										% fn_args.push_back(IntegerEA(256));		StartSound($1,1);
+
+OptSemicolon ->												%
+OptSemicolon -> ;											%
+
+IntValue -> Int												% $0=$1;
+IntValue -> - Int											% $0=-$2;
+
+
+FnArgs -> FnArg												% $0=$1;
+FnArgs -> FnArg , FnArgs									% $0=$1+$3;
+
+IfElsePart -> `if ( JumpCondition ) Instr `else				% $0=CreateJump(OP_BRA); UpdateConditionalJump($3,false);
+
+
+FnArg -> Expr												% $0=1; fn_args.push_back($1);
+
+
+// ---------------- Conditions ----------------
+
+JumpCondition -> JumpLogicOR							% $0=$1;
+
+JumpLogicOR -> JumpLogicAND								% $0=$1;
+JumpLogicOR -> JumpLogicOR || JumpLogicAND				% $0=CombineConditions($1,$3,true);
+
+JumpLogicAND -> JumpLogicCmp							% $0=$1;
+JumpLogicAND -> JumpLogicAND && JumpLogicCmp			% $0=CombineConditions($1,$3,false);
+
+JumpLogicCmp -> BitwiseOR								% $0=CompareAndJump($1,-1,	OP_BNE,OP_BNE,	OP_BEQ,OP_BEQ );
+JumpLogicCmp -> BitwiseShift < BitwiseShift				% $0=CompareAndJump($1,$3,	OP_BLE,OP_BCS,	OP_BGE,OP_BCC );
+JumpLogicCmp -> BitwiseShift > BitwiseShift 			% $0=CompareAndJump($1,$3,	OP_BGE,OP_BHI,	OP_BLE,OP_BLS );
+JumpLogicCmp -> BitwiseShift <= BitwiseShift 			% $0=CompareAndJump($1,$3,	OP_BLT,OP_BLS,	OP_BGT,OP_BHI );
+JumpLogicCmp -> BitwiseShift >= BitwiseShift 			% $0=CompareAndJump($1,$3,	OP_BGT,OP_BCC,	OP_BLT,OP_BCS );
+JumpLogicCmp -> BitwiseShift == BitwiseShift 			% $0=CompareAndJump($1,$3,	OP_BEQ,OP_BEQ,	OP_BNE,OP_BNE );
+JumpLogicCmp -> BitwiseShift != BitwiseShift 			% $0=CompareAndJump($1,$3,	OP_BNE,OP_BNE,	OP_BEQ,OP_BEQ );
+
+
+
+
+
+// ---------------- Expressions ----------------
+
+ExprChain -> Expr										%
+ExprChain -> MultiExprChain								%
+MultiExprChain -> MultiExprChain , Expr					%
+MultiExprChain -> Expr , Expr							%
+
+Expr -> OptAssignment									% $0=$1;
+
+
+OptAssignment -> TernaryConditional						% $0=$1;
+OptAssignment -> Assignment								% $0=$1;
+
+Assignment -> Target = OptAssignment					% $0=MoveAccumulateOp($1,$3,OP_MOVE);
+Assignment -> Target += OptAssignment					% $0=MoveAccumulateOp($1,$3,OP_ADD);
+Assignment -> Target -= OptAssignment					% $0=MoveAccumulateOp($1,$3,OP_SUB);
+Assignment -> Target &= OptAssignment					% $0=MoveAccumulateOp($1,$3,OP_AND);
+Assignment -> Target |= OptAssignment					% $0=MoveAccumulateOp($1,$3,OP_OR);
+Assignment -> Target ^= OptAssignment					% $0=MoveAccumulateOp($1,$3,OP_EOR);
+// Assignment -> TernaryConditional *= OptAssignment
+// Assignment -> TernaryConditional /= OptAssignment
+// Assignment -> TernaryConditional `%= OptAssignment
+// Assignment -> TernaryConditional >>= OptAssignment
+// Assignment -> TernaryConditional <<= OptAssignment
+
+
+TernaryConditional -> LogicalOR					% $0=$1;
+// TernaryConditional -> LogicalOR ? TernaryConditional : TernaryConditional
+
+
+LogicalOR -> LogicalAND							% $0=$1;
+// LogicalOR -> LogicalOR || LogicalAND	
+
+LogicalAND -> BitwiseOR							% $0=$1;
+// LogicalAND -> LogicalAND && BitwiseOR
+
+BitwiseOR -> BitwiseXOR							% $0=$1;
+BitwiseOR -> BitwiseOR | BitwiseXOR				% $0=BinaryOp($1,$3,OP_OR,true);
+
+BitwiseXOR -> BitwiseAND						% $0=$1;
+BitwiseXOR -> BitwiseXOR ^ BitwiseAND			% $0=BinaryOp($1,$3,OP_EOR,true);
+
+BitwiseAND -> RelationEqNeq						% $0=$1;
+BitwiseAND -> BitwiseAND & RelationEqNeq		% $0=BinaryOp($1,$3,OP_AND,true);
+
+RelationEqNeq -> RelationCmp					% $0=$1;
+//RelationEqNeq -> RelationEqNeq == RelationCmp
+//RelationEqNeq -> RelationEqNeq != RelationCmp
+
+RelationCmp -> BitwiseShift						% $0=$1;
+//RelationCmp -> RelationCmp > BitwiseShift
+//RelationCmp -> RelationCmp < BitwiseShift
+//RelationCmp -> RelationCmp >= BitwiseShift
+//RelationCmp -> RelationCmp <= BitwiseShift
+
+BitwiseShift -> AddSub							% $0=$1;
+BitwiseShift -> BitwiseShift >> AddSub			% $0=BinaryOp($1,$3,OP_ASR);
+BitwiseShift -> BitwiseShift << AddSub			% $0=BinaryOp($1,$3,OP_LSL);
+
+AddSub -> MulDivMod								% $0=$1;
+AddSub -> AddSub + MulDivMod					% $0=BinaryOp($1,$3,OP_ADD,true);
+AddSub -> AddSub - MulDivMod					% $0=BinaryOp($1,$3,OP_SUB);
+
+MulDivMod -> PrefixOps							% $0=$1;
+MulDivMod -> MulDivMod * PrefixOps				% $0=BinaryOp($1,$3,OP_MULS,true);
+MulDivMod -> MulDivMod / PrefixOps				% $0=BinaryOp($1,$3,OP_DIVS);
+MulDivMod -> MulDivMod `% PrefixOps				% $0=BinaryOp($1,$3,opcode_t(OP_DIVS+0x4000));
+
+PrefixOps -> PostfixOps							% $0=$1;
+// PrefixOps -> ++ PrefixOps
+// PrefixOps -> -- PrefixOps
+// PrefixOps -> + PrefixOps
+// PrefixOps -> - PrefixOps
+// PrefixOps -> ! PrefixOps
+// PrefixOps -> ~ PrefixOps
+
+PostfixOps -> Element							% $0=$1;
+//PostfixOps -> PostfixOps ++
+//PostfixOps -> PostfixOps --
+//PostfixOps -> PostfixOps ( OptCallArgList )
+//PostfixOps -> PostfixOps [ OptCallArgList ]
+//PostfixOps -> PostfixOps . Ident
+
+Element -> Int									% $0=IntegerEA($1);
+Element -> - Int								% $0=IntegerEA(-$2);
+Element -> ( ExprChain )						% $0=$2;
+Element -> Target								% $0=$1;
+Element -> Ident ( )							% $0=FuncToEA($1);
+Element -> Ident ( OptAssignment )				% $0=FuncToEA($1,$3);
+Target -> Ident									% $0=IdentToEA($1);
+
+
+//OptCallArgList -> CallArgList
+//OptCallArgList ->
+//CallArgList -> CallArgList , CallArg
+//CallArgList -> CallArg
+
+CallArg -> Assignment							% $0=$1;
+
+Frame -> # Ident								% $0=$2;
+Sound -> $ Ident								% $0=$2;
+
+
+
+Int :: [0-9]+						% $0=atoi($1);
+Int :: 0x[0-9a-fA-F]+				% $0=strtol($1+2,NULL,16);
+Int :: "'[^]'"						% $0=$1[1];
+Ident :: [a-zA-Z_]+[a-zA-Z_0-9]*	% $0=FindIdent($1);
+String :: "\"[^\"]*\""				% $0=FindString($1);
+Comment :: "[ \t\n]+"				% COMMENT
+Comment :: "//[^\n]*"				% COMMENT
+Comment :: "/[*]([^]*[*])+/"		% COMMENT
+_default_ ::						%
+
+$$LexerPrecode		/*A*/
+$$LexerPostcode		/*B*/
+$$ParserPrecode		/*C*/
+$$ParserPostcode	/*D*/
+
+
+$$Code
+
+
+
+#include "common.h"
+#include "script_compiler.h"
+
+ScriptCompiler::symb_t ScriptCompiler::Parse()
+{
+	using namespace instructions;
+
+$$Parser
+}

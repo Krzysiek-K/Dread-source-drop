@@ -1,0 +1,118 @@
+
+	struct VisLine {
+		int		scan_min = 0;
+		int		scan_max = 0;
+
+
+
+	int			scan_counter;
+
+
+
+
+void DreadMapGen::ComputeVisibility(Line *line, bool reset)
+	scan_counter = 0;
+
+
+
+void DreadMapGen::VisLine::IncludeVisInfo(VisLine *vsrc, DreadMapGen *mapgen)
+	if( vsrc->scan_min < scan_min )
+		scan_min = vsrc->scan_min;
+
+	if( vsrc->scan_max > scan_max )
+		scan_max = vsrc->scan_max;
+
+
+DreadMapGen::VisLine *DreadMapGen::RegisterVisLine(RegionPoly *region, Line *line, const Beam &beam, const Polygon2D &visregion)
+{
+	VisLine *vis = region->vis[line];
+	bool new_vis = false;
+	if( !vis )
+	{
+		vis = new VisLine();
+		region->vis[line] = vis;
+		vis->line = line;
+>>>		vis->scan_min = scan_counter;
+>>>		vis->scan_max = scan_counter;
+		new_vis = true;
+	}
+
+>>>	// update scan counter
+>>>	if( vis->scan_max < scan_counter )
+>>>		vis->scan_max = scan_counter;
+
+
+
+
+void DreadMapGen::ComputeRegionsVisibility()
+{
+	printf("%d regions to consider\n", regions.poly_set.size());
+
+	for( auto p=regions.poly_set.begin(); p!=regions.poly_set.end(); ++p )
+	{
+		// Iterate all region pairs
+		auto q = p;
+		for( ++q; q!=regions.poly_set.end(); ++q )
+		{
+			RegionPoly *r1 = *p;
+			RegionPoly *r2 = *q;
+			auto pp = r1->vis.begin();
+			auto qq = r2->vis.begin();
+			bool visible = false;
+
+			while( pp!=r1->vis.end() && qq!=r2->vis.end() )
+			{
+				if( pp->first < qq->first )
+					++pp;
+				else if( qq->first < pp->first )
+					++qq;
+				else // pp->first == qq->first
+				{
+					VisLine *v1 = pp->second;
+					VisLine *v2 = qq->second;
+					if( v1->scan_max >= v2->scan_min && v2->scan_max >= v1->scan_min )
+					{
+						visible = true;
+						break;
+					}
+					++pp;
+					++qq;
+				}
+			}
+
+			if( visible )
+			{
+				r1->visregions.push_back(r2);
+				r2->visregions.push_back(r1);
+			}
+		}
+	}
+
+	// Remove duplicates
+	for( auto p=regions.poly_set.begin(); p!=regions.poly_set.end(); ++p )
+	{
+		RegionPoly *reg = *p;
+		sort(reg->visregions.begin(), reg->visregions.end());
+
+		int d = 0;
+		for( int i=0; i<(int)reg->visregions.size(); i++ )
+			if( d==0 || reg->visregions[i]!=reg->visregions[d-1] )
+				reg->visregions[d++] = reg->visregions[i];
+		reg->visregions.resize(d);
+	}
+}
+
+
+void DreadMapGen::ComputeVisibility_Rec(Line *line, Sector *sec, Beam &beam, const Polygon2D &beam_poly, int depth)
+	// Process current sector
+	{
+		Polygon2D tmp, secpoly;
+		MakePolySector(sec, tmp);
+		if( !tmp.ComputeIntersection(beam_poly, secpoly) )
+			return;
+>>>		scan_counter++;
+
+
+[at the end cleanup]
+	for( int i=_beam_vislines; i<(int)beam.vislines.size(); i++ )
+		beam.vislines[i]->scan_max = scan_counter;

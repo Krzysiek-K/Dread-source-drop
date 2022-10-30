@@ -1,0 +1,87 @@
+
+
+	class RegionPoly {
+		map<Line*, int>				col;					// collisions
+		vector<Line*>				collist;				// list of lines to collide with
+
+
+
+DreadMapGen::RegionPoly::RegionPoly(const RegionPoly &rp)
+	col = rp.col;
+	collist = rp.collist;
+
+
+
+
+
+void DreadMapGen::ComputeCollisions(RegionPoly *reg)
+{
+	const float max_radius = 29.f;
+	static vector<vec2> corners;
+	static vector<vec2> normals;
+
+	reg->col.clear();
+	reg->collist.clear();
+	
+	corners.clear();
+	for( int i=0; i<(int)reg->poly.edges.size(); i++ )
+		corners.push_back(reg->poly.edges[i].start.GetVec2());
+	int N = (int)corners.size();
+	if( N<1 ) return;
+	corners.push_back(corners[0]);	// for safe +1 without modulo N
+
+	normals.clear();
+	for( int j=0; j<N; j++ )
+		normals.push_back((corners[j]-corners[j+1]).get_rotated90().get_normalized());
+
+
+	for( int i=0; i<(int)lines.size(); i++ )
+	{
+		Line *line = lines[i];
+		if( !line->tex_upper && !line->tex_lower )
+			continue;
+
+		if( line->other_sector )
+			continue;
+
+		vec2 v1 = line->v1->point_vec2();
+		vec2 v2 = line->v2->point_vec2();
+		float min_dist = max_radius + 1;
+		bool inside = true;
+
+		for( int j=0; j<N; j++ )
+		{
+			vec2 p1 = v1 - corners[j];
+			vec2 p2 = v2 - corners[j];
+			float d1 = normals[j].dot(p1);
+			float d2 = normals[j].dot(p2);
+			if( d1>0 ) inside = false;
+			if( d2>0 ) inside = false;
+
+			min_dist = fmin(min_dist, _point2line_dist(v1, corners[j], corners[j+1]));
+			min_dist = fmin(min_dist, _point2line_dist(v2, corners[j], corners[j+1]));
+			min_dist = fmin(min_dist, _point2line_dist(corners[j], v1, v2));
+			min_dist = fmin(min_dist, _point2line_dist(corners[j+1], v1, v2));
+		}
+
+		if( inside )
+			min_dist = 0;
+
+		if( min_dist <= max_radius )
+		{
+			reg->col[line] = (int)floor(min_dist);
+			reg->collist.push_back(line);
+		}
+	}
+}
+
+
+void DreadMapGen::ExportRegionProcess(RegionPoly *reg, ExportState &exp)
+	// Collision set
+	for( int i=0; i<(int)reg->collist.size(); i++ )
+	{
+		Line *line = reg->collist[i];
+		ExportLine(line, exp);
+		exp.vis.push_back(line->_number);
+		exp.vistype.push_back(3);
+	}

@@ -1,0 +1,63 @@
+
+bool DreadMapGen::ComputeLineOrderRec(RegionPoly *reg, const vector<VisLine*> &pending, bool check)
+{
+	vector<VisLine*> left, right, colinear;
+
+	if( pending.size()<=1 )
+	{
+		if( pending.size()==1 )
+		{
+			pending[0]->draw_order = (int)reg->drawlist.size();
+			reg->drawlist.push_back(pending[0]);
+		}
+		return true;
+	}
+
+
+	// Check every possible split line
+	for( int i=0; i<(int)pending.size(); i++ )
+	{
+		left.clear();
+		right.clear();
+		colinear.clear();
+
+		LineRP2 line = pending[i]->line->v1->point_rp2().LineTo(pending[i]->line->v2->point_rp2());
+		bool failed = false;
+		for( int j=0; j<(int)pending.size(); j++ )
+		{
+			coord_t s1 = line.CheckSide(pending[j]->line->v1->point_rp2());
+			coord_t s2 = line.CheckSide(pending[j]->line->v2->point_rp2());
+			if( !s1 && !s2 )
+				colinear.push_back(pending[j]);
+			else if( s1<=0 && s2<=0 )
+				left.push_back(pending[j]);
+			else if( s1>=0 && s2>=0 )
+				right.push_back(pending[j]);
+			else
+			{
+				failed = true;
+				break;
+			}
+		}
+	
+		if( failed ) continue;
+
+		if( !ComputeLineOrderRec(reg, right, check) ) return false;
+		for( int j=0; j<(int)colinear.size(); j++ )
+		{
+			colinear[j]->draw_order = (int)reg->drawlist.size();
+			reg->drawlist.push_back(colinear[j]);
+		}
+		if( !ComputeLineOrderRec(reg, left, check) ) return false;
+
+		return true;
+	}
+
+	if( !check )
+	{
+		vec2 mid = reg->MidPoint();
+		printf("WARNING: No valid line order for visibility region at (%.0f,%.0f) (recursive)!!!\n", mid.x, mid.y);
+	}
+
+	return false;
+}

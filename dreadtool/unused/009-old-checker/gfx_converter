@@ -1,0 +1,49 @@
+		else if( dither_mode == DITHER_CHECKER )
+		{
+			bc.ref_color = ideal_color + error[i];
+			for( int j=0; j<colors.size(); j++ )
+				for( int k=j; k<colors.size(); k++ )
+					if( odd_pos )
+					{
+						//CheckBestColorMix(bc, j*256 + j, j, k, 0.25f);
+						//CheckBestColorMix(bc, j*256 + k, j, k, 0.50f);
+						//CheckBestColorMix(bc, j*256 + k, j, k, 0.75f);
+						CheckBestColorMix(bc, j*256 + j, j, k, 0.25f);
+						CheckBestColorMix(bc, k*256 + j, j, k, 0.50f);
+						CheckBestColorMix(bc, k*256 + j, j, k, 0.75f);
+					}
+					else
+					{
+						CheckBestColorMix(bc, j*256 + k, j, k, 0.25f);
+						CheckBestColorMix(bc, j*256 + k, j, k, 0.50f);
+						CheckBestColorMix(bc, k*256 + k, j, k, 0.75f);
+					}
+		}
+		else if( dither_mode == DITHER_CHECKER_CLOSEST )
+		{
+			// Find the best solid color (ignore error diffusion)
+			GfxBestColorCode bc1;
+			bc1.ref_color = ideal_color;
+			for( int j=0; j<colors.size(); j++ )
+				CheckBestColor(bc1, j);
+
+			// Find color to mix taking error into account
+			bc.ref_color = ideal_color + error[i];
+			int j = bc1.first_code&0xFF;
+			for( int k=j; k<colors.size(); k++ )
+				if( odd_pos )
+				{
+					//CheckBestColorMix(bc, j*256 + j, j, k, 0.25f);
+					//CheckBestColorMix(bc, j*256 + k, j, k, 0.50f);
+					//CheckBestColorMix(bc, j*256 + k, j, k, 0.75f);
+					CheckBestColorMix(bc, j*256 + j, j, k, 0.25f);
+					CheckBestColorMix(bc, k*256 + j, j, k, 0.50f);
+					CheckBestColorMix(bc, k*256 + j, j, k, 0.75f);
+				}
+				else
+				{
+					CheckBestColorMix(bc, j*256 + k, j, k, 0.25f);
+					CheckBestColorMix(bc, j*256 + k, j, k, 0.50f);
+					CheckBestColorMix(bc, k*256 + k, j, k, 0.75f);
+				}
+		}

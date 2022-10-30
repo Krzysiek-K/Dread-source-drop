@@ -1,0 +1,269 @@
+
+
+void DreadMapGen::ComputeRegionVisibility(RegionPoly *reg)
+{
+	const bool debug = false;
+
+	// init
+	work_mesh.Clear();
+	if( !reg ) return;
+
+	// Init visibility mesh
+	if( !debug )
+	{
+		for( int i=0; i<(int)reg->visregions.size(); i++ )
+			work_mesh.polys.push_back(reg->visregions[i]->poly);
+	}
+	else
+	{
+		for( int i=0; i<(int)lines.size(); i++ )
+			lines[i]->_debug_mark = 0;
+	}
+
+	// Gather region vertexes
+	static vector<vec2> regv;
+	static vector<PointRP2> regp;
+	regv.clear();
+	regp.clear();
+	for( int j=0; j<(int)reg->poly.edges.size(); j++ )
+	{
+		vec2 pp = reg->poly.edges[j].start.GetVec2() + 0.5f;
+		PointRP2 rp((int)floor(pp.x), (int)floor(pp.y));
+		regv.push_back(pp);
+		regp.push_back(rp);
+	}
+
+
+	// Unmark affected lines, clean vertexes
+	for( auto p=reg->vis.begin(); p!=reg->vis.end(); ++p )
+		if( !p->first->other_sector )
+		{
+			p->first->_mark = 0;
+			p->first->v1->_line_in.clear();
+			p->first->v1->_line_out.clear();
+			p->first->v2->_line_in.clear();
+			p->first->v2->_line_out.clear();
+		}
+
+	// Add lines to per-vertex lists
+	for( auto p=reg->vis.begin(); p!=reg->vis.end(); ++p )
+		if( !p->first->other_sector )
+		{
+			p->first->v1->_line_out.push_back(p->first);
+			p->first->v2->_line_in.push_back(p->first);
+		}
+
+	// Find poly center
+	vec2 vcenter(0, 0);
+	for( int j=0; j<(int)reg->poly.edges.size(); j++ )
+		vcenter += reg->poly.edges[j].start.GetVec2();
+	vcenter /= (int)reg->poly.edges.size();
+	PointRP2 center((int)floor(vcenter.x+0.5f), (int)floor(vcenter.y+0.5f));
+
+
+	// Process line chains
+	vector<PointRP2> chain;
+	Polygon2D shadowpoly, left, right;
+	bool work = true;
+	while( work )
+	{
+		work = false;
+
+		for( auto p=reg->vis.begin(); p!=reg->vis.end(); ++p )
+			if( !p->first->other_sector && !p->first->_mark )
+			{
+				chain.clear();
+				
+				// Find first line in the chain
+				Line *line = p->first;
+				while( line->v1->_line_out.size()==1 &&		// we are the only outgoing line
+					line->v1->_line_in.size()==1 &&			// there is only one incoming line
+					line->v1->_line_in[0]->_mark==0 )		// and it's not marked yet
+				{
+					line = line->v1->_line_in[0];
+					line->_mark = -1;
+				}
+
+				// Gather line chain
+				chain.push_back(line->v1->point_rp2());		// add v1 and mark the line
+				line->_mark = 1;
+				if( debug ) line->_debug_mark = 1;
+
+				while( line->v2->_line_in.size()==1 &&		// we are the only incoming line
+					line->v2->_line_out.size()==1 &&		// there is only one outgoing line
+					line->v2->_line_out[0]->_mark<=0 )		// and it's not marked yet in this pass
+				{
+					line = line->v2->_line_out[0];			// switch to next line
+					chain.push_back(line->v1->point_rp2());	// add v1 and mark the line
+					line->_mark = 1;
+					if( debug ) line->_debug_mark = 1;
+				}
+
+				chain.push_back(line->v2->point_rp2());		// add v2, done
+				work = true;
+
+				// Clip chain front - remove edges visible from both sides
+				while( chain.size()>=2 )
+				{
+					LineRP2 edge = chain[0].LineTo(chain[1]);
+					double mind = 100;
+					for( int j=0; j<(int)regv.size(); j++ )
+					{
+						double d = edge.CheckSideVec2(regv[j]);
+						if( d<mind ) mind=d;
+					}
+					if( mind < -0.55 ) chain.erase(chain.begin());
+					else break;
+				}
+
+				// Clip chain end - remove edges visible from both sides
+				while( chain.size()>=2 )
+				{
+					LineRP2 edge = chain[chain.size()-2].LineTo(chain[chain.size()-1]);
+					double mind = 100;
+					for( int j=0; j<(int)regv.size(); j++ )
+					{
+						double d = edge.CheckSideVec2(regv[j]);
+						if( d<mind ) mind=d;
+					}
+					if( mind < -0.55 ) chain.erase(chain.end()-1);
+					else break;
+				}
+
+				// Anything left?
+				if( chain.size()<2 )
+					continue;
+
+				// Find shadow limit edges
+				PointRP2 left_hinge = chain[0];
+				PointRP2 right_hinge = chain.back();
+				LineRP2 left_limit;
+				LineRP2 right_limit;
+				for( int j=0; j<(int)regp.size(); j++ )
+				{
+					const PointRP2 &rp = regp[j];
+					
+					if( j==0 || left_limit.CheckSide(rp) < 0 )
+						left_limit = rp.LineTo(left_hinge);
+
+					if( j==0 || right_limit.CheckSide(rp) < 0 )
+						right_limit = right_hinge.LineTo(rp);
+				}
+				bool over180 = (left_limit.CheckSide(right_hinge)<0) || (right_limit.CheckSide(left_hinge)<0);
+
+				int spos = 0;
+				while( spos+1 < (int)chain.size() )
+				{
+					LineRP2 edge = chain[spos+1].LineTo(chain[spos]);	// reverse, shadow volume on the right, for shadow clipping
+
+					// Make shadow clip
+					shadowpoly.CreateRectangle(-REGION_SIZE, -REGION_SIZE, REGION_SIZE, REGION_SIZE);
+					shadowpoly.ClipBy(edge);
+					int vpos = spos+1;
+					while( vpos+1<(int)chain.size() && edge.CheckSide(chain[vpos+1]) >= 0 )
+					{
+						edge = chain[vpos+1].LineTo(chain[vpos]);
+						shadowpoly.ClipBy(edge);
+						vpos++;
+					}
+					if( vpos>spos+1 && shadowpoly.ClipBy(chain[spos].LineTo(chain[vpos])) )
+					{
+						if( !debug )	work_mesh.CSGSubtract(shadowpoly);
+						else			work_mesh.polys.push_back(shadowpoly);
+					}
+
+					shadowpoly.CreateRectangle(-REGION_SIZE, -REGION_SIZE, REGION_SIZE, REGION_SIZE);
+					if( shadowpoly.ClipBy(chain[vpos].LineTo(chain[spos])) &&
+						shadowpoly.ClipBy(center.LineTo(chain[spos])) &&
+						shadowpoly.ClipBy(chain[vpos].LineTo(center)) )
+					{
+						if( !over180 )
+						{
+							if( shadowpoly.ClipBy(left_limit) &&
+								shadowpoly.ClipBy(right_limit) )
+							{
+								if( !debug )	work_mesh.CSGSubtract(shadowpoly);
+								else			work_mesh.polys.push_back(shadowpoly);
+							}
+						}
+						else
+						{
+							// reject only part on left side of both limits
+							shadowpoly.SplitByLine(left_limit, right, left);
+							if( !right.IsEmpty() )
+							{
+								if( !debug )	work_mesh.CSGSubtract(right);
+								else			work_mesh.polys.push_back(right);
+							}
+							if( left.ClipBy(right_limit) )
+							{
+								if( !debug )	work_mesh.CSGSubtract(left);
+								else			work_mesh.polys.push_back(left);
+							}
+						}
+					}
+					spos = vpos;
+				}
+
+				//if( debug )return;
+			}
+	}
+
+
+#if 0
+	int steps = 0;
+	for( auto p=reg->vis.begin(); p!=reg->vis.end(); ++p )
+	{
+		if( p->first->other_sector )
+			continue;
+
+		PointRP2 p1 = p->first->v1->point_rp2();
+		PointRP2 p2 = p->first->v2->point_rp2();
+		LineRP2 lline = p2.LineTo(p1);		// reversed - shadow region on the right side
+		LineRP2 left, right;
+		bool is_left=false, is_right=false;
+
+		for( int j=0; j<(int)reg->poly.edges.size(); j++ )
+		{
+			vec2 pp = reg->poly.edges[j].start.GetVec2() + 0.5f;
+			PointRP2 rp((int)floor(pp.x), (int)floor(pp.y));
+			coord_t side = lline.CheckSide(rp);
+			if( side>0 )
+			{
+				is_left = false;
+				break;
+			}
+			if( side==0 )
+				continue;
+			if( !is_left || left.CheckSide(rp)<0 )
+			{
+				left = rp.LineTo(p1);
+				is_left = true;
+			}
+			if( !is_right || right.CheckSide(rp)<0 )
+			{
+				right = p2.LineTo(rp);
+				is_right = true;
+			}
+		}
+
+		if( !is_right || !is_left )
+			continue;
+
+		Polygon2D poly;// = init;
+		poly.CreateRectangle(-REGION_SIZE, -REGION_SIZE, REGION_SIZE, REGION_SIZE);
+		poly.ClipBy(lline);
+		poly.ClipBy(left);
+		poly.ClipBy(right);
+		poly.UpdateBox();
+		if( poly.IsEmpty() )
+			continue;
+
+		work_mesh.CSGSubtract(poly);
+		//work_mesh.polys[0] = poly;
+		//if( ++steps>=1 )
+		//	break;
+	}
+#endif
+
+}

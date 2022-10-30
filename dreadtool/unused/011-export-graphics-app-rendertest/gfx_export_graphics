@@ -1,0 +1,312 @@
+	map<GfxAssetGroup*, bool> export_groups;
+	vector<GfxAssetGroup*> export_group_list;
+	map<GfxAssetGroup*, vector<string> > export_group_table;
+	BinaryWordData bin;
+	int data_size = 0;
+
+	// Export tagged assets
+	for( auto p=asset_list.begin(); p!=asset_list.end(); ++p )
+	{
+		GfxAsset *asset = dynamic_cast<GfxAsset*>(*p);
+		if( !asset ) continue;
+
+		GfxAssetGroup *group = asset->asset_group;
+		if( !group || asset->textures.size()<1 || !asset->textures[0] ) continue;
+
+		GfxTexture *tex = asset->textures[0];
+
+		GfxAssetGroup::ExportSettings &es = *(platform_st ? &group->export_st : &group->export_amiga);
+		if( es.export_mode == GfxAssetGroup::EXPORT_OFF )
+			continue;
+
+
+		if( es.export_mode == GfxAssetGroup::EXPORT_BITPLANES )
+		{
+			bin.Clear();
+
+			int round_width = (tex->texture.width+15)/16*16;
+			int stride = round_width/16*2;
+			int num_bitplanes = es.num_bitplanes;
+			int mask_bitplane = -1;
+			if( group->opt_masked )
+				mask_bitplane = num_bitplanes++;
+
+			if( es.write_header )
+			{
+				bin.AddWord((word)tex->texture.width);
+				bin.AddWord((word)tex->texture.height);
+				bin.AddWord((word)stride);
+				bin.AddComment("width, height, stride");
+			}
+			bin.maxlen = stride/2;
+
+			for( int plane=0; plane<num_bitplanes; plane++ )
+			{
+				if( plane==mask_bitplane )
+					bin.LineComment("mask");
+				else
+					bin.LineComment(format("bitplane %d", plane));
+
+				for( int y=0; y<tex->texture.height; y++ )
+				{
+					for( int x0=0; x0<round_width; x0+=16 )
+					{
+						word value = 0;
+						for( int x=0; x<16; x++ )
+						{
+							DWORD color = group->opt_masked ? COLOR_TRANSPARENT : 0;
+							if( x0+x<tex->texture.width )
+								color = tex->texture(x0+x,y);
+
+							if( plane==mask_bitplane )
+								color = !COLOR_IS_TRANSPARENT(color);
+							else
+								color = (color>>plane) & 1;
+
+							if( color )
+								value |= 0x8000>>x;
+						}
+						bin.AddWord(value);
+					}
+					bin.NewLine();
+				}
+			}
+
+			string aname = "GFX_"+asset->name;
+			export_group_table[group].push_back(aname);
+			data_size += bin.WriteTable(fp, aname.c_str(), es.chipmem);
+		}
+
+		if( es.export_mode == GfxAssetGroup::EXPORT_BITPLANES_INTERLEAVED )			// TBD: document
+		{
+			bin.Clear();
+		
+			int maskoffs = group->opt_masked ? ((tex->texture.width+15)/16)*tex->texture.height*4 : 0;
+
+			if( es.write_header )
+			{
+				bin.AddWord((word)tex->texture.width);
+				bin.AddWord((word)tex->texture.height);
+				bin.AddWord((word)maskoffs);
+				bin.AddComment("width, height, mask offset");
+			}
+			bin.maxlen = (tex->texture.width+15)/16;
+
+			for( int pass=0; pass<=(group->opt_masked ? 1 : 0); pass++ )
+			{
+				if( pass )
+					bin.AddComment("Mask");
+
+				for( int y=0; y<tex->texture.height; y++ )
+					for( int plane=0; plane<4; plane++ )
+					{
+						for( int x0=0; x0<tex->texture.width; x0+=16 )
+						{
+							word w = 0;
+							for( int x=0; x<16 && x0+x<tex->texture.width; x++ )
+							{
+								DWORD col = tex->texture.data[(x0+x)+y*tex->texture.width];
+								word bits = 0;
+								if( pass==1 )
+									bits = COLOR_IS_TRANSPARENT(col) ? 0 : 1;			// prepare graphics mask
+								else if( !COLOR_IS_TRANSPARENT(col) )					// prepare graphics data
+								{
+									if( col&(0x0001<<plane) ) bits |= 1;
+								}
+								w |= bits<<(15-x);
+							}
+							bin.AddWord(w);
+						}
+						if( plane==0 )
+							bin.AddComment(format("%3d", y));
+					}
+			}
+		
+			string aname = "GFX_"+asset->name;
+			export_group_table[group].push_back(aname);
+			data_size += bin.WriteTable(fp, aname.c_str(), es.chipmem);
+		}
+
+
+		if( es.export_mode == GfxAssetGroup::EXPORT_BITPLANES_ST )
+		{
+			bin.Clear();
+
+			int round_width = (tex->texture.width+15)/16*16;
+			if( es.write_header )
+			{
+				bin.AddWord((word)tex->texture.width);
+				bin.AddWord((word)tex->texture.height);
+				bin.AddComment("width, height");
+			}
+			bin.maxlen = (group->opt_masked ? 1 : 0) + es.num_bitplanes;
+
+			for( int y=0; y<tex->texture.height; y++ )
+			{
+				for( int x0=0; x0<round_width; x0+=16 )
+				{
+					word mask = 0;
+					word p1   = 0;
+					word p2   = 0;
+					word p3   = 0;
+					word p4   = 0;
+					for( int x=0; x<16; x++ )
+					{
+						DWORD color = group->opt_masked ? COLOR_TRANSPARENT : 0;
+						if( x0+x<tex->texture.width )
+							color = tex->texture(x0+x, y);
+
+						if( !COLOR_IS_TRANSPARENT(color) )
+						{
+							mask |= 0x8000>>x;
+							if( color & 1 ) p1 |= 0x8000>>x;
+							if( color & 2 ) p2 |= 0x8000>>x;
+							if( color & 4 ) p3 |= 0x8000>>x;
+							if( color & 8 ) p4 |= 0x8000>>x;
+						}
+					}
+					if( group->opt_masked )
+						bin.AddWord(mask);
+					if( es.num_bitplanes>=1 ) bin.AddWord(p1);
+					if( es.num_bitplanes>=2 ) bin.AddWord(p2);
+					if( es.num_bitplanes>=3 ) bin.AddWord(p3);
+					if( es.num_bitplanes>=4 ) bin.AddWord(p4);
+					bin.AddComment(format("%3d..%3d, %3d", x0, min(x0+15, tex->texture.width-1), y));
+				}
+				bin.NewLine();
+			}
+		
+			string aname = "GFX_"+asset->name;
+			export_group_table[group].push_back(aname);
+			data_size += bin.WriteTable(fp, aname.c_str(), false);
+		}
+
+		if( es.write_info )
+		{
+			// dword table 
+			//	
+			//	- start:		address of the main graphics
+			//	- number:		0000ddd sssssssx xxxxxxxx yyyyyyyy
+			//					<font_addr>
+			//	- end:			NULL
+			fprintf(fp, "\nconst dword GFXINFO_%s[] = {\n", asset->name.c_str());
+			fprintf(fp, "\t(dword)GFX_%s,\n", asset->name.c_str());
+			for( int i=0; i<asset->overlays.size(); i++ )
+			{
+				const GfxAsset::Overlay &ov = asset->overlays[i];
+				if( ov.mode == GfxAsset::Overlay::M_NUMBER && ov.font.get()!=NULL && ov.num_digits>=1 && ov.num_digits<=3 )
+				{
+					DWORD code = ov.num_digits << 24;
+					code |= ov.font_step << 17;
+					code |= ov.xoffs << 8;
+					code |= ov.yoffs;
+					fprintf(fp, "\t0x%08X, (dword)GFXGROUP_%s,\n", code, ov.font->name.c_str());
+				}
+			}
+			fprintf(fp, "\t0\n");
+			fprintf(fp, "};\n");
+		}
+		
+		if( es.export_mode == GfxAssetGroup::EXPORT_FONT_MASK || es.write_index )
+			if( !export_groups[group] )
+			{
+				export_groups[group] = true;
+				export_group_list.push_back(group);
+			}
+	}
+
+	
+	// Export tagged groups assets
+	for( auto p=export_group_list.begin(); p!=export_group_list.end(); ++p )
+	{
+		GfxAssetGroup *group = *p;
+
+		GfxAssetGroup::ExportSettings &es = *(platform_st ? &group->export_st : &group->export_amiga);
+		if( es.export_mode == GfxAssetGroup::EXPORT_FONT_MASK )
+		{
+			// gather
+			map<int,GfxTexture*> glyphs;
+			int mincode = 255;
+			int maxcode = 0;
+			for( int i=0; i<group->assets.size(); i++ )
+			{
+				GfxAsset *a = dynamic_cast<GfxAsset*>(group->assets[i]);
+				if( !a || a->textures.size()<=0 || !a->textures[0] ) continue;
+
+				const char *s = a->name.c_str();
+				const char *e = s;
+				while( *e ) e++;
+				while( s<e && e[-1]>='0' && e[-1]<='9' ) e--;
+				int code = ParseInt(e);
+
+				if( code<mincode ) mincode = code;
+				if( code>maxcode ) maxcode = code;
+
+				glyphs[code] = a->textures[0];
+			}
+
+			if( glyphs.size() > 0 )
+			{
+				// generate
+				bin.Clear();
+				bin.maxlen = 16;
+
+
+				// header
+				int height = glyphs.begin()->second->texture.height;
+				bin.AddWord(height);
+				bin.AddWord(mincode);
+				bin.AddWord(maxcode - mincode + 1);
+				bin.AddComment("height, start code, num codes");
+
+				// widths
+				for( int code=mincode; code<=maxcode; code++ )
+				{
+					GfxTexture *tex = glyphs[code];
+					if( !tex )
+					{
+						bin.AddWord(0);
+						bin.AddComment(format("%3d missing", code));
+					}
+					else
+					{
+						bin.AddWord(tex->texture.width);
+						bin.AddComment(format("%3d", code));
+					}
+				}
+
+				// data
+				for( int code=mincode; code<=maxcode; code++ )
+				{
+					GfxTexture *tex = glyphs[code];
+					if( !tex )
+					{
+						for( int i=0; i<height; i++ )
+							bin.AddWord(0);
+						bin.AddComment(format("%3d missing", code));
+					}
+					else
+					{
+						for( int i=0; i<height; i++ )
+							bin.AddWord(tex->texture.GatherBitplaneWord(0, i, -1));
+						bin.AddComment(format("%3d", code));
+					}
+				}
+
+				// write
+				bin.WriteTable(fp, format("GFX_%s", group->name.c_str()).c_str(), es.chipmem);
+			}
+		}
+
+		if( es.write_index )
+		{
+			// info
+			vector<string> &list = export_group_table[group];
+			fprintf(fp, "\nconst word *GFXGROUP_%s[] = {\n", group->name.c_str());
+			for( int i=0; i<list.size(); i++ )
+				fprintf(fp, "\t%s,\n", list[i].c_str());
+			fprintf(fp, "};\n");
+		}
+	}
+
+	return data_size;

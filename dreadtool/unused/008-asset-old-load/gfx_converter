@@ -1,0 +1,240 @@
+
+
+
+	for( int i=0; i<tex.data.size(); i++ )
+	{
+		vec3 col = vec3::from_rgb(tex.data[i]);
+		BestColorCode bc;
+		bc.ref_color = LABColor::from_rgb(col) + error[i]*0.5f;
+
+		for( int j=0; j<palette.size(); j++ )
+			CheckBestColor(bc, j);
+
+		CheckBestColorChecker(bc, bc.first_code&0xFF, bc.second_code&0xFF);
+
+		tex.data[i] = bc.first_code;
+
+		LABColor err = bc.ref_color - bc.first_lab;
+		if( i+1 < error.size() ) error[i+1] += err*(7.f/16);
+		if( i+tex.width-1 < error.size() ) error[i+tex.width-1] += err*(3.f/16);
+		if( i+tex.width+0 < error.size() ) error[i+tex.width+0] += err*(5.f/16);
+		if( i+tex.width+1 < error.size() ) error[i+tex.width+1] += err*(1.f/16);
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+	struct LightLevel {
+		int		light;		// 0..255
+		float	factor;		// texture brightness factor
+
+		LightLevel(int l, float f) : light(l), factor(f) {}
+	};
+
+
+
+	//const float ls = 1.5f;
+	//light_levels.push_back(LightLevel(64, 0.25f*ls));
+	//light_levels.push_back(LightLevel(128, 0.50f*ls));
+	//light_levels.push_back(LightLevel(192, 0.75f*ls));
+	//light_levels.push_back(LightLevel(255, 1.00f*ls));
+
+	//main_palette.colors.push_back(GfxColor(0x000000));
+	//main_palette.colors.push_back(GfxColor(0x0000AA));
+	//main_palette.colors.push_back(GfxColor(0x222211));
+	//main_palette.colors.push_back(GfxColor(0x222266));
+	//main_palette.colors.push_back(GfxColor(0x333322));
+	//main_palette.colors.push_back(GfxColor(0x443322));
+	//main_palette.colors.push_back(GfxColor(0x444444));
+	//main_palette.colors.push_back(GfxColor(0x555555));
+	//main_palette.colors.push_back(GfxColor(0x664422));
+	//main_palette.colors.push_back(GfxColor(0x666655));
+	//main_palette.colors.push_back(GfxColor(0x777777));
+	//main_palette.colors.push_back(GfxColor(0x888888));
+	//main_palette.colors.push_back(GfxColor(0xAAAAAA));
+	//main_palette.colors.push_back(GfxColor(0xBB9955));
+	//main_palette.colors.push_back(GfxColor(0xBBBBBB));
+	//main_palette.colors.push_back(GfxColor(0xFFFFFF));
+
+
+
+//GfxTexture *GfxConverter::LoadTexture(const char *name, const char *path, float brightness, tex_type_t type)
+//{
+//	GfxTexture *tex = new GfxTexture();
+//	tex->name = name;
+//	tex->type = type;
+//	tex->light_level = 255;
+//
+//	if( !tex->texture.Load(path) )
+//	{
+//		delete tex;
+//		throw string("Can't load texture: ") + path;
+//	}
+//	tex->orig_w = tex->texture.width;
+//	tex->orig_h = tex->texture.height;
+//
+//	// Apply brightness
+//	for( int j=0; j<tex->texture.data.size(); j++ )
+//	{
+//		vec3 color = vec3::from_rgb(tex->texture.data[j]);
+//		float a = (tex->texture.data[j]>>24)/255.f;
+//		color *= brightness;
+//		color.saturate();
+//		tex->texture.data[j] = color.make_rgba(a);
+//	}
+//
+//	// Load offsets
+//	auto p = tex_info.find(name);
+//	if( p!=tex_info.end() )
+//	{
+//		tex->texture.off_x = p->second.off_x;
+//		tex->texture.off_y = p->second.off_y;
+//	}
+//
+//	// Process
+//	switch( type )
+//	{
+//	case TEX_TYPE_FLAT:
+//		tex->texture.Collapse();
+//		break;
+//
+//	case TEX_TYPE_WALL:
+//	case TEX_TYPE_SPRITE:
+//	case TEX_TYPE_SKY:
+//		tex->texture.Downscale();
+//		break;
+//
+//	case TEX_TYPE_WALL_DETAIL:
+//	case TEX_TYPE_SPRITE_HD:
+//	case TEX_TYPE_GRAPHICS:
+//		break;
+//	}
+//
+//	if( type==TEX_TYPE_GRAPHICS )
+//		alt_palette.DitherTexture(tex->texture, true, false);
+//	else
+//		main_palette.DitherTexture(tex->texture, (type==TEX_TYPE_SPRITE || type==TEX_TYPE_SPRITE_HD || type==TEX_TYPE_GRAPHICS), true);
+//
+//	// Upload
+//	tex->texture.Upload();
+//
+//	// Store
+//	tex_index[name].push_back(textures.size());
+//	textures.push_back(tex);
+//
+//	return tex;
+//}
+//
+//int GfxConverter::AssureTexture(const char *name, int light_level, tex_type_t type)
+//{
+//	if( name==string("-") || name==string("F_SKY1") )
+//		return 0;
+//
+//	int best = -1;
+//	int best_err = 1000;
+//	for( int i=0; i<textures.size(); i++ )
+//		if( textures[i]->type==type && textures[i]->name == name )
+//		{
+//			int err = abs(textures[i]->light_level - light_level);
+//			if( best<0 || err<best_err )
+//			{
+//				best = i;
+//				best_err = err;
+//			}
+//		}
+//
+//	if( best>=0 )
+//		return best;
+//
+//	const char *tname = "texture";
+//	const char *tpath = "../dreadgfx/pk3/textures";	// "newtex/textures";
+//	if( type==TEX_TYPE_FLAT ) tname = "flat", tpath = "newtex/flats";
+//	if( type==TEX_TYPE_SPRITE ) tname = "sprite", tpath = "newtex/sprites";
+//	if( type==TEX_TYPE_SPRITE_HD ) tname = "sprite", tpath = "newtex/sprites";
+//	if( type==TEX_TYPE_GRAPHICS ) tname = "graphic", tpath = "newtex/graphics";
+//
+//	//string path = format("newtex/%ss/%s", tname, name);
+//	string path = format("%s/%s", tpath, name);
+//	GfxTexture *last_tex = NULL;
+//	for( int i=0; i<light_levels.size(); i++ )
+//	{
+//		GfxTexture *tex = LoadTexture(name, path.c_str(), light_level>=0 ? light_levels[i].factor : 1.0f, type);
+//		last_tex = tex;
+//		tex->light_level = light_level>=0 ? light_levels[i].light : 255;
+//
+//		// Best?
+//		int err = abs(tex->light_level - light_level);
+//		if( best<0 || err<best_err )
+//		{
+//			best = textures.size()-1;
+//			best_err = err;
+//		}
+//
+//		if( light_level<0 )
+//			break;
+//	}
+//
+//	//if( type==TEX_TYPE_SPRITE || type==TEX_TYPE_SPRITE_HD )
+//	//	printf("Loaded %s: %s  (%dx%d)\n", tname, name, last_tex->texture.width, last_tex->texture.height);
+//	//else
+//	//	printf("Loaded %s: %s\n", tname, name);
+//	return best;
+//}
+
+
+
+
+
+	unsigned long long ftime = GetFileTime("newtex/palette.txt");
+	if( ftime > palette_time )
+	{
+		palette_time = ftime;
+		mod = true;
+
+		main_palette.Clear();
+		alt_palette.Clear();
+
+		vector<string> lines;
+		if( NFS.GetFileLines("newtex/palette.txt", lines) )
+			for( int i=0; i<lines.size(); i++ )
+			{
+				const char *s = lines[i].c_str();
+				if( *s=='#' )
+				{
+					s++;
+					int col = ParseHex(s);
+					int c2 = 0;
+					c2 |= ((col>>8)&0x0F)*0x110000;
+					c2 |= ((col>>4)&0x0F)*0x001100;
+					c2 |= ((col)&0x0F)*0x000011;
+					main_palette.colors.push_back(GfxColor(c2));
+				}
+				else if( *s=='w' )
+				{
+					s++;
+					int code = ParseInt(s);
+					main_palette.weights[code] = ParseFloat(s);
+				}
+				else if( *s=='+' && s[1]=='#' )
+				{
+					s+=2;
+					int col = ParseHex(s);
+					int c2 = 0;
+					c2 |= ((col>>8)&0x0F)*0x110000;
+					c2 |= ((col>>4)&0x0F)*0x001100;
+					c2 |= ((col)&0x0F)*0x000011;
+					alt_palette.colors.push_back(GfxColor(c2));
+				}
+			}
+
+		main_palette.Init();
+		alt_palette.Init();
+	}

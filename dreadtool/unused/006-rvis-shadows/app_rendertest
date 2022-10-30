@@ -1,0 +1,16 @@
+
+
+
+		ms.EnumButton(NULL, "RVis", mapview_mode, MAPVIEW_REGION_VIS);
+
+
+void RenderTestApp::RunMapView()
+		if( Dev.GetKeyState(VK_RBUTTON) )
+			mapgen.ComputeRegionVisibility(mv_sel_region);
+
+
+	case MAPVIEW_REGION_VIS:
+		MV_DrawMesh(mapgen.work_mesh, MVDR_DRAW_LINE_MARKERS, 0xFF8000);									// orange			- work mesh
+		MV_DrawLines(MVDL_TWO_SIDED | MVDL_DEBUG_MARK_ONLY, 0x00C000);										// green			- debug mark 2-sided lines
+		MV_DrawLines(MVDL_ONE_SIDED | MVDL_DEBUG_MARK_ONLY, 0x00FF00);										// light green		- debug mark 1-sided lines
+		break;

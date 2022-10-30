@@ -1,0 +1,104 @@
+
+void RenderTestApp::ExportWeapon(FILE *fp)
+{
+	// Load sprites
+	static const struct {
+		const char *name;
+		int			dy;
+		int			delay;
+	} SPNAMES[] = {
+		{ "SHTGA0", 0, 3 },
+		{ "SHTFB1", 4, 3 },
+		{ "SHTFA1", 2, 3 },
+		{ "SHTGA0", 0, 3 },
+		{ "SHTGB0", 0, 8 },
+		{ "SHTGC0", 0, 8 },
+		{ "SHTGD0", 0, 8 },
+		{ "SHTGC0", 0, 8 },
+		{ "SHTGB0", 0, 8 },
+		{ "SHTGA0", 0, 0 },
+		{ NULL }
+	};
+
+	map<string, int> info_plane_size;
+	vector<string> info_lines;
+	int size = 0;
+
+	for( int i=0; SPNAMES[i].name; i++ )
+	{
+		int tid = gfx_converter.AssureTexture(SPNAMES[i].name, -1, TEX_TYPE_SPRITE);
+		DataTexture &tex = gfx_converter.textures[tid]->texture;
+
+		if( !info_plane_size[SPNAMES[i].name] )
+		{
+			fprintf(fp, "\n__chip word WEAPON_%s[] = {\n", SPNAMES[i]);
+			for( int pass=0; pass<=4; pass++ )
+			{
+				if( pass )
+					fprintf(fp, "\t// Bitplane %d\n", pass-1);
+				else
+					fprintf(fp, "\t// Mask\n");
+
+				int plane_size = 0;
+				plane_size = 0;
+				for( int y=0; y<tex.height; y++ )
+				{
+					fprintf(fp, "\t");
+					for( int x0=0; x0<tex.width; x0+=8 )
+					{
+						word w = 0;
+						for( int x=0; x<8 && x0+x<tex.width; x++ )
+						{
+							DWORD col = tex.data[(x0+x)+y*tex.width];
+							word bits = 0;
+							if( pass==0 ) bits = (col==0x000F) ? 0 : 3;
+							else if( col!=0x000F )
+							{
+								if( col&(0x0001<<(pass-1)) ) bits |= 1;
+								if( col&(0x0100<<(pass-1)) ) bits |= 2;
+							}
+							w |= bits<<(14-x*2);
+						}
+						fprintf(fp, "0x%04X,", w);
+						size += 2;
+						plane_size += 2;
+					}
+					fprintf(fp, "\n");
+				}
+
+				info_plane_size[SPNAMES[i].name] = plane_size;
+			}
+			fprintf(fp, "};\n");
+
+			// info (new)
+			fprintf(fp, "const WeaponFrameInfoX WEAPONFRAME_%s = {\n", SPNAMES[i].name);
+			fprintf(fp, "\tWEAPON_%s,\n", SPNAMES[i].name);
+			fprintf(fp, "\tWEAPON_%s + %d,\n", SPNAMES[i].name, info_plane_size[SPNAMES[i].name]/2*1);
+			fprintf(fp, "\tWEAPON_%s + %d,\n", SPNAMES[i].name, info_plane_size[SPNAMES[i].name]/2*2);
+			fprintf(fp, "\tWEAPON_%s + %d,\n", SPNAMES[i].name, info_plane_size[SPNAMES[i].name]/2*3);
+			fprintf(fp, "\tWEAPON_%s + %d,\n", SPNAMES[i].name, info_plane_size[SPNAMES[i].name]/2*4);
+			fprintf(fp, "\t%d, %d,\n", tex.width, tex.height);
+			fprintf(fp, "\t%d, %d\n", -tex.off_x, -tex.off_y);
+			fprintf(fp, "};\n");
+		}
+
+		// info (old)
+		string info = format("\t{ WEAPON_%-10s, %3d, %3d, %3d, %3d, %5d, %2d },",
+			SPNAMES[i].name,
+			tex.width, tex.height,
+			-tex.off_x, -tex.off_y+SPNAMES[i].dy,
+			info_plane_size[SPNAMES[i].name],
+			SPNAMES[i].delay);
+
+		info_lines.push_back(info);
+	}
+
+	fprintf(fp, "\nconst WeaponFrameInfo WEAPON_INFO[] = {\n");
+	for( int i=0; i<info_lines.size(); i++ )
+		fprintf(fp, "%s\n", info_lines[i].c_str());
+	fprintf(fp, "\t{ NULL, 0, 0, 0, 0, 0, 0 },\n");
+	fprintf(fp, "};\n");
+
+
+	printf("Export: %d weapon bytes.\n", size);
+}

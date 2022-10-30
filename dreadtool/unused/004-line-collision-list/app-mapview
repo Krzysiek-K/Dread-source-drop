@@ -1,0 +1,35 @@
+
+		MAPVIEW_LINE_COL,
+
+
+		MVDL_COLLISIONS_ONLY	= (1<<5),
+
+
+void RenderTestApp::MV_DrawLines(int flags, DWORD color)
+		if( flags & MVDL_COLLISIONS_ONLY )
+		{
+			if( !mv_sel_region ) continue;
+		
+			if( mv_sel_region->col.find(line)==mv_sel_region->col.end() )
+				continue;
+		}
+
+
+void RenderTestApp::RunMapView()
+	case MAPVIEW_LINE_COL:
+		MV_DrawRegions(0, 0x008080);																		// dark cyan		- vis regions
+		MV_DrawLines(MVDL_ONE_SIDED, 0xC0C0C0);																// light gray		- 1-sided lines			(MAP CORE)
+		MV_DrawLines(MVDL_TWO_SIDED, 0x606060);																// dark gray		- 2-sided lines			(MAP CORE)
+		MV_DrawRegions(MVDR_MARKED_ONLY, 0x00FFFF);															// light cyan		- vis regions	(marked)
+		MV_DrawRegions(MVDR_SELECTED_ONLY | MVDR_DRAW_VERTEXES | MVDR_DRAW_LINE_MARKERS, 0x00FFFF);			// light cyan		- vis regions	(selected)
+		break;
+
+	case MAPVIEW_LINE_COL:
+		MV_DrawLines(MVDL_TWO_SIDED | MVDL_COLLISIONS_ONLY, 0x00C000);										// green			- collision 2-sided lines
+		MV_DrawLines(MVDL_ONE_SIDED | MVDL_COLLISIONS_ONLY, 0x00FF00);										// light green		- collision 1-sided lines
+		break;
+
+
+
+void RenderTestApp::RunMenu()
+		ms.EnumButton(NULL, "Lines", mapview_mode, MAPVIEW_LINE_COL);

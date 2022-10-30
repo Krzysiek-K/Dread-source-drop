@@ -1,0 +1,159 @@
+
+
+* SDK TODO:
+
+	* General list:
+
+
+		- test all new items
+
+		- new item: boots
+		- new item: small medkit
+		- teleporting enemies			(sector action: Teleport special enemies on switch)
+		? monster-triggered switches	(sector action: Set/clear <tag> when special monster is killed)
+		- extra tag binary logic		(tag numbers >= 100 combine flags)
+		- allow double-winged doors
+		- Head monster: shoot without stopping
+		
+
+		> finish up new renderer?
+		> Triggers and/or script editing
+		
+		
+
+		> Tsak 2) Barrels -> easy explode : I'd set the barrel health to lowest possible so you get an explosion even with 1 pistol shot. Not fun to have to deal 3 shots for an explosion, makes barrels far less usable for enemy disposal this way (better to concentrate on the enemy instead). Insta-barrel explosion should make them far, far more usable.
+		- Tsak 3) Barrels -> bigger area of effect and (or) more damage : enemies need to be next to a barel, almost touching it  to even get hurt 
+		- Tsak 4) Blood Splat -> less gravity :  this is way too fast currently
+		- Tsak 5) Launcher -> more damage/power : feels quite underpowered currently
+		- Tsak 7) All enemies (especially shotgunner) -> more speed : everyone feels like is walking super slowly. Player rarely has to readjust his targeting because of that. Did a cross comparison with Doom recently and indeed enemies like the shotgunner or marine feel like they have at least x2 speed than what you have set it to currently. Note enemy speed in hard mode e.t.c. doesn't have to be any faster either (if fast enemy speed is an issue, f.e. with collisions).
+		- Jam 5. chaingunner taking cover as little as possible and optionally winding up faster
+
+		+ teleporters					(sector action: Teleport player to <tag> location)
+		+ walk triggered sectors		(set/clear switch 1..32)
+		+ slow doors
+		+ use texture offsets for doors
+		+ exit level switch
+		+ switch modes:
+			+ Toggle switch
+			+ One-time toggle switch
+			+ Toggle switch (follow tag state)
+			+ Switch tag ON, reusable, follow
+			+ Switch tag OFF, reusable, follow
+		+ added new flats (dithered fixed colors)
+		+ Tsak 6) Pistol -> more damage : 6 shots to get shotgunner killed feels too much now
+		+ Tsak 1) Shotgun -> less available ammo on pickup : this should make collecting ammo from items more interesting as now the shotgun gets almost full capacity on pickup already
+		+ switches
+		+ Door generator will copy ceiling height from front sector to back sector (allows door sector to have slightly lower height in the editor to see the texture, and set up offsets in the future)
+		+ Added option to open & close doors in 3D preview
+		+ Improve Dread game autodetection in Doom Builder 2 (use map name "DREADMAP")
+		+ Jam 4. deaf flag for ai
+		+ include new animations from Tsak
+		+ stay-open doors
+		+ sector actions "last enemy drops blue/yellow/red card"
+		+ lower/upper floor per-linedef colors hack	"$Fxx"
+
+		+ linedef actions to force 255 and 128 light level on texture
+		+ Jam 7. any solution to close arena till all enemies are killed (like the last enemy dropping required keycard). maybe dropping items in general? 
+
+
+
+		? GPU render to have proper texture offsets
+		? increase A1200 memory limit over 256k
+		? Jam 2. bugfix for sky ceiling combined with brightness 128 - if possible
+		? F_FIX## flats
+
+		- decrease A500 memory limit to what we get on real machine
+		- export F_SKY1 to "textures" folder in PK3  (not only to flats)
+
+		
+		
+		- concrete textures with 64/96 alignment	(keep the old ones also)
+		x Dread render to have sky texture render support
+		+ GPU render to respect the 104 + 106 linedef actions
+		- make sure enemy collisions work well
+
+
+		- Jam 1. 100% (or just yet better than now) working collisions
+		- Jam 3. properly rendered doors
+		- Jam 6a. logic simulation sounds playing early
+		- Jam 6b. status bar updates early
+		- Jam 6c. palette flashes slightly early
+
+
+
+		+ fix top line clipping		(128px linedef viewed from under 64px roof)
+		+ make sure F_COL## flats work properly
+		+ add 96px and 64px sky routines
+		+ Tsak 8) Items - > Bigger collision box : should make it easier to collect
+
+
+* TODO:
+
+	- draw weapon sprites in game
+
+	- make asset paths relative to the asset.txt file (or whatever include file is currently used)
+	- write down object animations to assets.txt
+	- print color values in the palette preview
+
+	- enable scroll wheel to move the menu
+	- draw objects in 3D world
+	- implement map hot reload
+	
+
+
+	
+	+ increase horizontal import resolution for non-sprite weapons
+	+ import new weapon sprites
+	+ verbose import mode
+	+ watch image files modification times
+	+ add "include" support for assets.txt	(make sure included files are watched, too)
+	+ option: graphics trimming
+	+ verify hardware sprites are at most 64px wide and at most 15 colors
+	+ improve error reporting to continue after failing to import an asset
+	+ rename old "sprites" to "objects"
+
+
+
+* Ideal operation order
+
+	- color key
+	- scroll		(add: clipping mode)
+	- downscale		(add: Lanczos)
+	- color adjust
+	- dithering
+	- repack		(new: HD / HD+)
+	- trim
+
+
+
+== Graphics assets processing steps ==
+
+The following steps are taken for every gfx asset, for every specified light level.
+
+
+=== Image loading ===
+
+Image is loaded from file. The asset name is used as the file name, and path specified with the ''-path'' option is used.
+The extension is added automatically to load the image from one of the supported file formats:
+* .bmp
+* .dds
+* .dib
+* .hdr
+* .jpg
+* .pfm
+* .png
+* .ppm
+* .tga
+The tool tries loading file with one of the above extensions (trying to open one, not necessarily in specified order).
+
+
+=== Measuring original dimensions ===
+
+At this point original texture dimensions and offsets are recorded.
+Use ''-visualscale'' to scale the measured size (but not the offsets).
+
+
+=== Masking (color key) ===
+
+If ''-colorkey'' option is specified, pixels of special color are replaced with transparency.
+

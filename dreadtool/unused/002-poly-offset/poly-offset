@@ -1,0 +1,77 @@
+
+void DreadMapGen::ComputeCollisionMesh(PolygonMesh2D &mesh, int offset)
+{
+	Polygon2D init;
+	init.CreateRectangle(-REGION_SIZE, -REGION_SIZE, REGION_SIZE, REGION_SIZE);
+
+	// Init
+	mesh.Clear();
+	tmp_mesh.Clear();
+	tmp_mesh.polys.push_back(init);
+
+	// Subtract free space from temp
+	// Add free space to target mesh
+	for( int i=0; i<(int)sectors.size(); i++ )
+	{
+		Polygon2D poly;
+		MakePolySector(sectors[i], poly);
+		tmp_mesh.CSGSubtract(poly);
+		mesh.polys.push_back(poly);
+	}
+
+	// Subtract blocking spaces
+	Polygon2D newpoly;
+	vector<vec2> vtx;
+	vector<PointRP2> pvtx;
+
+	for( int i=0; i<(int)tmp_mesh.polys.size(); i++ )
+	{
+		Polygon2D &tpoly = tmp_mesh.polys[i];
+		vtx.clear();
+		for( int j=0; j<(int)tpoly.edges.size(); j++ )
+			vtx.push_back(tpoly.edges[j].start.GetVec2());
+
+		pvtx.clear();
+
+		int N = (int)vtx.size();
+		for( int j=0; j<N; j++ )
+		{
+			// ^ Y
+			// |
+			// +---> X
+			vec2 v0 = vtx[j];
+			vec2 v1 = vtx[(j+1)%N];
+			vec2 v2 = vtx[(j+2)%N];
+			vec2 n0 = (v0-v1).get_rotated90().get_normalized();	// Y, -X		- make normals point outward (left side)
+			vec2 n2 = (v1-v2).get_rotated90().get_normalized();
+			v0 = v1 + n0*(offset+0.5f);
+			v2 = v1 + n2*(offset+0.5f);
+			vec3 l0(n0.x, n0.y, -n0.dot(v0));
+			vec3 l2(n2.x, n2.y, -n2.dot(v2));
+			vec3 pp = l0.cross(l2);
+			vec2 v1b = vec2(pp.x, pp.y)/pp.z;
+			float miss = (v1b-v1).length();
+			if( miss >= offset*1.7f )
+			{
+				v1 += (n0+n2).get_normalized()*(offset+0.5f);
+				pvtx.push_back(PointRP2((int)floor(v0.x+0.5f), (int)floor(v0.y+0.5f)));
+				pvtx.push_back(PointRP2((int)floor(v1.x+0.5f), (int)floor(v1.y+0.5f)));
+				pvtx.push_back(PointRP2((int)floor(v2.x+0.5f), (int)floor(v2.y+0.5f)));
+			}
+			else if(  miss >= offset*1.3f )
+			{
+				pvtx.push_back(PointRP2((int)floor(v0.x+0.5f), (int)floor(v0.y+0.5f)));
+				pvtx.push_back(PointRP2((int)floor(v2.x+0.5f), (int)floor(v2.y+0.5f)));
+			}
+			else
+				pvtx.push_back(PointRP2((int)floor(v1b.x+0.5f), (int)floor(v1b.y+0.5f)));
+			//pvtx.push_back(PointRP2((int)floor(v1.x+0.5f), (int)floor(v1.y+0.5f)));
+		}
+
+		newpoly.CreateFromPoints(&pvtx[0], (int)pvtx.size());
+
+		//mesh.Clear();
+		//mesh.polys.push_back(newpoly);
+		mesh.CSGSubtract(newpoly);
+	}
+}
