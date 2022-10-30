@@ -1,0 +1,23 @@
+
+
+Hereby, a license is granted to use DreadTool and asset contained in this bundle for:
+
+    - personal use - e.g. prototyping game maps and new assets
+    - editorial use - e.g. publishing articles or videos showing custom maps, level design tips, etc
+    - publishing results on the Dread discord server
+
+    ONLY as long as it's done in the context of the Dread game project.
+    (e.g. using the assets, or derivate works for other projects is NOT allowed)
+
+
+
+
+This package contains WinUAE Amiga emulator (winuae64.exe) which is a separate program
+ covered by its own license (GPL). As such, this ZIP is an "aggregate" of two programs,
+ each governed by its own license.
+
+
+
+
+All rights reserved.
+Copyright (c) 2021-2022 KK/Altair
