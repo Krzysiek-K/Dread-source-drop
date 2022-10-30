@@ -1,0 +1,141 @@
+#if 0
+static const DataVertex MAP_VTX[] = {
+	{ -192,  192 },		//	0
+	{  192,  192 },		//	1
+	{  192,   32 },		//	2
+	{  192,  -32 },		//	3
+	{  192, -192 },		//	4
+	{ -192, -192 },		//	5
+	{ -128,  192 },		//	6
+	{  128,  192 },		//	7
+	{ -128,  321 },		//	8			y=320			321->448
+	{  128,  321 },		//	9
+	{ -320,  192 },		// 10	A
+	{ -320, -192 },		// 11	B
+	{ -192,  321 },		// 12	C
+	{  192,  321 },		// 13	D
+	{  320,  321 },		// 14	E
+	{ -192,  704 },		// 15	F
+	{  192,  704 },		// 16	G
+	{  320,  704 },		// 17	H
+	{ 0x7FFF, 0x7FFF }
+	//        
+	//        
+	//        F-------G--H
+	//        |   2   |3 |
+	//        |       |  |
+	//        C--8--9-D--E
+	//           |1 |
+	//   A----0--6--7-1
+	//   |            |
+	//   |            2
+	//   |     0      |
+	//   |            3
+	//   |            |
+	//   B----5-------4
+	//        
+	//        
+};
+
+static const DataLine MAP_LINES[] = {
+	// pocket entries
+	{  6,  7,	TEX_RW23_4_OFFS,		-128, -64, 0x40, 0xC0,	 6	},	// 0	North - middle (gap)							0->1
+	{  9,  8,	TEX_RW23_4_OFFS,		-128, -64, 0x40, 0xC0,	 6	},	// 2	Passage north entrance							2->1
+
+	// pocket interior walls
+	{  6,  8,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0x40,	 3	},	// 1	Pocket - left
+	{  9,  7,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0x40,	 3	},	// 1	Pocket - right
+
+	// pocket exits
+	{  7,  6,	TEX_RW23_4_OFFS,		 -64,   0, 0x40, 0x40,	 7	},	// 1	North - middle (gap)	(2nd side)				1->0
+	{  8,  9,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0x40,	 7  },	// 1	Pocket - middle									1->2
+	{ 16, 13,	TEX_RW23_4_OFFS,		-128, -64, 0x40, 0xC0,	 6 },	// 2	North - middle (gap)							2->3
+
+	// front walls that can obstruct other walls
+	{  0,  6,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,	 5	},	// 0	North - left
+	{  7,  1,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,	 5	},	// 0	North - right
+	{ 10,  0,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,	 5	},	// 0	West region - north
+	{  8, 12,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,   5	},	// 2	sector 2 - South
+	{ 14, 13,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0xC0,   3	},	// 3	sector 3 - South
+	{ 14,  9,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,   5	},	// 2	sector 2 - South
+
+	// outer walls that can obstruct other walls
+	{  1,  2,	TEX_RW23_4_OFFS,		 -64,   0, 0x40, 0xC0,	 8	},	// 0	East - left
+	{  2,  3,	TEX_DOOR3_6_OFFS,		 -64,   0, 0x40, 0xC0,	 8	},	// 0	East - door
+	{  3,  4,	TEX_RW23_4_OFFS,		 -64,   0, 0x40, 0xC0,	 8	},	// 0	East - right
+	{ 12, 15,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,   9  },	// 2	sector 2 - West
+
+	// walls that can't obstruct anything
+	{  4,  5,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,   9	},	// 0	South
+	{  5, 11,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,	 9	},	// 0	West region
+	{ 11, 10,	TEX_RW23_4_OFFS,		 -64,   0, 0x40, 0xC0,	 8	},	// 0	West region
+
+	{ 15, 16,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,   9  },	// 2	sector 2 - North
+	{ 16, 17,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0xC0,   3	},	// 3	sector 3 - North
+	{ 17, 14,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0xC0,   3	},	// 3	sector 3 - East
+	//{ 17, 14,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,   9  },	// 2	sector 2 - East
+
+//	{  8,  9,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0x40,	 3	},	// 1	Pocket - middle				full
+
+	{ 0xFFFF, 0, 0, 0, 0, 0, 0 }
+};
+#endif
+
+
+
+#if 0
+static const DataVertex MAP_VTX[] ={
+	{ -320,  192 },		//	0
+	{ -320, -192 },		//	1
+	{  192,  192 },		//	2
+	{  192, -192 },		//	3
+	{  320,  192 },		//	4
+	{  320, -192 },		//	5
+	{  512,  192 },		//	6
+	{  512, -192 },		//	7
+	{  640,  192 },		//	8
+	{  640, -192 },		//	9
+
+	{  -64,  192 },		//	A	10
+	{  -64, -192 },		//	B	11
+
+	{ 0x7FFF, 0x7FFF }
+	//        
+	//   0-A-2-4---6-8
+	//   | 0 |1| 2 |3|
+	//   1-B-3-5---7-9
+	//        
+	//        
+};
+
+static const DataLine MAP_LINES[] ={
+	{ 2,  3,	TEX_RW23_4_OFFS,		-128, -64, 0x40, 0xC0,	 6 },	// Big wall + gap	(unclipped)		!!!		0->1
+	{ 4,  5,	TEX_RW23_4_OFFS,		 -64,   0, 0x40, 0x40,	 7 },	// Exit								!!!		1->2
+	{ 6,  7,	TEX_RW23_4_OFFS,		-128, -64, 0x40, 0xC0,	10 },	// Big wall + gap	(clip)			!!!		2->3
+
+	//{ 7,  6,	TEX_RW23_4_OFFS,		 -64,   0, 0x40, 0x40,	 7 },	// Exit								!!!		3->2
+	//{ 5,  4,	TEX_RW23_4_OFFS,		-128, -64, 0x40, 0xC0,	10 },	// Big wall + gap	(clip)			!!!		2->1
+	//{ 3,  2,	TEX_RW23_4_OFFS,		 -64,   0, 0x40, 0x40,	 7 },	// Exit								!!!		1->0
+
+	// Sector 0
+	{ 1,  0,	TEX_RW23_4_OFFS,		 -64,   0, 0x40, 0xC0,	 4 },	// Low wall			(unclipped)
+	{ 0, 10,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,	 5 },	// High wall		(unclipped)
+	{10,  2,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,	 5 },	//
+	{ 3,  1,	TEX_RW23_4_OFFS,		-128,   0, 0x40, 0xC0,	 5 },	// High wall		(unclipped)
+
+	// Sector 1
+	{ 2,  4,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0x40,	 3 },	// Dark
+	{ 5,  3,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0x40,	 3 },	// Dark
+
+	// Sector 2
+	{ 4,  6,	TEX_RW23_4_OFFS,		 -64,   0, 0x40, 0xC0,	 8 },	// Low wall			(clip)
+	{ 7,  5,	TEX_RW23_4_OFFS,		 -64,   0, 0x40, 0xC0,	 8 },	// Low wall			(clip)
+
+	// Sector 3
+	{ 6,  8,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0x40,	 3 },	// Dark
+	{ 9,  7,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0x40,	 3 },	// Dark
+	{ 8,  9,	TEX_RW23_4_DARK_OFFS,	 -64,   0, 0x40, 0x40,	 3 },	// Dark	END
+
+	{ 0xFFFF, 0, 0, 0, 0, 0, 0 }
+};
+#endif

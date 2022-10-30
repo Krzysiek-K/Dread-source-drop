@@ -1,0 +1,2 @@
+
+loading.png out\loading -format=4 -interleaved -rawpalette

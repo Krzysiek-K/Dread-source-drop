@@ -1,0 +1,279 @@
+
+
+
+
+
+* Tsak issues:
+
+	PS: if I move the mouse slowly to the right with sensitivity set to 10. It doesn't register input. if I do the same thing to the left i recognizes this perfectly.
+	PS: improve the first hub room readability
+
+	0)	Ok so the config is the default basic-non expanded configuration : a1200 in quickstart mode. 3.0 kickstart (rev 39.106). Does the same with 3.1		Winuae version is 3.3.0
+
+	1) Seems the game doesn't like AGA or 020 (at least on UAE). Screen gets glitched and completely corrupted once you start the game. It's even worse on 030.
+	2) Explosions from exploding barrels isn't heard (gets extremely low volume).
+	3) For some reason there's a lot of sfx getting interrupted. Feels you're making use of a single channel instead of 4.
+	4) The secret door (crates) at the far right of the map  can be opened behind the wall from the outside area (the area where the red key is).
+	5) Screen glitch/flashes when you complete the level.
+	6) Doors opening and kept open creates some sort of a glitch sometimes with a vertical set of lines kept on screen (until the door closes up again).
+
+	a) Lovely decoration on the previously "boring" part at the area to the right of the map.
+	b) End area with the white concrete still sucks visually (sorry).
+	c) Map is extremely small and generally underwhelming (in comparison the new map you showcased with the ST music example feels way more interesting)
+	d) No use of the head enemy also is a bit :confused:. Makes the overal enemy variety feel lacking.
+	e) Found 3 of the 4 secrets so far (machinegun).
+	f) I expected the cursor keys to function in the menu (only WASD does for the moment).
+	g) Sound design on the menus could use a bit extra polishing (letters dropping are too loud and the clickety sound that follows sounds distorted, also the sound when you select something doesn't feel too good).
+	h) Would surely help using a loading screen (using our standard font perhaps?) as the loading at the start is quite long.
+
+
+
+* Demo release to do:
+
+		? all		[b] bad looking end area
+
+
+
+
+		? Amiga		NO REPRO	[1] AGA/020 corruption and crash
+		- all		upper step texture 96..128 not culling
+
+
+		> Amiga		[5] level completed screen glitch
+		> Amiga		[3] add sound queueing support (like ST)
+		> Amiga		NTSC support
+
+
+		- ST		improve menu text shading
+		- ST		nightmare crash
+		- ST		NTSC support
+		
+		- all		add respawn sequence to Head monster
+
+		+ all		add respawn sequence to Chaingunner
+		+ Amiga		[2]	sound attenuation for explosions (barrels & missiles)
+		+ all		add a secret with a chaingun
+		+ all		make Shotgunners miss more if player moved from the line of shooting
+		+ all		[6] door edge rendered too soon in visibility
+
+
+	* Amiga:
+		+ disable game logic when killed
+		+ hide weapon when player is dead
+		+ check how Esc works when player is killed
+		+ add Esc key sound when exiting game to menu
+		+ make sure minimap Tab is disabled
+		+ level end sound
+		+ change sound attenuation to higher value
+		+ fix flashing screen problem
+		+ reset mouse delta when entering the game
+
+
+	* ST:
+		+ new sounds:	DSRESP1, DSRESP2, DSHEADRESP, DSPLDTH, DSLEVEND
+		+ load new music
+		+ check how Esc works when player is killed
+		+ disable game logic when killed
+		+ merge menu sounds to ST
+		+ "T B D: merge to ST version"
+		+ disable in-game Tab key
+		+ disable interrupt firing when player is dead
+		+ level end sound
+		+ in-game Esc sound
+		+ reset mouse delta when entering the game
+		+ return to menu music when player is dead or has finished a level
+		+ blue light over red key
+		+ disable EXIT option
+		+ fix SFX option sound working
+
+	* Common:
+		+ add sound for Esc key in menus (DSAMMO)
+		+ clamp palette index for blood (going outside boundary)
+		+ player death sound
+		+ add respawn sound to Shotgunner
+		+ implement better respawn timing (not visibility-dependent)
+		+ slow down sky scrolling
+		+ make sure red glow it at least set to 1 when player health decreases
+		+ make sure shooting "sound" command always comes before "player_damage"
+		+ add more secrets
+		+ allow only opening doors in front of the player
+		+ allow player to move out of the line of fire of the shotgunner
+		+ fix big door rendering line mode glitch
+
+
+
+
+
+
+* Old to do:
+
+	- map:		add door color markings
+	- map:		add more enemies
+	- map:		make sure player can reach every room (and make it meaningful)
+	- map:		playtest
+
+	~ combat:	implement projectiles
+
+	- monsters:	chaingunner
+	- monsters:	alien		(only if projectiles get implemented)
+	- monsters:	commander	(only if projectiles get implemented)
+
+	- ui:		implement palette flashes
+
+
+	- monsters:	slug	(fix colors, add death frames)
+		
+
+
+	+ map:		decorate first zone with trees, limit grass
+
+	+ map:		prepare keycolor/doortrak texture
+	+ map:		implement X texture offsets (to implement color door markings & doortraks)
+	+ map:		change doortrak textures
+	+ items:	add shotgun & launcher pickups
+	+ items:	add rocket boxes
+	+ items:	add remaining keycards
+	+ items:	add armor
+
+
+	vvv MORE BELOW vvv
+
+
+
+
+	~ implement UI rendering
+		+ current song uses too much chip RAM
+		+ keys indicators
+		+ available weapons indicators
+		+ ammo / capacity indicators
+		- pre-render fixed elements (grayed-out numbers, % signs, last 0's in capacity)
+		- paste background into face frames
+		- scriptable face "thing"
+
+
+	~ implement doors as scriptable things
+		+ auto-close doors
+		- prevent closing doors on the player (and other things)
+		- prevent closing doors on other things
+
+	- implement separate "active" list
+		- deactivate only after time
+
+	- graphics:
+		- improve visibility of keycard sprites
+		- improve visibility of ammo sprites
+
+	- monster-monster collisions
+
+	- change all engine coords to fixed point
+
+
+
+	- visibility groups
+
+	~ hitscan clipping
+		> subsector extra clip nodes (separating solid from subsector area)
+		+ hitscan collision mesh
+		- things clipping	(avoid monster friendly fire & shooting through doors)
+
+
+	- load-time map memory allocation:
+		- moveable engine tables
+		- map data in a single binary chunk (pre)loaded to common memory region
+		- parse map data from the end, allocating engine objects from the top
+	- rewrite walk collision clipping in asm (include no-slide option for monsters)
+	- rewrite things clipping in asm
+	- rewrite high-level collision checks in asm
+
+	- referenced textures
+
+
+
+	+ thing scripting language
+
+	+ combat: hitscan (for monster visibility & hit tests)
+	+ combat: player shots spawn puffs/blood
+	x combat: monster shots spawn puffs (when missed)
+
+	+ debug monster-wall collisions
+
+	+ cleanup: remove old game system
+
+	+ pickup callback
+	+ "destroyed" script macro
+
+	+ monster movement & wall collisions
+
+
+	+ weapon system
+		+ cleanup: remove old weapon system
+		+ export weapon frames based on script usage
+		+ weapon swing
+		+ fix triggering
+	+ "become" script macro
+
+	+ player inertia	
+	+ attach virtual "things" to machines for collision checks
+	+ things visibility conditions
+
+	+ things clipping: walk
+
+	+ reduce subvertex precision to 3 (use defines everywhere - 4 total: engine C, engine asm, map converter, cheat generator)
+	+ move things processing/drawing to asm
+	+ proper things visibility on/off code & sorting
+
+	+ FIX: walls at high zoom levels don't cover things
+
+	+ a lot of code moved to ASM
+	+ use near clipping plane to perform better culling of 2-sided lines
+	+ fix bad texture coords when getting close to right end of a long wall
+	+ figure out how to make doors
+	+ collisions: in-game physics
+	+ convert line preparation code to use solely mulu/muls/divu/divs for all multiplications and divisions		(except computation of <du>)
+
+
+	+ fix game hanging in various places (e.g. in double-lit west storage area, in east storage rooms)
+
+	+ implement sprite clipping
+
+	+ autogenerate cheat names for map preview
+	+ autogenerate cheat selection table for map compiler
+	+ autogenerate clipping table for line draw
+
+	+ add missing linecheat cases
+	+ better timing of weapon animation
+		+ introduce timing
+		+ generate timing from the tool
+	+ autogenerate cheat tables and include lists
+
+	+ transform vertexes on-demand
+
+	+ remove unused fields from the line cheat functions declarations
+
+
+
+* Map design:
+
+	A	B	C
+
+	D	E	F
+
+	G	H	I
+
+
+		A	- dark tunnels
+		C	- outside yard with boxes
+		E	- center hub
+		F	- computer halls
+		H	- entry
+
+			- outside region, with overhang on supports
+			- room with ceiling hole
+			- room with boxes
+
+
+	> slime pool in the middle
+	> slime room with bridge across
+	> outdoor region with boxes (some scattered)
+	> indoor magazine with boxes
+	

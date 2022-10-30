@@ -1,0 +1,51 @@
+
+void Dread_DrawSprite(__d2 int spx, __d1 int spy, __a3 const word *frame)
+{
+	//// Transform
+	//{
+	//	spx = (spx<<ENGINE_SUBVERTEX_PRECISION) - lrc_cam_pos_x;
+	//	spy = (spy<<ENGINE_SUBVERTEX_PRECISION) - lrc_cam_pos_y;
+	//	int tx = (((int)spx)*lrc_cam_rotate_dx - ((int)spy)*lrc_cam_rotate_dy)>>14;
+	//	spy = (((int)spx)*lrc_cam_rotate_dy + ((int)spy)*lrc_cam_rotate_dx)>>14;
+	//	spx = tx;
+	//}
+
+	// Draw
+	const int WOLFSCREEN_W = 160;
+	const int wolf_xoffs = 80;
+	const int zoom_i = 80;
+	const int clip = 161;	//161;	// fix.4
+
+	if( spy < clip )
+		return;
+
+	int p1x = spx - (frame[1]<<ENGINE_SUBVERTEX_PRECISION);
+	int p2x = p1x + (frame[0]<<ENGINE_SUBVERTEX_PRECISION);
+	word tx1 = 0;
+	word tx2 = frame[0];
+
+
+	// xp = px*zoom / py
+	int xmin = divs(muls(p1x, zoom_i), spy) + wolf_xoffs;
+	int xmax = divs(muls(p2x, zoom_i), spy) + wolf_xoffs;
+	if( xmin>=xmax ) return;
+
+	short s0 = divs((zoom_i*32)<<(8+ENGINE_SUBVERTEX_PRECISION), spy);		// won't overflow because of clipping p#y>=321
+	long u1s = ((long)tx1)<<(16+1);
+	long u2s = ((long)tx2)<<(16+1);
+	long du = (u2s-u1s)/(long)(xmax-xmin);									// result can be 32-bit!!
+
+	if( xmin < 0 )
+	{
+		u1s -= du*xmin;
+		xmin = 0;
+	}
+	if( xmax>WOLFSCREEN_W ) xmax = WOLFSCREEN_W;
+	if( xmin>=xmax ) return;
+
+	//															v line->y1
+	asm_tex_base = (const byte*)frame + -40;
+
+	Dread_LineCore_Sprite(xmin<<3, xmax-xmin-1, s0, u1s, du, frame);
+
+}

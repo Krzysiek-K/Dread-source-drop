@@ -1,0 +1,165 @@
+
+# ---------------- Build parameters ----------------
+
+DEMO_NAME		= DreadST
+
+
+
+
+
+# ---------------- Build directories ----------------
+
+SRCDIR = ./src
+OBJDIR = ./objst
+OUTDIR = ./out
+
+SOUNDDIR	= ./sound
+GENDIR		= ./gen
+DATADIR		= ./data
+
+
+MAPFILE = $(OUTDIR)/auto/$(DEMO_NAME).map
+
+FINALEXE = $(realpath $(OUTDIR)/auto/$(DEMO_NAME).prg)
+FINALHD = $(realpath $(OUTDIR))
+
+
+
+OBJECTS = $(patsubst %,$(OBJDIR)/%,$(_OBJECTS))
+HEADERS = $(patsubst %,$(SRCDIR)/%,$(_HEADERS))
+
+
+# ---------------- Build sources ----------------
+
+
+CSRC += $(SRCDIR)/st_main.c
+CSRC += $(SRCDIR)/st_framework.c
+CSRC += $(SRCDIR)/dread_mapload.c
+
+HEADERS += $(wildcard $(SRCDIR)/*.h)
+HEADERS += $(wildcard $(SRCDIR)/*.inc)
+HEADERS += $(wildcard $(SRCDIR)/*.inl)
+
+ASMSRC	+= $(wildcard $(SRCDIR)/*.S)
+ASMSRC	+= $(wildcard $(SRCDIR)/*.s)
+ASMSRC	+= $(wildcard $(SRCDIR)/*.i)
+ASMSRC	+= $(wildcard $(SRCDIR)/*.asm)
+
+HEADERS += $(wildcard $(GENDIR)/*.inl)
+ASMSRC	+= $(wildcard $(GENDIR)/*.s)
+ASMSRC	+= $(wildcard $(GENDIR)/*.i)
+ASMSRC	+= $(GENDIR)/gen_asmstruct.i
+
+HEADERS	+= $(wildcard $(DATADIR)/*.inc)
+ASMSRC	+= $(wildcard $(DATADIR)/*.i)
+
+
+
+
+# ---------------- Build objects ----------------
+
+OBJECTS += $(patsubst $(SRCDIR)/%.c,$(OBJDIR)/%.o,$(CSRC))
+OBJECTS += $(OBJDIR)/st_asm.o
+
+LIBS = lib/vc.lib
+
+
+
+
+
+# ---------------- Build tools ----------------
+
+K68		= c:/LocalProjects/_amiga/k68/Release/k68.exe
+VASM	= vasmm68k_mot_win32.exe
+VC		= vc
+LINK	= vlink
+
+HATARI		= c:/Progs/Hatari/hatari.exe 
+HATARI_OPT	+= --tos c:/Progs/Hatari/tos.img
+HATARI_OPT	+= --confirm-quit 0
+HATARI_OPT	+= --fast-boot 1
+HATARI_OPT	+= --harddrive c:/LocalProjects/_amiga/dreadmake/out
+
+
+# ---------------- Build options ----------------
+
+
+DEFS	+= -DATARI_ST
+
+
+CFLAGS	+= $(DEFS)
+CFLAGS	+= -notmpfile
+#CFLAGS	+= -O4 -notmpfile
+# #CFLAGS	+= -O=23999 -maxoptpasses=32
+#CFLAGS	+= -O3 -maxoptpasses=32 -notmpfile
+CFLAGS	+= -I. -Isrc
+CFLAGS  += -nostdlib
+
+# Disable nasty warnings:
+#	 62 - imported symbol <...> was not referenced
+
+ASMFLAGS	+= -m68000 -spaces -Fhunk $(BUILD_PARM) -x
+ASMFLAGS	+= -nowarn=62
+
+
+
+# Disable nasty warnings:
+#	 81	- casting number to address				//	(word*)0xdff001
+#	170	- dead code elliminated
+#	 65	- unused variable
+#	152 - loop eliminated						//	do{...}while(0);
+#	172	- optimizer passes						//	Dread_Build_Fillers()
+#	 79	- offset equals size of object			//	e_visthings_max = e_visthings + ENGINE_MAX_VISTHINGS;
+
+CFLAGS += -dontwarn=81 -dontwarn=170 -dontwarn=65 -dontwarn=152 -dontwarn=172 -dontwarn=79
+
+LINKFLAGS += -gc-all -nostdlib -M$(MAPFILE)
+
+
+
+# ---------------- Build generated sources ----------------
+
+
+gen/gen_asmstruct.i : src/dread_data.h src/dread_estructs.h scripts/asmstruct/_gen_asmstruct.awk Makefile
+	gawk -f scripts/asmstruct/_gen_asmstruct.awk $^ >$@
+
+
+
+# ---------------- Build commands ----------------
+
+
+#src/xcode.asm : $(XSRC) Makefile
+#	$(K68) $(XSRC) -o $(SRCDIR)/xcode.asm -oh $(SRCDIR)/xcode.h
+
+$(OBJDIR)/st_asm.o : $(ASMSRC) Makefile
+	$(VASM) $(ASMFLAGS) -o $(OBJDIR)/st_asm.o $(SRCDIR)/st_asm.s $(DEFS)
+
+$(OBJDIR)/%.o : $(SRCDIR)/%.c $(HEADERS) Makefile
+	$(VC) $(CFLAGS) -final -c $(subst /,\,$<) -o $@
+
+
+#$(FINALEXE) : $(OBJECTS) Makefile
+#	$(LINK) $(LINKFLAGS) -o $(FINALEXE) $(subst /,\,$(OBJECTS)) $(LIBS)
+
+
+$(FINALEXE) : $(CSRC) $(OBJDIR)/st_asm.o Makefile
+	$(VC) $(CFLAGS) -o $(FINALEXE) $(subst /,\,$(CSRC)) $(OBJDIR)/st_asm.o $(LIBS)
+
+
+
+
+# ---------------- Build targets ----------------
+
+
+all: $(FINALEXE)
+
+rebuild: clean all
+
+clean:
+	-rm -rf ./$(OBJDIR)/*.o
+	-rm -rf $(FINALEXE)
+
+run_st: $(FINALEXE)
+	$(HATARI) $(HATARI_OPT)
+
+.PHONY: all rebuild clean run_st

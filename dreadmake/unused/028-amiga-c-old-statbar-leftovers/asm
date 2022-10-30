@@ -1,0 +1,13 @@
+_Blit_C2P_Pass_Stats:
+
+	bra		_Blit_Pass_StatusBar
+
+
+;	jsr		_Dread_BlitStats
+;	move.l	d0, a0
+;	add.l	d0, d0
+;	beq		.end
+;	lea.l	_Blit_C2P_Pass_Stats(pc),a0
+;.end:
+;	move.l	a0, _Blit_IRQ_fn
+;	rts

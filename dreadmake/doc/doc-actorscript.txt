@@ -1,0 +1,177 @@
+
+
+actor SPOS 10
+{
+	callback OnDamage {
+		health -= damage;
+		if( health <= 0 )
+			->Die;
+		if( rand < 200 )
+			->Pain;
+		->Walk;			// whatever happened, we are awake now (exit idle state)
+	}
+
+	callback OnCreate {
+		collision_set 10;
+		dealth = 20;
+		->Idle;
+	}
+
+	func IdleWatch {
+		if( timer_attack <= 0 )
+		{
+			timer_attack = rand + 100;
+			aim_target;
+			if( distance < 200 )
+			{
+				// sound $SPOSARG;
+				->Walk;
+			}
+		}
+	}
+
+	func HuntWalk {
+		if( timer_walk <= 0 )
+		{
+			aim_target;
+			if( timer_attack<=0 && rand<distance )
+				->Shoot;
+
+			if( distance < 64 )
+				vector_align 256, rand*2-256;
+			else
+				vector_align 0, rand*2-256;
+
+			walk_start 32, rand + 300;
+		}
+	}
+
+	func TryWalk {
+		aim_target;				// set target vector and compute its length
+		if( distance > 128 )
+			Walk;				// state is also a function (which never returns)
+	}
+		
+	state Idle {
+		frame #SPOSA;	stop_move;	IdleWatch;	delay 96;
+		frame #SPOSD;				IdleWatch;	delay 96;
+	}
+		
+	state Walk {
+		frame #SPOSA;	HuntWalk;	delay 48;
+		frame #SPOSB;	HuntWalk;	delay 48;
+		frame #SPOSC;	HuntWalk;	delay 48;
+		frame #SPOSD;	HuntWalk;	delay 48;
+	}
+
+	state Shoot {
+		stop_move;	frame #SPOSE;	aim_target;		vector_align 256, (rand-128)>>3;
+		delay 96;	frame #SPOSF;	shoot_target rand*32/(32+distance);		//sound $SHOOT;
+		delay 48;	frame #SPOSE;
+		delay 48;	timer_attack = rand + 100;			->Walk;
+	}
+
+	state Die {
+		collision_off;
+	}
+
+	state Dead {
+		stop_logic;
+	}
+}
+
+
+* Basic actor behavior:
+
+	- reduce health if damaged
+		- die if health reached zero
+		- chance to go into pain frames
+	- stand with idle animation
+		- periodically check if the player is visible (hitscan)			[ambush flag]
+	- walking
+		- play walk animation
+		- check distance to player - random chance to fire if close enough
+		- if walking timer elapsed:		(walking requires new setup)
+			- compute vector to the player
+			- if distant - add random perpendicular offset
+			- if close	 - make the vector perpendicular (random left/right direction)
+			- commit walking movement		[walk_start]
+	- firing
+		- take aim - save vector to the player, set aiming animation frame
+		- wait
+		- fire: hitscan attack
+			- collides with walls
+			- can damage player and other things
+			- produces a smoke puff if hits a wall
+
+
+
+* Actor script:
+
+
+	- Commands:
+		frame <frame>				- set frame
+		delay <time>				- wait for time/300s
+		vector_target				- set aiming vector towards the camera
+
+		walk_start speed, time		- setup straight walk along the vector, (pre)checks collision with static geometry, sets timer_walk (duration might be shorter if it hits something)
+
+
+
+		aim_target					- set aiming vector towards the camera
+		shoot_target <damage>		- hitscan shoot according to target vector
+		walk_target <speed>			- set velocity towards target vector					(walk mode - don't fall over ledges, try to move around obstacles)
+		turn_target <angle>			- rotate target vector by specified angle (in degrees)
+		stop_move					- stop
+		sound						- play sound
+		Fn							- call func, limited recursion depth
+		spawn <actor>				- creates new actor
+		return
+
+	- Functions:
+		vector_len					- target vector length
+		rand						- random integer 0..255
+
+	- Object variables:
+		.health
+		.damage
+		.timer_delay
+		.timer_ttl
+		.timer_walk
+		.timer_attack
+
+	- Global variables:
+		player_health
+		player_armor
+		player_ammo1..4
+		player_ammo1..4_capacity
+		player_key1..3
+		player_gun2..7
+
+
+
+* VM architecture:
+
+	- binary operators:		+ - * / << >> | & || &&
+		<Acc#/Imm> <op> <Acc#>
+
+
+* JIT architecture:
+
+	d0	- (temp)	Acc 0
+	d1	- (temp)	Acc 1
+	d2	-			Acc 2
+	d3	-			Acc 3
+	d4
+	d5
+	d6
+	d7
+
+	a0	- (temp)
+	a1	- (temp)
+	a2	- thing pointer (self)
+	a3	- global variables pointer
+	a4	- 
+	a5
+	a6
+	a7	- STACK

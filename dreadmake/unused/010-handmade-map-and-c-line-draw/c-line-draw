@@ -1,0 +1,59 @@
+	for( int x=xmin; x<xmax; x++ )
+	{
+		int size = (((word)s1)>>2) & ~7;
+		if( size>=NUM_SOFT_SIZES*8 ) size = NUM_SOFT_SIZES*8-1;
+		const ScalerInfo *si = (ScalerInfo*)((byte*)FN_SCALERS + size);
+		size = si->real_size;
+
+		int ymin = 0;	//clip_y1[x];
+		int ymax = 100;	//clip_y2[x];
+		int y1 = 50 + ((size*line_h1)>>8);
+		//int y2 = 50 + ((size*line_h2)>>8);
+		//int y3 = 50 + ((size*line_h3)>>8);
+		if( y1<=ymin ) y1 = ymin;
+		if( y1>=ymax ) y1 = ymax;
+		//if( y2<=ymin ) y2 = ymin;
+		//if( y2>=ymax ) y2 = ymax;
+		//if( y3<=ymin ) y3 = ymin;
+		//if( y3>=ymax ) y3 = ymax;
+
+		byte *dst = render_buffer + render_offsets[x<<1];
+		word *fn;
+
+
+//		// // 0..y1	Sky
+//		// fn = (word*)FN_SKYCOPY;
+//		// fn[y1*2] = 0x4E75;		// RTS
+//		// ((skycopy_fn_t)(fn+2*ymin))(dst, e_skyptr[x]+ymin);
+//		// fn[y1*2] = 0x1159;		// 0001 000 101 011 001			MOVE.b	(A1)+, yyy(A0)						MOVE =	00 SS	<Xdst> <Mdst> <Msrc> <Xsrc>
+//
+//		// 0..y1	Ceil color
+//		fn = (word*)FN_COLORFILL;
+//		fn[y1*2] = 0x4E75;		// RTS
+//		((colorfill_fn_t)(fn+2*ymin))(dst, line->ceil);
+//		fn[y1*2] = 0x1141;		// 0001 000 101 000 001			MOVE.b	D1, yyy(A0)							MOVE =	00 SS	<Xdst> <Mdst> <Msrc> <Xsrc>
+
+
+		// y1..y2	Upper texture
+		int tx = (u1s / s1)&63;
+
+		fn = si->func_addr;
+		//fn[y2*3] = 0x4E75;		// RTS
+		((scaler_fn_t)(fn+3*y1))(dst, tex_base + tx);
+		//fn[y2*3] = 0x116A;		// 0001 000 101 101 010			MOVE.b	xxx(A2), yyy(A0)					MOVE =	00 SS	<Xdst> <Mdst> <Msrc> <Xsrc>
+		//((scaler_fn_t)(fn))(dst, tex_base + tx);
+
+//		// y2..y3	Next sector
+//		clip_y1[x] = y2;
+//		clip_y2[x] = y3;
+//
+//		// y3..100	Floor color
+//		fn = (word*)FN_COLORFILL;
+//		fn[ymax*2] = 0x4E75;		// RTS
+//		((colorfill_fn_t)(fn+2*y3))(dst, line->floor);
+//		fn[ymax*2] = 0x1141;		// 0001 000 101 000 001			MOVE.b	D1, yyy(A0)							MOVE =	00 SS	<Xdst> <Mdst> <Msrc> <Xsrc>
+
+
+		s1 += ds;
+		u1s += du;
+	}

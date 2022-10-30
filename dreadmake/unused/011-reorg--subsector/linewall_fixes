@@ -1,0 +1,420 @@
+
+void Dread_LineWall_Fix2(EngineLine *line, word mode)
+{
+	const int WOLFSCREEN_W = 160;
+	const int wolf_xoffs = 80;
+	const int zoom_i = 80;
+	const int clip = CHEAT_MODES[mode].clip;	//615;//161;	//321		fix.4
+
+	// size = ((zoom_i*32)<<12) / p1y		zoom_i = 80
+	// y1 = 50 + ((size*h1)>>8)
+	//
+	// size*h1/256 = 50
+	// ((zoom_i*32)<<4) / p1y * h1 = 50
+	// 40960 / p1y * h1 = 50
+	// 40960 * h1 = 50 * p1y
+	// p1y = 25.6 * h1				// forgot the >>5 before	(size was fixed.5)
+	//
+	int p1x, p1y;
+	{
+		EngineVertex *v = line->v1;
+		if( !v->tr_x )
+		{
+			short xp = (v->xp<<4) - lrc_cam_pos_x;
+			short yp = (v->yp<<4) - lrc_cam_pos_y;
+			v->tr_x = (muls(xp, lrc_cam_rotate_dx) - muls(yp, lrc_cam_rotate_dy))>>14;
+			v->tr_y = (muls(xp, lrc_cam_rotate_dy) + muls(yp, lrc_cam_rotate_dx))>>14;
+		}
+		p1x = v->tr_x;
+		p1y = v->tr_y;
+	}
+
+	int p2x, p2y;
+	{
+		EngineVertex *v = line->v2;
+		if( !v->tr_x )
+		{
+			short xp = (v->xp<<4) - lrc_cam_pos_x;
+			short yp = (v->yp<<4) - lrc_cam_pos_y;
+			v->tr_x = (muls(xp, lrc_cam_rotate_dx) - muls(yp, lrc_cam_rotate_dy))>>14;
+			v->tr_y = (muls(xp, lrc_cam_rotate_dy) + muls(yp, lrc_cam_rotate_dx))>>14;
+		}
+		p2x = v->tr_x;
+		p2y = v->tr_y;
+	}
+
+	if( p1y<clip && p2y<clip )
+		return;
+
+	if( clip & 1 )	// Use texcoords
+	{
+		word tx1 = line->xcoord1;
+		word tx2 = line->xcoord2;
+		// Clip:	Y+X > 0
+		{
+			int d1 = p1y+p1x;
+			int d2 = p2y+p2x;
+			if( d1<0 )
+			{
+				if( d2<0 ) return;
+				d2 -= d1;
+				p1x -= divs(muls(p2x-p1x, d1), d2);		// clipped point should fall on a diagonal line - coords should have same absolute value (save some computations)
+				p1y = -p1x;//-= divs(muls(p2y-p1y, d1), d2);
+				tx1 -= divs(muls(tx2-tx1, d1), d2);
+			}
+		}
+		// Clip:	Y-X > 0		(required only for non-perspective)
+		{
+			int d1 = p1y-p1x;
+			int d2 = p2y-p2x;
+			if( d2<0 )
+			{
+				if( d1<0 ) return;
+				d1 -= d2;
+				p2x -= divs(muls(p1x-p2x, d2), d1);
+				p2y = p2x;//-= divs(muls(p1y-p2y, d2), d1);
+				tx2 -= divs(muls(tx1-tx2, d2), d1);
+				//tx2 -= (tx1-tx2)*d2/d1;
+			}
+		}
+
+
+		p1y -= clip;
+		p2y -= clip;
+		if( p1y<0 )
+		{
+			if( p2y<0 ) return;
+			tx1 -= divu(mulu(-p1y, tx2-tx1), p1y-p2y);		// TBD: check it all, convert to unsigned where possible
+			p1x -= divs(muls(p1y, p1x-p2x), p1y-p2y);
+			p1y = 0;
+		}
+		else if( p2y<0 )
+		{
+			tx2 += divs(muls(tx2-tx1, p2y), p1y-p2y);
+			p2x -= divs(muls(p2y, p1x-p2x), p1y-p2y);
+			p2y = 0;
+		}
+		p1y += clip;
+		p2y += clip;
+		//tx2 -= tx1&~63;
+		//tx1 &= 63;
+		tx1 <<= 7;
+		tx2 <<= 7;
+
+		// xp = px*zoom / py
+		int xmin = divs(muls(p1x, zoom_i), p1y) + wolf_xoffs;
+		int xmax = divs(muls(p2x, zoom_i), p2y) + wolf_xoffs;
+		if( xmin>=xmax ) return;
+
+		// compute deltas relative to more distant end, so it stays connected (decide before world-space clipping and apply clipping from that side)
+		word s1 = divu((zoom_i*32)<<12, p1y);		// won't overflow because of clipping p#y>=161					10485760 / p#y <= 0xFFFF
+		word s2 = divu((zoom_i*32)<<12, p2y);		// *32<<12 (size/32 to convert to table index) gives just enough precision to hide wobbling of long walls
+		short ds = (short)divs((int)s2-(int)s1, xmax-xmin);
+		unsigned long u1s = mulu(tx1, s1);					// result can be 32-bit!!
+		unsigned long u2s = mulu(tx2, s2);					// result can be 32-bit!!
+		line_cheat_fn fn = CHEAT_MODES[mode].fn_persp;
+		{
+			//// is using perspective worth it?
+			//long ss = (long)s1 + (long)s2;
+			//long uu = u1s + u2s;
+			//long err = uu/ss - ((tx1+tx2)>>1);			// error for the line center (screen space), in texels
+			//if( err<0 ) err = -err;
+			//int ref = 4*128 + 20000000/ss;		// max error in texels, smaller sizes allow more error
+			//if( err < ref )
+			//{
+			//	mode |= 1;
+			//	u1s = tx1;
+			//	u2s = tx2;
+			//}
+
+			word ss = (s1>>1) + (s2>>1);
+			dword uu = (u1s + u2s)>>1;
+			int err = (int)divu(uu, ss) - ((tx1+tx2)>>1);			// error for the line center (screen space), in texels
+			if( err<0 ) err = -err;
+			int ref = 4*128 + divu(10000000, ss);		// max error in texels, smaller sizes allow more error
+			if( err < ref )
+			{
+				fn = CHEAT_MODES[mode].fn_nopersp;
+				u1s = tx1;
+				u2s = tx2;
+			}
+		}
+		long du;
+		if( u1s <= u2s )	// just check for subtraction overflow in asm implementation
+			du = (u2s-u1s)/(word)(xmax-xmin);				// result can be 32-bit!!
+		else
+			du = -((u1s-u2s)/(word)(xmax-xmin));
+
+		if( xmin<0 ) xmin = 0;
+		if( xmax>WOLFSCREEN_W ) xmax = WOLFSCREEN_W;
+		if( xmin>=xmax ) return;
+
+		// (size*line_h1)>>8
+		//		size		= 0 .. 1200				s--- -xxx xxxx xxxx		>>		sxxx xxxx xxxx ----
+		//		line_h1		= -511 .. 511			s--- ---x xxxx xxxx		>>		sxxx xxxx xx-- ----
+		asm_line_ds = ds;
+		asm_tex_base = line->tex_upper + ((-40 - line->y1)<<0);
+		//asm_tex_base = (TEXTURE_DATA + (mode&1 ? TEX_RW23_4_DARK_OFFS : TEX_RW23_4_OFFS )) + ((-40 - line->y1)<<0);
+
+
+		// Runtime size computation:
+		//	int size = (((word)s1)>>2) & ~7;
+		//	if( size>=NUM_SOFT_SIZES*8 ) size = NUM_SOFT_SIZES*8-1;
+		//	const ScalerInfo *si = (ScalerInfo*)((byte*)FN_SCALERS + size);
+
+		fn(xmin<<3, xmax-xmin-1, s1, u1s, du, line);
+	}
+	else
+	{
+		// No texcoords
+		// Clip:	Y+X > 0
+		{
+			int d1 = p1y+p1x;
+			int d2 = p2y+p2x;
+			if( d1<0 )
+			{
+				if( d2<0 ) return;
+				d2 -= d1;
+				p1x -= divs(muls(p2x-p1x, d1), d2);		// clipped point should fall on a diagonal line - coords should have same absolute value (save some computations)
+				p1y = -p1x;//-= divs(muls(p2y-p1y, d1), d2);
+			}
+		}
+		// Clip:	Y-X > 0		(required only for non-perspective)
+		{
+			int d1 = p1y-p1x;
+			int d2 = p2y-p2x;
+			if( d2<0 )
+			{
+				if( d1<0 ) return;
+				d1 -= d2;
+				p2x -= divs(muls(p1x-p2x, d2), d1);
+				p2y = p2x;//-= divs(muls(p1y-p2y, d2), d1);
+			}
+		}
+
+		p1y -= clip;
+		p2y -= clip;
+		if( p1y<0 )
+		{
+			if( p2y<0 ) return;
+			p1x -= divs(muls(p1y, p1x-p2x), p1y-p2y);
+			p1y = 0;
+		}
+		else if( p2y<0 )
+		{
+			p2x -= divs(muls(p2y, p1x-p2x), p1y-p2y);
+			p2y = 0;
+		}
+		p1y += clip;
+		p2y += clip;
+
+		// xp = px*zoom / py
+		int xmin = divs(muls(p1x, zoom_i), p1y) + wolf_xoffs;
+		int xmax = divs(muls(p2x, zoom_i), p2y) + wolf_xoffs;
+		if( xmin>=xmax ) return;
+
+		// compute deltas relative to more distant end, so it stays connected (decide before world-space clipping and apply clipping from that side)
+		word s1 = divu((zoom_i*32)<<12, p1y);		// won't overflow because of clipping p#y>=161					10485760 / p#y <= 0xFFFF
+		word s2 = divu((zoom_i*32)<<12, p2y);		// *32<<12 (size/32 to convert to table index) gives just enough precision to hide wobbling of long walls
+		short ds = (short)divs((int)s2-(int)s1, xmax-xmin);
+		mode <<= 1;
+
+		if( xmin<0 ) xmin = 0;
+		if( xmax>WOLFSCREEN_W ) xmax = WOLFSCREEN_W;
+		if( xmin>=xmax ) return;
+
+		asm_line_ds = ds;
+		CHEAT_MODES[mode].fn_nopersp(xmin<<3, xmax-xmin-1, s1, 0, 0, line);
+	}
+}
+
+void Dread_LineWall_Fix2_wip(EngineLine *line, word mode)
+{
+	const int WOLFSCREEN_W = 160;
+	const int wolf_xoffs = 80;
+	const int zoom_i = 80;
+
+	asm_tex_base = line->tex_upper + ((-40 - line->y1)<<0);
+	if( !Dread_LineWall_Fix2_asm(line, mode) )
+		return;
+	return;
+
+	//int p1x = f2a_p1x;
+	int p1y = f2a_p1y;
+	//int p2x = f2a_p2x;
+	int p2y = f2a_p2y;
+	int clip = f2a_clip;
+
+	//if( clip & 1 )	// Use texcoords
+	{
+		word tx1 = f2a_tx1;
+		word tx2 = f2a_tx2;
+		//// Clip:	Y+X > 0
+		//{
+		//	int d1 = p1y+p1x;
+		//	int d2 = p2y+p2x;
+		//	if( d1<0 )
+		//	{
+		//		if( d2<0 ) return;
+		//		d2 -= d1;
+		//		p1x -= divs(muls(p2x-p1x, d1), d2);		// clipped point should fall on a diagonal line - coords should have same absolute value (save some computations)
+		//		p1y = -p1x;//-= divs(muls(p2y-p1y, d1), d2);
+		//		tx1 -= divs(muls(tx2-tx1, d1), d2);
+		//	}
+		//}
+		//// Clip:	Y-X > 0		(required only for non-perspective)
+		//{
+		//	int d1 = p1y-p1x;
+		//	int d2 = p2y-p2x;
+		//	if( d2<0 )
+		//	{
+		//		if( d1<0 ) return;
+		//		d1 -= d2;
+		//		p2x -= divs(muls(p1x-p2x, d2), d1);
+		//		tx2 -= divs(muls(tx1-tx2, d2), d1);
+		//		p2y = p2x;
+		//	}
+		//}
+
+
+		//p1y -= clip;
+		//p2y -= clip;
+		//if( p1y<0 )
+		//{
+		//	if( p2y<0 ) return;
+		//	tx1 -= divs(muls(p1y, tx1-tx2), p1y-p2y);
+		//	p1x -= divs(muls(p1y, p1x-p2x), p1y-p2y);
+		//	p1y = 0;
+		//}
+		//else if( p2y<0 )
+		//{
+		//	tx2 += divs(muls(tx2-tx1, p2y), p1y-p2y);
+		//	p2x -= divs(muls(p2y, p1x-p2x), p1y-p2y);
+		//	p2y = 0;
+		//}
+		//p1y += clip;
+		//p2y += clip;
+		////tx2 -= tx1&~63;
+		////tx1 &= 63;
+		//tx1 <<= 7;
+		//tx2 <<= 7;
+
+		// xp = px*zoom / py
+		//int xmin = divs(muls(p1x, zoom_i), p1y) + wolf_xoffs;
+		//int xmax = divs(muls(p2x, zoom_i), p2y) + wolf_xoffs;
+		//if( xmin<0 ) xmin = 0;
+		//if( xmax>WOLFSCREEN_W ) xmax = WOLFSCREEN_W;
+		//if( xmin>=xmax ) return;
+		int xmin = f2a_p1x;
+		//int xmax = f2a_p2x;
+		int xlen = f2a_p2x;
+
+		// compute deltas relative to more distant end, so it stays connected (decide before world-space clipping and apply clipping from that side)
+		//word s1 = divu((zoom_i*32)<<12, p1y);		// won't overflow because of clipping p#y>=161					10485760 / p#y <= 0xFFFF
+		//word s2 = divu((zoom_i*32)<<12, p2y);		// *32<<12 (size/32 to convert to table index) gives just enough precision to hide wobbling of long walls
+		//asm_line_ds = (short)divs((int)s2-(int)s1, xlen);
+		word s1 = f2a_s1;
+		//word s2 = f2a_s2;
+		////unsigned long u1s = mulu(tx1, s1);					// result can be 32-bit!!
+		////unsigned long u2s = mulu(tx2, s2);					// result can be 32-bit!!
+		unsigned long u1s = f2a_u1s;
+		//unsigned long u2s = f2a_u2s;
+		//line_cheat_fn fn = CHEAT_MODES[mode].fn_persp;
+		line_cheat_fn fn = f2a_fn;
+		//{
+		//	word ss = (s1>>1) + (s2>>1);
+		//	dword uu = (u1s>>1) + (u2s>>1);
+		//	int err = (int)divu(uu, ss) - ((tx1+tx2)>>1);			// error for the line center (screen space), in texels
+		//	if( err<0 ) err = -err;
+		//	int ref = 4*128 + divu(10000000, ss);		// max error in texels, smaller sizes allow more error
+		//	if( err < ref )
+		//	{
+		//		fn = CHEAT_MODES[mode].fn_nopersp;
+		//		u1s = tx1;
+		//		u2s = tx2;
+		//	}
+		//}
+		long du = f2a_u2s;
+		//long du;
+		//if( u1s <= u2s )	// just check for subtraction overflow in asm implementation
+		//	du = (u2s-u1s)/(word)(xlen);				// result can be 32-bit!!
+		//else
+		//	du = -((u1s-u2s)/(word)(xlen));
+
+		// (size*line_h1)>>8
+		//		size		= 0 .. 1200				s--- -xxx xxxx xxxx		>>		sxxx xxxx xxxx ----
+		//		line_h1		= -511 .. 511			s--- ---x xxxx xxxx		>>		sxxx xxxx xx-- ----
+		//asm_tex_base = line->tex_upper + ((-40 - line->y1)<<0);
+		//asm_tex_base = (TEXTURE_DATA + (mode&1 ? TEX_RW23_4_DARK_OFFS : TEX_RW23_4_OFFS )) + ((-40 - line->y1)<<0);
+
+
+		// Runtime size computation:
+		//	int size = (((word)s1)>>2) & ~7;
+		//	if( size>=NUM_SOFT_SIZES*8 ) size = NUM_SOFT_SIZES*8-1;
+		//	const ScalerInfo *si = (ScalerInfo*)((byte*)FN_SCALERS + size);
+
+		fn(xmin<<3, xlen-1, s1, u1s, du, line);
+	}
+	//else
+	//{
+	//	// No texcoords
+	//	// Clip:	Y+X > 0
+	//	{
+	//		int d1 = p1y+p1x;
+	//		int d2 = p2y+p2x;
+	//		if( d1<0 )
+	//		{
+	//			if( d2<0 ) return;
+	//			d2 -= d1;
+	//			p1x -= divs(muls(p2x-p1x, d1), d2);		// clipped point should fall on a diagonal line - coords should have same absolute value (save some computations)
+	//			p1y = -p1x;//-= divs(muls(p2y-p1y, d1), d2);
+	//		}
+	//	}
+	//	// Clip:	Y-X > 0		(required only for non-perspective)
+	//	{
+	//		int d1 = p1y-p1x;
+	//		int d2 = p2y-p2x;
+	//		if( d2<0 )
+	//		{
+	//			if( d1<0 ) return;
+	//			d1 -= d2;
+	//			p2x -= divs(muls(p1x-p2x, d2), d1);
+	//			p2y = p2x;//-= divs(muls(p1y-p2y, d2), d1);
+	//		}
+	//	}
+	//
+	//	p1y -= clip;
+	//	p2y -= clip;
+	//	if( p1y<0 )
+	//	{
+	//		if( p2y<0 ) return;
+	//		p1x -= divs(muls(p1y, p1x-p2x), p1y-p2y);
+	//		p1y = 0;
+	//	}
+	//	else if( p2y<0 )
+	//	{
+	//		p2x -= divs(muls(p2y, p1x-p2x), p1y-p2y);
+	//		p2y = 0;
+	//	}
+	//	p1y += clip;
+	//	p2y += clip;
+	//
+	//	// xp = px*zoom / py
+	//	int xmin = divs(muls(p1x, zoom_i), p1y) + wolf_xoffs;
+	//	int xmax = divs(muls(p2x, zoom_i), p2y) + wolf_xoffs;
+	//	if( xmin>=xmax ) return;
+	//
+	//	// compute deltas relative to more distant end, so it stays connected (decide before world-space clipping and apply clipping from that side)
+	//	word s1 = divu((zoom_i*32)<<12, p1y);		// won't overflow because of clipping p#y>=161					10485760 / p#y <= 0xFFFF
+	//	word s2 = divu((zoom_i*32)<<12, p2y);		// *32<<12 (size/32 to convert to table index) gives just enough precision to hide wobbling of long walls
+	//	short ds = (short)divs((int)s2-(int)s1, xmax-xmin);
+	//	mode <<= 1;
+	//
+	//	if( xmin<0 ) xmin = 0;
+	//	if( xmax>WOLFSCREEN_W ) xmax = WOLFSCREEN_W;
+	//	if( xmin>=xmax ) return;
+	//
+	//	asm_line_ds = ds;
+	//	CHEAT_MODES[mode].fn_nopersp(xmin<<3, xmax-xmin-1, s1, 0, 0, line);
+	//}
+}

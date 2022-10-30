@@ -1,0 +1,21 @@
+
+chip 0 $200 $FFFFF
+chip 1 $200 $EF14B
+
+seg 0 $000200
+seg 1 $00C000
+seg 2 $043800
+seg 3 $048200
+seg 4 $048400
+seg 5 $048A00
+seg 6 $062C00
+seg 7 $062E00
+seg 8 $085C00
+seg 14 $0EF14C
+seg 15 $0F074C
+
+chip 2 $89000 $EF14B
+chip 3 $89000 $FDFFF	$75000
+
+mem 1 290304
+mem 2  57344

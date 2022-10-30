@@ -1,0 +1,49 @@
+;	move.w		4(a3), d0					;		int y1 = 50 + ((size*line_h1)>>8);
+;	muls.w		_asm_line_h1(pc), d0
+;	swap.w		d0
+;	and.w		#$FFFC, d0
+;
+;	cmp.w		#-50*4, d0
+;	bge.b		.y1_ymin					;		if( y1<=ymin ) y1 = ymin;
+;	move.w		#-50*4, d0
+;.y1_ymin:
+;	cmp.w		#50*4, d0
+;	ble.b		.y1_ymax
+;	move.l		#50*4, d0
+;.y1_ymax:
+;
+;	move.w		4(a3), d1					;		int y2 = 50 + ((size*line_h2)>>8);
+;	muls.w		_asm_line_h2(pc), d1
+;	swap.w		d1
+;	and.w		#$FFFC, d1
+;
+;	cmp.w		#-50*4, d1
+;	bge.b		.y2_ymin
+;	move.l		#-50*4, d1
+;.y2_ymin:
+;	cmp.w		#50*4, d1
+;	ble.b		.y2_ymax					;		if( y2>=ymax ) y2 = ymax;
+;	move.l		#50*4, d1
+;.y2_ymax:
+;
+;	move.w		d0, -(a7)
+;	move.l		#_multab6+50*4, a1
+;	move.w		(a1,d0.w), d0
+;	move.w		(a1,d1.w), d1
+;
+;	move.l		(a3), a1					;		fn = si->func_addr;
+;	move.w		#$4E75,(a1,d1.w)			;		fn[ymax*2] = 0x4E75;		// RTS
+;	jsr			(a1,d0.w)					;		((scaler_fn_t)(fn))(dst, tex_base + tx);				typedef void(*scaler_fn_t)(__a0 byte *dst, __a2 const byte *tex);
+;	move.w		#$116A,(a1,d1.w)			;		fn[y2*3] = 0x116A;		// 0001 000 101 101 010			MOVE.b	xxx(A2), yyy(A0)					MOVE =	00 SS	<Xdst> <Mdst> <Msrc> <Xsrc>
+;
+;	move.b		34(a5), d5
+;	move.l		_FN_COLORFILL, a1			;		fn = (word*)FN_COLORFILL;
+;	move.w		(a7)+, d0
+;	move.w		#$4E75,(a1,d0.w)			;		fn[y1*2] = 0x4E75;		// RTS
+;	jsr			(a1)						;		((colorfill_fn_t)(fn+2*ymin))(dst, line->ceil);
+;	move.w		#$1145,(a1,d0.w)			;		fn[y1*2] = 0x1141;		// 0001 000 101 000 101			MOVE.b	D5, yyy(A0)							MOVE =	00 SS	<Xdst> <Mdst> <Msrc> <Xsrc>
+;
+;	dbra.w		d3, .loop					;	}	// LOOP END
+;
+;	movem.l		(a7)+,d2-d7/a2-a6
+;	rts

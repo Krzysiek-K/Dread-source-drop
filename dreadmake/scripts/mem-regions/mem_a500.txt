@@ -1,0 +1,27 @@
+
+chip 0 $200 $7FFFF
+slow 0 $C00000 $C7FFFF
+
+chip 1 $200 $7274B
+slow 1 $C00000 $C7C9FF
+
+seg 0 $C00000
+seg 1 $C0BE00
+seg 2 $C43600
+seg 3 $000200
+seg 4 $C48000
+seg 5 $000400
+seg 6 $C48600
+seg 7 $C48800
+seg 8 $01A600
+seg 14 $C7CA00
+seg 15 $07274C
+
+chip 2 $1DA00 $7274B
+slow 2 $C6B600 $C7C9FF
+
+chip 3 $1DA00 $7FFFF		$62600
+slow 3 $C6B600 $C7DFFF		$12A00
+
+mem 1 271872
+mem 2  76288

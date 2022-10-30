@@ -1,0 +1,62 @@
+#define stvar__hz_200		(*(volatile dword*)0x4BA)
+#define TIMER_C_DATA		(*(volatile byte*)0xFFFFFA23)
+#define TIMER_CD_CONTROL	(*(volatile byte*)0xFFFFFA1D)
+#define INT_B_PENDING		(*(volatile byte*)0xFFFFFA0D)
+
+
+dword ST_GetPerfTimer(void)
+{
+	//				[no IRQ ]	[  IRQ  ]	T1	T2
+	//	ABC			008 5 008	001 5 001
+	//
+	//	.!ABC		007	5 007	192 6 192	*	*
+	//	.A!BC		007	5 007	192 6 192	*	*
+	//	.AB!C		007	5 007	192 5 192
+	//	.ABC!		007	5 007	192 5 192
+	//	A.!BC		008	5 007	001 6 192	-	*
+	//	A.B!C		008	5 007	001 5 192	*	-
+	//	A.BC!		008	5 007	001 5 192	*	-
+	//	AB.!C		008	5 007	001 5 192	*	-
+	//	AB.C!		008	5 007	001 5 192	*	-
+	//	ABC.!		008	5 007	001 5 001	*	*
+	//
+	//		. tick
+	//		! IRQ
+	//
+	//	byte t1 = TIMER_C_DATA;		// A
+	//	dword hz = stvar__hz_200;	// B
+	//	byte t2 = TIMER_C_DATA;		// C
+	
+	//
+	//						 A  B C  D
+	//	---- . ---- ! ----	[1] H P [2]
+	//
+	//	ABCD .      !		001 5 - 001
+	//	ABC  . D    !		001	5 - 192
+	//	AB   . CD   !		001	5 * 192
+	//	A    . BCD  !		001	5 * 192
+	//	     . ABCD !		192	5 * 192
+	//	ABC  .      ! D		001	5 - 192
+	//	AB   . C    ! D		001	5 * 192
+	//	A    . BC   ! D		001	5 * 192
+	//	     . ABC  ! D		192	5 * 192
+	//	AB   .      ! CD	001	5 - 192
+	//	A    . B    ! CD	001	5 - 192
+	//	     . AB   ! CD	192	5 - 192
+	//	A    .      ! BCD	001	6 - 192
+	//	     . A    ! BCD	192	6 - 192
+	//	     .      ! ABCD	192	6 - 192
+	//
+	static dword last_perf;
+	dword hz = stvar__hz_200;
+	byte t1 = TIMER_C_DATA;
+
+	dword perf = hz*192 - t1;
+
+	if( last_perf && (int)(perf-last_perf)<0 )
+		perf = last_perf;
+	last_perf = perf;
+
+	return perf;
+}
+

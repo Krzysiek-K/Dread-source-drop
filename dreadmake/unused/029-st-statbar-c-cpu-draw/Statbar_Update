@@ -1,0 +1,90 @@
+
+void Statbar_Update(word *screenbase, const dword *info, word *shadow)
+{
+	const word *bg = (const word*)(*info++) + 2;
+
+	while( 1 )
+	{
+		dword code = *info++;
+		byte cmd = (byte)(code>>24);
+		if( cmd>=1 && cmd<=3 )
+		{
+			// draw value
+			const word **font = (const word**)(*info++);
+			word value = *(word*)(*info++);
+
+			if( value == *shadow )
+			{
+				shadow++;
+				shadow += cmd;
+				continue;
+			}
+			*shadow++ = value;
+
+			word xstep = (word)(code>>17) & 0x007F;
+			word xpos = (word)(code>>8) & 0x01FF;
+			word ypos = (byte)code;
+			byte first = 1;
+			cmd--;
+			xpos += cmd * xstep;
+			do
+			{
+				word glyphnum = 0;
+				if( value || first )
+				{
+					glyphnum = value%10 + 1;
+					first = 0;
+				}
+				value /= 10;
+
+				if( *shadow != glyphnum )
+				{
+					*shadow = glyphnum;
+
+					const word *glyph = font[glyphnum];
+
+#if 1
+					// perf = 4.94
+					ST_DrawClearMaskedNarrow(xpos, ypos, screenbase, glyph, bg);
+#else
+					// perf = 5.32
+					word *dst = screenbase + (xpos>>4)*4 + 80*ypos;
+					word *back = bg + (xpos>>4)*4 + 80*ypos;
+					word width = *glyph++;			// width - assume 1 word
+					word height = *glyph++ - 1;
+					word backmask0 = 0xFFFF<<(16-width);
+
+					do {
+						dword backmask = backmask0 << (16 - (xpos&15));
+						dword mask = ~((dword)*glyph++ << (16 - (xpos&15)));
+
+						for( int i=0; i<4; i++ )
+						{
+							dword data = (dword)*glyph++ << (16 - (xpos&15));
+							*dst = (*dst & ~HIWORD(backmask)) | (*back & HIWORD(backmask));
+							*dst = (*dst & HIWORD(mask)) | HIWORD(data);
+
+							dst[4] = (dst[4] & ~LOWORD(backmask)) | (back[4] & LOWORD(backmask));
+							dst[4] = (dst[4] & LOWORD(mask)) | LOWORD(data);
+
+							dst++;
+							back++;
+						}
+
+						dst += 80 - 4;
+						back += 80 - 4;
+					} while( height-->0 );
+#endif
+				}
+				
+				xpos -= xstep;
+				shadow++;
+			} while( cmd-->0 );
+		}
+		else if( cmd==16 )
+		{
+		}
+		else
+			break;
+	}
+}

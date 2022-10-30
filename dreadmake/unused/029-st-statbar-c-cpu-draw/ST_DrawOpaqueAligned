@@ -1,0 +1,18 @@
+void ST_DrawOpaqueAligned(word xpos, word ypos, __a0 word *screen, __a1 const word *bitmap)
+{
+	word *dst = screen + (xpos>>4)*4 + 80*ypos;
+	word width = (*bitmap++) >> 4;
+	word height = *bitmap++ - 1;
+
+	do {
+		for( int x=0; x<width; x++ )
+		{
+			*dst++ = *bitmap++;
+			*dst++ = *bitmap++;
+			*dst++ = *bitmap++;
+			*dst++ = *bitmap++;
+		}
+	
+		dst += 80 - 4*width;
+	} while( height-->0 );
+}

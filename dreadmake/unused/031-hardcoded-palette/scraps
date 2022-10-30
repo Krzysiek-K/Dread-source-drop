@@ -1,0 +1,239 @@
+
+
+/// Amiga
+
+//
+///*const*/ word PAL[16] ={
+//#if PALETTE_KK
+//	0x000,	// black			0000	OK
+//	0x222,	// gray ramp		0001	OK
+//	0x333,	// |
+//	0x555,	// |
+//	0x777,	// |
+//	0xBBB,	// |
+//	0xFFF,	// white
+//	0x343,	// green ramp
+//	0x573,	// |
+//	0x774,	// |
+//	0x004,	// blue				1010	OK
+//	0x320,	// brown
+//	0x431,	// brown
+//	0xCA5,	// yellow
+//	0xC00,	// 
+//	0x600,	// 
+//#else
+//	0x000,		//	black
+//	0x222,		//	gray ramp
+//	0x333,		//	|
+//	0x444,		//	|
+//	0x454,		//	green
+//	0x665,		//	beige ramp
+//	0x887,		//	|
+//	0xAA9,		//	brown ramp
+//	0x543,		//	|
+//	0x432,		//	|
+//	0x322,		//	|
+//	0xA00,		//	red
+//	0xD95,		//	orange
+//	0xEEB,		//	white/yellow
+//	0x4CE,		//	cyan
+//	0x34C,		//	blue
+//#endif
+//};
+
+
+/*const*/ word STAT_PAL[16] ={
+#if PALETTE_KK
+	0x000,	// black
+	0x222,	// |
+	0x333,	// |
+	0x444,	// |
+	0x666,	// |
+	0x00A,	// blue
+	0xFD8,	// yellow
+	0x400,	// red - shadow
+	0x800,	// red - edge
+	0xA00,	// red - number face
+	0xC00,	// red - highlight
+	0x531,	// 
+	0x853,	// 
+	0x963,	// 
+	0xB74,	// 
+	0xD96,	// 
+#else
+	0x000,		//	black
+	0x222,		//	grey ramp
+	0x333,		//	|
+	0x555,		//	|
+	0x777,		//	|
+	0xAAA,		//	|
+	0x431,		//	brown ramp
+	0x642,		//	|
+	0x963,		//	|
+	0xB74,		//	|
+	0xE96,		//	|
+	0xFB9,		//	|
+	0x400,		//	red ramp
+	0x800,		//	|
+	0xB00,		//	|
+	0x22D,		//	blue
+#endif
+};
+
+
+/// ST
+
+
+
+
+/*const*/ word PAL[16] ={
+#if PALETTE_KK
+	0x000>>1,		//	black
+	0x222>>1,		//	gray ramp
+	0x444>>1,		//	|
+	0x666>>1,		//	|
+	0x888>>1,		//	|
+	0xCCC>>1,		//	|
+	0xEEE>>1,		//	white
+	0x242>>1,		//	green ramp
+	0x462>>1,		//	|
+	0x664>>1,		//	|
+	0x004>>1,		//	blue
+	0x420>>1,		//	brown
+	0x442>>1,		//	brown
+	0xCA4>>1,		//	yellow
+	0xC00>>1,		//	red
+	0x600>>1,		//	|
+#else
+	0x000>>1,
+	0x222>>1,
+	0x444>>1,
+	0x666>>1,
+	0x686>>1,
+	0x888>>1,
+	0xAAA>>1,
+	0xCCA>>1,
+	0x864>>1,
+	0x642>>1,
+	0x422>>1,
+	0xC00>>1,
+	0xEA8>>1,
+	0xEEC>>1,
+	0x6CE>>1,
+	0x46C>>1,
+#endif
+};
+
+/*const*/ word HUD_PAL[16] ={
+	0x000>>1,		//	black
+	0x222>>1,		//	|
+	0x444>>1,		//	|
+	0x666>>1,		//	|
+	0x888>>1,		//	|
+	0xAAA>>1,		//	|
+	0x420>>1,
+	0x642>>1,
+	0xA64>>1,
+	0xB84>>1,		// $B74???
+	0xEA6>>1,
+	0xFCA>>1,
+	0x400>>1,
+	0x800>>1,
+	0xC00>>1,
+	0x00C>>1,
+};
+
+
+
+
+//void Dread_Precompute_Palette(int id, int cmul, int cadd)
+//{
+//	word *dst = PALETTES + id*16;
+//	for( int i=0; i<16; i++ )
+//	{
+//		word col = PAL[i];
+//		*dst++ = ((((col&0x0F0F)*cmul)>>4)&0x0F0F) + ((((col&0x00F0)*cmul)>>4)&0x00F0) + cadd;
+//	}
+//}
+
+
+	//Dread_Precompute_Palette(0, 16, 0);				// 0 - normnal
+	//Dread_Precompute_Palette(1, 15, 0x100);			// 1 - red tint
+	//Dread_Precompute_Palette(2, 14, 0x200);			// 2 |
+	//Dread_Precompute_Palette(3, 13, 0x300);			// 3 |
+	//Dread_Precompute_Palette(4, 12, 0x400);			// 4 |
+	//Dread_Precompute_Palette(5, 11, 0x500);			// 5 |
+	//Dread_Precompute_Palette(6, 10, 0x600);			// 6 |
+	//Dread_Precompute_Palette(7, 9, 0x700);			// 7 |
+	//Dread_Precompute_Palette(8, 8, 0x800);			// 8 |
+	//Dread_Precompute_Palette(9, 12, 0x442);			// 9 - yellow flash
+
+
+
+	//for(word i=0;i<16;i++)
+	//	VID_PAL[i] = (PAL[i]>>1)&0x777;
+
+
+
+
+
+
+
+
+
+/// Menu - Amiga
+const word MENU_PAL[] = {
+	0x000,	//	 0	- black
+	0x111,	//	 1
+	0x333,	//	 2
+	0x444,	//	 3
+	0x555,	//	 4
+	0x666,	//	 5
+	0x777,	//	 6
+	0x211,	//	 7
+	0x322,	//	 8
+	0x433,	//	 9
+	0x332,	//	10
+	0x221,	//	11
+	0x222,	//	12
+	0x400,	//	13	- font lowlight
+	0x700,	//	14	- font face
+	0x900,	//	15	- font highlight
+	0x100,	//	16
+	0x200,	//	17
+	0x422,	//	18
+	0x533,	//	19
+	0x544,	//	20
+	0x644,	//	21
+	0x655,	//	22
+	0x300,	//	23
+	0x411,	//	24
+	0x522,	//	25
+	0x421,	//	26
+	0x311,	//	27
+	0x311,	//	28
+	0x766,	//	29
+	0x888,	//	30
+	0x999,	//	31
+};
+
+
+// Menu: ST
+///*const*/ word MENU_PAL[16] ={
+//	0x000>>1,		//  0
+//	0x200>>1,		//  1
+//	0x222>>1,		//  2
+//	0x444>>1,		//  3
+//	0x888>>1,		//  4
+//	0xAAA>>1,		//  5
+//	0x242>>1,		//  6
+//	0x664>>1,		//  7
+//	0x644>>1,		//  8
+//	0x400>>1,		//  9
+//	0x420>>1,		// 10
+//	0x600>>1,		// 11
+//	0x800>>1,		// 12
+//	0xc00>>1,		// 13
+//	0x666>>1,		//
+//	0xFFF>>1,		//
+//};

@@ -1,0 +1,142 @@
+
+
+// Blit operations:
+//	- blit each affected digit to temp buffer		(digit mask + digit + BG -> temp)
+//	- mark X range in final blit mask
+//	- final blit									(final blit mask [h=1] + temp + final -> final)
+
+// Status bar coords:
+//	Ammo		4	17	30				Y=4		(step 13)
+//	Health		51	64	77	90			Y=4		(step 13)
+//	Arms		111	123	135				Y=4		(step 12)
+//										Y=14
+//	Face		148,3
+//	Armor		182	195 208 221			Y=4		(step 13)
+//	Keys		239		Y=4 14 24				(step 10)
+//	
+
+
+
+
+word blit_num = 0;
+word tmp_digit = 0;
+
+
+//	Blitter cycle = 4
+//		A is free
+//		B allways adds +2 cycles
+//		C or D is free	- use of BOTH adds +2 cycles
+
+//#define _A		0x00F0
+//#define _B		0x00CC
+//#define _C		0x00AA
+//
+//
+//void Stat_Clear(int x0, int y0, int w, int h,int debug)
+//{
+//	int x2 = x0 + w;
+//	int ww = ((x2+15)>>4) - (x0>>4);
+//
+//	BLTCON0 = 0x07CA;	//0x0700 | ((debug&1) ? (~_A)&_C : ((~_A)&_C) | _A&_B);
+//	BLTCON1 = 0x0000;
+//	BLTAFWM = 0xFFFF >> (x0&15);
+//	BLTALWM = x2&15 ? 0xFFFF<<(16-(x2&15)) : 0xFFFF;
+//	BLTADAT = 0xFFFF;
+//	BLTBMOD = 40-2*ww;
+//	BLTCMOD = 40-2*ww;
+//	BLTDMOD = 40-2*ww;
+//	BLTBPT = GFX_STBAR0 + 3 + (x0>>4) + 20*4*y0;
+//	BLTCPT = statbar_buffer + (x0>>4) + 20*4*y0;
+//	BLTDPT = statbar_buffer + (x0>>4) + 20*4*y0;
+//	BLTSIZE = COMPUTE_BLTSIZE(ww, h<<2);
+//}
+//
+//void Stat_Draw(int x0, int y0, int w, int h, word *image, word *mask)
+//{
+//	int x2 = x0 + w;
+//	int ww = ((x2+15)>>4) - (x0>>4);
+//
+//	BLTCON0 = 0x0FCA | (x0<<12);	//0x0F00 | ((~_A)&_C) | _A&_B | (x0<<12);
+//	BLTCON1 = 0x0000 | (x0<<12);
+//	BLTAFWM = 0xFFFF;
+//	BLTALWM = ww>((w+15)>>4) ? 0x0000 : 0xFFFF;
+//	BLTAMOD = -2*(ww-((w+15)>>4));
+//	BLTBMOD = -2*(ww-((w+15)>>4));
+//	BLTCMOD = 40-2*ww;
+//	BLTDMOD = 40-2*ww;
+//	BLTAPT = mask;
+//	BLTBPT = image;
+//	BLTCPT = statbar_buffer + (x0>>4) + 20*4*y0;
+//	BLTDPT = statbar_buffer + (x0>>4) + 20*4*y0;
+//	BLTSIZE = COMPUTE_BLTSIZE(ww, h<<2);
+//}
+//
+//
+//void Stat_Clear_asm(void);
+//void Stat_Draw_0_asm(__a0 const word *image);
+//
+//int Dread_BlitStats(void)
+//{
+//	//return 0;
+//	int a = tmp_digit>>1;
+//	int d = a%10;
+//
+//	switch( blit_num++ )
+//	{
+//	//case 0:
+//	//	//if( tmp_digit&1 )
+//	//	//	Stat_Clear(a, 0, 13, 16, 0);
+//	//	//else
+//	//	//	Stat_Draw(a, 0, 13, 16, STAT_DIGITS[d]+3, STAT_DIGITS[d]+3+4*16);
+//	//	//tmp_digit++;
+//	//	break;
+//
+//	case 0:		Stat_Clear_asm(); break;
+//	//case 0:		Stat_Clear(4, 4, 13*3, 16, 0);		break;
+//	//case 1:		Stat_Draw(4, 4, 13, 16, (word*)STAT_DIGITS[tmp_digit/100%10]+3, (word*)STAT_DIGITS[tmp_digit/100%10]+3+4*16);		break;
+//	case 1:		Stat_Draw_0_asm(STAT_DIGITS[tmp_digit%10]+3);	break;
+//	case 2:		Stat_Draw(4+13, 4, 13, 16, (word*)STAT_DIGITS[tmp_digit/10%10]+3, (word*)STAT_DIGITS[tmp_digit/10%10]+3+4*16);	break;
+//	case 3:		Stat_Draw(4+13*2, 4, 13, 16, (word*)STAT_DIGITS[tmp_digit%10]+3, (word*)STAT_DIGITS[tmp_digit%10]+3+4*16);		break;
+//
+//
+//	default:
+//		blit_num = 0;
+//		tmp_digit++;
+//		return 0;
+//	}
+//
+//	return 1;
+//}
+
+
+
+
+void Stat_Set(word *stat, word value, word num_base)
+{
+	if( value>999 )
+		value = 999;
+
+	if( *stat == value )
+		return;
+
+	*stat = value;
+
+	if( value >= 100 )
+	{
+		stat[1] = num_base + value/100;
+		stat[2] = num_base + value/10%10;
+		stat[3] = num_base + value%10;
+	}
+	else if( value>=10 )
+	{
+		stat[1] = 0;
+		stat[2] = num_base + value/10;
+		stat[3] = num_base + value%10;
+	}
+	else
+	{
+		stat[1] = 0;
+		stat[2] = 0;
+		stat[3] = num_base + value;
+	}
+}

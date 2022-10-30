@@ -1,0 +1,132 @@
+
+; ================================================================ _Dread_LineCore_Sprite ================================================================
+
+
+		public _Dread_LineCore_Sprite
+_Dread_LineCore_Sprite:
+	
+	; loop regs:	<input>							<runtime>							<fill/texture>
+	;
+	;	d0											(temp)
+	;	d1											(-)
+	;	d2			xmin							(-)								
+	;	d3			xmax-xmin-1						column counter						
+	;	d4											s0
+	;	d5											(-)
+	;	d6											u1s
+	;	d7											du
+	;
+	;	a0											(temp)	
+	;	a1											(temp)		(span read stream)
+	;	a2											(temp)								texture pointer
+	;	a3			frame							col_table														// [opt: _asm_tex_base]
+	;	a4											LineCheat*								
+	;	a5											RenderColumnInfo*
+	;	a6																				return addr
+	;	a7											render_buffer (dynamic)				write pointer
+
+	movem.l		d2-d7/a2-a6,-(a7)
+	move.l		a7, _a7_save
+
+
+	lea.l		_render_columns, a5
+	adda.w		d2, a5
+
+	adda.w		#10, a3						; point to col_table
+
+	move.l		d4, d0						;		int size = (((word)s1)>>3) & ~3;
+	lsr.w		#3, d0
+	and.w		#$FFFC, d0
+	lea.l		_SIZE_LINE_CHEAT, a4		;		const LineCheat *lc = (LineCheat*)((byte*)SIZE_LINE_CHEAT + size);
+	move.l		(a4,d0), a4
+
+	bra.b		.start
+
+
+.loop:										;	for( int x=xmin; x<xmax; x++ )
+											;	{
+
+	add.l		d7, d6						;		u1s += du;
+	addq.w		#8, a5
+	swap.w		d5
+
+.start:										;		// FIRST ITERATION STARTS HERE
+
+											;					== Texcoord
+	move.l		d6, d0						;						int tx = u1s >> 16;
+	swap.w		d0
+	and.w		#$FFFE, d0
+											
+											; a3	= &span_offsets[1]
+											; a1	= _tex_base
+											; d0.w	= tx<<1
+
+	;move.l		a3, a1						; a1 = pointer to first span info
+	;add.w		(a3,d0.w), a1				;	add offset
+	move.l		_asm_tex_base(pc), a2		; a2 = pointer to texture data
+
+	;lea.l		(a3,d0.w), a2				;						const byte *tex = tex_base + tx;
+	
+;.start_span:
+;	move.w		(a1)+, d0
+;	beq.b		.continue
+;	lea.l		(a1,d0.w), a2
+	; y1 = (a1)+
+	; y2 = (a1)+
+
+
+											;					=== Span range
+	;move.w		(a1)+, d0
+	;move.w		#0, d0
+	;sub.w		#(64-40)*4, d0
+	;move.w		_asm_line_h1(pc), d0		;						int y0 = (( -64 - lrc_cam_pos_z)*size)>>8;
+	;muls.w		28(a4), d0
+	;swap.w		d0
+	;and.w		#$FFFC, d0
+
+	;move.w		(a1)+, d1
+	;move.w		#16, d1
+	;sub.w		#(64-40)*4, d1
+	;move.w		_asm_line_h2(pc), d1		;						int y1 = ((   0 - lrc_cam_pos_z)*size)>>8;
+	;muls.w		28(a4), d1
+	;swap.w		d1
+	;and.w		#$FFFC, d1
+
+	move.w		#-20*4, d0
+	move.w		#20*4, d1
+
+
+	cmp.w		#-50*4, d0					;	if( y0 < -50 ) y0 = -50;
+	bge.w		.y0_noclip
+	move.w		#-50*4, d0
+.y0_noclip:
+	cmp.w		#50*4, d1					;	if( y1 >  50 ) y1 =  50;
+	ble.w		.y1_noclip
+	move.w		#50*4, d1
+.y1_noclip:
+	cmp.w		d1, d0						;	if( y0 >= y1 ) continue;
+	bge.w		.continue
+
+
+	move.l		_render_buffer, a7			;		byte *dst = render_buffer + (x>>2) + (x&3)*4000;
+	adda.w		2(a5), a7
+	move.w		d0, d2
+	lsr.w		#1, d2
+	add.w		d2, a7						;	skip
+
+	move.l		30(a4), a0					;	fn2					LUT.l:	Scaler func			(jump directly to proper Y offset)		(Z = -64 / -128)
+	move.w		#$4ED6,(a0,d1.w)			;	trim (fn2,d0)		LUT.w:	Tex length			(x4)									(L = -64..0 / -128..0)
+	lea.l		.upper_ret(pc), a6
+	jmp			(a0,d0.w)						;	jsr (fn2)
+.upper_ret:
+	move.w		#$1EEA,(a0,d1.w)			;	untrim (fn2,d0)		$116A -> $1EEA
+
+;	bra.b		.start_span
+
+.continue:
+	dbra.w		d3, .loop					; LOOP END
+
+.end:
+	move.l		_a7_save, a7
+	movem.l		(a7)+,d2-d7/a2-a6
+	rts

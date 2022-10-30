@@ -1,0 +1,62 @@
+;	; ================================================================ ST_DrawHUDInit ================================================================
+;	;
+;	;	Draws static HUD background.
+;	;
+;	;	a0	- screen			(offset to where HUD drawing starts)
+;	;	a1	- HUD info table
+;	;
+;		public _ST_DrawHUDInit
+;	_ST_DrawHUDInit:
+;		move.l		(a1), a1				; get HUD gfx data pointer
+;		rts
+
+
+; ================================================================ ST_DrawHUDUpdate ================================================================
+;
+;	Updates HUD with new values.
+;
+;	a0	- screen				(offset to where HUD drawing starts)
+;	a1	- HUD info table
+;	a2	- status bar data
+;	a3	- status bar shadow
+;
+	public _ST_DrawHUDUpdate
+_ST_DrawHUDUpdate:
+;
+;	d1	- draw mode
+;	d2	- X step
+;	d3	- X coord
+;
+;	a0	- screen				(offset to where HUD drawing starts)
+;	a1	- HUD info table
+;	a2	- status bar data
+;	a3	- status bar shadow
+;	a4	- background HUD gfx
+;	a5	- dst
+;
+	movem.l		d2-d4/a2-a5,-(a7)
+	move.l		(a1)+, a2				; get HUD gfx data pointer
+
+.gfx_script_loop:
+	move.b		(a1)+, d1				; read draw mode
+	sub.b		#1, d1
+	cmp.b		#4, d1
+	bge			.end
+
+										; ---------------- 1..4: draw digits ----------------
+	moveq.l		#0, d2					; read & decode step, X and Y
+	moveq.l		#0, d3
+	moveq.l		#0, d4
+	move.b		(a1)+, d2
+	lsr.l		#1, d2
+	roxl.l		#8, d3
+	move.b		(a1)+, d3
+	move.b		(a1)+, d4
+
+
+
+	bra			.gfx_script_loop
+
+.end:
+	movem.l		(a7)+,d2-d4/a2-a5
+	rts

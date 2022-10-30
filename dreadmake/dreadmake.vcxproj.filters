@@ -1,0 +1,464 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Cheats">
+      <UniqueIdentifier>{289ff67a-d858-4354-9891-77d2118b2a8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Docs">
+      <UniqueIdentifier>{5dcf9664-65ca-40ec-b996-83baef06aee9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dread">
+      <UniqueIdentifier>{57e503a7-6c2b-4fd2-8142-a64dca4c7042}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Dread\Asm">
+      <UniqueIdentifier>{9aaf17e4-2a32-49a5-ac05-997811b63e52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripts">
+      <UniqueIdentifier>{6034e354-f760-4b54-a14f-ee53ccf5056e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ST">
+      <UniqueIdentifier>{91ae7342-59ff-485e-80b2-aaa58085c058}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source - Amiga">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source - Amiga\Asm">
+      <UniqueIdentifier>{df3e7671-7a8e-41cc-9b74-3afe3d167967}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source - Amiga\Audio">
+      <UniqueIdentifier>{7f0e842e-77db-42ba-b169-c89bc731191a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source - Amiga\Asm\Bootloader">
+      <UniqueIdentifier>{009488f5-98f6-4afd-900b-a44d4883f6bd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="gen\line_cheat_x000.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\line_cheat_x000p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\line_cheat_x004.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\line_cheat_x013p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\line_cheat_x023.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\line_cheat_x023p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\line_cheat_x027p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\line_cheats.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="src\dread_asm.s">
+      <Filter>Dread\Asm</Filter>
+    </None>
+    <None Include="src\dread_asm_draw.s">
+      <Filter>Dread\Asm</Filter>
+    </None>
+    <None Include="src\dread_asm_lines.s">
+      <Filter>Dread\Asm</Filter>
+    </None>
+    <None Include="src\dread_asm_scripts.s">
+      <Filter>Dread\Asm</Filter>
+    </None>
+    <None Include="src\dread_asm_sprites.s">
+      <Filter>Dread\Asm</Filter>
+    </None>
+    <None Include="!android-run.bat">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="!bb10-run.bat">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="!web-run.bat">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="gen\gen_asmstruct.i">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="src\dread_asm_fn.s">
+      <Filter>Dread\Asm</Filter>
+    </None>
+    <None Include="scripts\asmstruct\_gen_asmstruct.awk">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="gen\line_cheat_x029p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="src\dread_asm_weaponsprites.s">
+      <Filter>Dread\Asm</Filter>
+    </None>
+    <None Include="!runmake.bat">
+      <Filter>Scripts</Filter>
+    </None>
+    <None Include="Makefile.ST">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="src\st_asm.s">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="vc_st.cfg">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="Makefile">
+      <Filter>Source - Amiga</Filter>
+    </None>
+    <None Include="src\st_fn.s">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="src\st_system.s">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="src\st_c2p.s">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="src\st_ikbd.s">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="src\st__macros.s">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="src\st_draw.s">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="src\amiga__defs.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga__macros.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga__startup.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga__traps.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga_asm.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga_asmblit.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga_framework.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\lineasm.k68">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\copper.k68">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\xcode.k68">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\xcode.asm">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga_statbar_asm.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga_audio.s">
+      <Filter>Source - Amiga\Audio</Filter>
+    </None>
+    <None Include="src\amiga_audio_irq.s">
+      <Filter>Source - Amiga\Audio</Filter>
+    </None>
+    <None Include="src\amiga_audio2.s">
+      <Filter>Source - Amiga\Audio</Filter>
+    </None>
+    <None Include="src\amiga_audio2_irq.s">
+      <Filter>Source - Amiga\Audio</Filter>
+    </None>
+    <None Include="src\st_audio.s">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="src\amiga__system.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga__sys_macros.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="vc.cfg">
+      <Filter>Source - Amiga</Filter>
+    </None>
+    <None Include="src\dread_asm_experimental.s">
+      <Filter>Dread\Asm</Filter>
+    </None>
+    <None Include="gen\line_experimental.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\render2_linedefs.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\render2_linedef_x000p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\render2_linedef_x006p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\line_cheat_x009p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\render2_linedef_x002p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\render2_linedef_x005p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\render2_linedef_x026p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\render2_linedef_x017p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\line_cheat_x031p.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\render2_linedef_x002.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="gen\line_cheat_x006.s">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="src\st_comm_asm.s">
+      <Filter>ST</Filter>
+    </None>
+    <None Include="src\inflate.asm">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga_trackloader.s">
+      <Filter>Source - Amiga\Asm</Filter>
+    </None>
+    <None Include="src\amiga_bootsector.s">
+      <Filter>Source - Amiga\Asm\Bootloader</Filter>
+    </None>
+    <None Include="src\amiga_boot_print.s">
+      <Filter>Source - Amiga\Asm\Bootloader</Filter>
+    </None>
+    <None Include="src\amiga_boot_memory.s">
+      <Filter>Source - Amiga\Asm\Bootloader</Filter>
+    </None>
+    <None Include="src\amiga_boot_copper.s">
+      <Filter>Source - Amiga\Asm\Bootloader</Filter>
+    </None>
+    <None Include="src\amiga_boot_script.s">
+      <Filter>Source - Amiga\Asm\Bootloader</Filter>
+    </None>
+    <None Include="gen\dread_loadscript.inc">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="src\amiga_boot_vars.s">
+      <Filter>Source - Amiga\Asm\Bootloader</Filter>
+    </None>
+    <None Include="data\export_data.inc">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="data\export_map_asm.i">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="data\export_scripts.i">
+      <Filter>Cheats</Filter>
+    </None>
+    <None Include="src\amiga_comm_asm.s">
+      <Filter>Source - Amiga</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\dread.h">
+      <Filter>Dread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dread_asm.h">
+      <Filter>Dread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dread_data.h">
+      <Filter>Dread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dread_engine.h">
+      <Filter>Dread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dread_framework.h">
+      <Filter>Dread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dread_physics.h">
+      <Filter>Dread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+    <ClInclude Include="src\demo.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+    <ClInclude Include="src\trackloader.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dread_estructs.h">
+      <Filter>Dread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\st_framework.h">
+      <Filter>ST</Filter>
+    </ClInclude>
+    <ClInclude Include="src\st.h">
+      <Filter>ST</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_vscreen.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_menu.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_blitter.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_minimap.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_asm.h">
+      <Filter>Source - Amiga\Asm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\xcode.h">
+      <Filter>Source - Amiga\Asm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_statbar.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+    <ClInclude Include="src\st_menu.h">
+      <Filter>ST</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_audio.h">
+      <Filter>Source - Amiga\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_audio2.h">
+      <Filter>Source - Amiga\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_system.h">
+      <Filter>Source - Amiga\Asm</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_files.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dread_mapload.h">
+      <Filter>Dread</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_comm.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+    <ClInclude Include="src\amiga_debug.h">
+      <Filter>Source - Amiga</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="doc\doc.txt">
+      <Filter>Docs</Filter>
+    </Text>
+    <Text Include="doc\doc-actorscript.txt">
+      <Filter>Docs</Filter>
+    </Text>
+    <Text Include="doc\TODO.txt">
+      <Filter>Docs</Filter>
+    </Text>
+    <Text Include="doc\mapformat.txt">
+      <Filter>Docs</Filter>
+    </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\dread_codegen.c">
+      <Filter>Dread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dread_framework.c">
+      <Filter>Dread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dread_game.c">
+      <Filter>Dread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dread_mapload.c">
+      <Filter>Dread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dread_physics.c">
+      <Filter>Dread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dread_soft.c">
+      <Filter>Dread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dread_statbar.c">
+      <Filter>Dread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\m_copper.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\m_timing.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mem.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\trackloader.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dread_estructs.c">
+      <Filter>Dread</Filter>
+    </ClCompile>
+    <ClCompile Include="src\st_main.c">
+      <Filter>ST</Filter>
+    </ClCompile>
+    <ClCompile Include="src\st_framework.c">
+      <Filter>ST</Filter>
+    </ClCompile>
+    <ClCompile Include="src\fn.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\st_debug.c">
+      <Filter>ST</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_main.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_vscreen.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_menu.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_blitter.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_minimap.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_statbar.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\st_menu.c">
+      <Filter>ST</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_audio_c.c">
+      <Filter>Source - Amiga\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_audio2_c.c">
+      <Filter>Source - Amiga\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_files.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\st_comm.c">
+      <Filter>ST</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_comm.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+    <ClCompile Include="src\amiga_debug.c">
+      <Filter>Source - Amiga</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

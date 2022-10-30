@@ -1,0 +1,7 @@
+;	pea       int_timerb		; Offset 8
+;	move.w    #168,-(sp)		; Offset 6		data
+;	move.w    #0,-(sp)			; Offset 4		control
+;	move.w    #1,-(sp)			; Offset 2		timer B
+;	move.w    #31,-(sp)			; Offset 0
+;	trap      #14				; Call XBIOS
+;	lea       $C(sp),sp			; Correct stack

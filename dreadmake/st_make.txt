@@ -1,0 +1,18 @@
+--- make rebuild ---
+rm -rf ././objst/*.o
+rm -rf ./out/auto/main.prg
+rm -rf ././lst/*.lst
+vasmm68k_mot_win32.exe -m68000 -spaces -Fhunk  -x -nowarn=62									 -o objst/st_asm.o src/st_asm.s
+vasm 1.8e (c) in 2002-2018 Volker Barthelmann
+vasm M68k/CPU32/ColdFire cpu backend 2.3c (c) 2002-2018 Frank Wille
+vasm motorola syntax module 3.12 (c) 2002-2018 Frank Wille
+vasm hunk format output module 2.9c (c) 2002-2018 Frank Wille
+
+CODE(acrx2):	        4220 bytes
+DATA(adrw1):	          28 bytes
+vc -DATARI_ST -nostdlib -I. -Isrc -dontwarn=81 -dontwarn=170 -dontwarn=65 -dontwarn=152 -dontwarn=172 -dontwarn=79 -c src/st_main.c -o objst/st_main.o
+vc -DATARI_ST -nostdlib -I. -Isrc -dontwarn=81 -dontwarn=170 -dontwarn=65 -dontwarn=152 -dontwarn=172 -dontwarn=79 -c src/st_framework.c -o objst/st_framework.o
+vc -DATARI_ST -nostdlib -I. -Isrc -dontwarn=81 -dontwarn=170 -dontwarn=65 -dontwarn=152 -dontwarn=172 -dontwarn=79 -c src/dread_mapload.c -o objst/dread_mapload.o
+vlink  -b ataritos -o ./out/auto/main.prg ./objst/st_asm.o ./objst/st_main.o ./objst/st_framework.o ./objst/dread_mapload.o lib/vc.lib
+Warning 22: Attributes of section .text were changed from r-x- in Linker Script <built-in script> to rwx- in dread_mapload.o.
+End.

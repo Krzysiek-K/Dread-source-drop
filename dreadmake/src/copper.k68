@@ -1,0 +1,710 @@
+
+
+// BPL1PTH   =	$dff0E0			;+  W   A       Bitplane 1 pointer (high 3 bits)
+// BPL1PTL   =	$dff0E2			;+  W   A       Bitplane 1 pointer (low 15 bits)
+// BPL2PTH   =	$dff0E4			;+  W   A       Bitplane 2 pointer (high 3 bits)
+// BPL2PTL   =	$dff0E6			;+  W   A       Bitplane 2 pointer (low 15 bits)
+// BPL3PTH   =	$dff0E8			;+  W   A       Bitplane 3 pointer (high 3 bits)
+// BPL3PTL   =	$dff0EA			;+  W   A       Bitplane 3 pointer (low 15 bits)
+// BPL4PTH   =	$dff0EC			;+  W   A       Bitplane 4 pointer (high 3 bits)
+// BPL4PTL   =	$dff0EE			;+  W   A       Bitplane 4 pointer (low 15 bits)
+// BPL5PTH   =	$dff0F0			;+  W   A       Bitplane 5 pointer (high 3 bits)
+// BPL5PTL   =	$dff0F2			;+  W   A       Bitplane 5 pointer (low 15 bits)
+// BPL6PTH   =	$dff0F4			;+  W   A       Bitplane 6 pointer (high 3 bits)
+// BPL6PTL   =	$dff0F6			;+  W   A       Bitplane 6 pointer (low 15 bits)
+
+//COLOR00   =	$dff180			;   W   D       Color table 00
+//COLOR01   =	$dff182			;   W   D       Color table 01
+//COLOR02   =	$dff184			;   W   D       Color table 02
+//COLOR03   =	$dff186			;   W   D       Color table 03
+//COLOR04   =	$dff188			;   W   D       Color table 04
+//COLOR05   =	$dff18A			;   W   D       Color table 05
+//COLOR06   =	$dff18C			;   W   D       Color table 06
+//COLOR07   =	$dff18E			;   W   D       Color table 07
+
+
+
+extern long _TICK_SPR_POINTER;
+extern long _NULL_SPR_POINTER;
+
+extern long _cop_write;
+extern word _cop_write_y;
+
+
+
+void Cop_StartBit0()
+{
+	a0 = _cop_write;
+				(a0).w+ = 0x100;		(a0).w+ = 0x0200;
+	(a0).w+ = 0x180;	(a0).w+ = 0x000;		// black border
+	_cop_write = a0;
+	_cop_write_y = 44;
+}
+
+void Cop_StartBit1(void *bit0 @ d0)
+{
+	a0 = _cop_write;
+				(a0).w+ = 0x0E2;		(a0).w+ = d0.w;
+	swap d0;	(a0).w+ = 0x0E0;		(a0).w+ = d0.w;
+				(a0).w+ = 0x100;		(a0).w+ = 0x1200;
+	(a0).w+ = 0x180;	(a0).w+ = 0x000;		// black border
+	_cop_write = a0;
+	_cop_write_y = 44;
+}
+
+void Cop_StartBit2(void *bit0 @ d0, void *bit1 @ d1)
+{
+	a0 = _cop_write;
+				(a0).w+ = 0x0E2;		(a0).w+ = d0.w;
+	swap d0;	(a0).w+ = 0x0E0;		(a0).w+ = d0.w;
+				(a0).w+ = 0x0E6;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0E4;		(a0).w+ = d1.w;
+				(a0).w+ = 0x100;		(a0).w+ = 0x2200;
+	(a0).w+ = 0x180;	(a0).w+ = 0x000;		// black border
+	_cop_write = a0;
+	_cop_write_y = 44;
+}
+
+void Cop_StartBit3(void *bit0 @ d0, void *bit1 @ d1, void *bit2 @ d2)
+{
+	a0 = _cop_write;
+				(a0).w+ = 0x0E2;		(a0).w+ = d0.w;
+	swap d0;	(a0).w+ = 0x0E0;		(a0).w+ = d0.w;
+				(a0).w+ = 0x0E6;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0E4;		(a0).w+ = d1.w;
+	d1 = d2;	(a0).w+ = 0x0EA;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0E8;		(a0).w+ = d1.w;
+				(a0).w+ = 0x100;		(a0).w+ = 0x3200;
+	(a0).w+ = 0x180;	(a0).w+ = 0x000;		// black border
+	_cop_write = a0;
+	_cop_write_y = 44;
+}
+
+void Cop_StartBit4(void *bit0 @ d0, void *bit1 @ d1, void *bit2 @ d2, void *bit3 @ d3)
+{
+	a0 = _cop_write;
+				(a0).w+ = 0x0E2;		(a0).w+ = d0.w;
+	swap d0;	(a0).w+ = 0x0E0;		(a0).w+ = d0.w;
+				(a0).w+ = 0x0E6;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0E4;		(a0).w+ = d1.w;
+	d1 = d2;	(a0).w+ = 0x0EA;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0E8;		(a0).w+ = d1.w;
+	d1 = d3;	(a0).w+ = 0x0EE;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0EC;		(a0).w+ = d1.w;
+				(a0).w+ = 0x100;		(a0).w+ = 0x4200;
+	(a0).w+ = 0x180;	(a0).w+ = 0x000;		// black border
+	_cop_write = a0;
+	_cop_write_y = 44;
+}
+
+void Cop_StartBit5(void *bit0 @ d0, void *bit1 @ d1, void *bit2 @ d2, void *bit3 @ d3, void *bit4 @ d4)
+{
+	a0 = _cop_write;
+				(a0).w+ = 0x0E2;		(a0).w+ = d0.w;
+	swap d0;	(a0).w+ = 0x0E0;		(a0).w+ = d0.w;
+				(a0).w+ = 0x0E6;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0E4;		(a0).w+ = d1.w;
+	d1 = d2;	(a0).w+ = 0x0EA;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0E8;		(a0).w+ = d1.w;
+	d1 = d3;	(a0).w+ = 0x0EE;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0EC;		(a0).w+ = d1.w;
+	d1 = d4;	(a0).w+ = 0x0F2;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0F0;		(a0).w+ = d1.w;
+				(a0).w+ = 0x100;		(a0).w+ = 0x5200;
+	(a0).w+ = 0x180;	(a0).w+ = 0x000;		// black border
+	_cop_write = a0;
+	_cop_write_y = 44;
+}
+
+void Cop_SetBit0()
+{
+	a0 = _cop_write;
+						(a0).w+ = 0x100;		(a0).w+ = 0x0200;
+	_cop_write = a0;
+}
+
+void Cop_SetBit1(void *bit0 @ d0)
+{
+	a0 = _cop_write;
+				(a0).w+ = 0x0E2;		(a0).w+ = d0.w;
+	swap d0;	(a0).w+ = 0x0E0;		(a0).w+ = d0.w;
+				(a0).w+ = 0x100;		(a0).w+ = 0x1200;
+	_cop_write = a0;
+}
+
+void Cop_SetBit4(void *bit0 @ d0, void *bit1 @ d1, void *bit2 @ d2, void *bit3 @ d3)
+{
+	a0 = _cop_write;
+				(a0).w+ = 0x0E2;		(a0).w+ = d0.w;
+	swap d0;	(a0).w+ = 0x0E0;		(a0).w+ = d0.w;
+				(a0).w+ = 0x0E6;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0E4;		(a0).w+ = d1.w;
+	d1 = d2;	(a0).w+ = 0x0EA;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0E8;		(a0).w+ = d1.w;
+	d1 = d3;	(a0).w+ = 0x0EE;		(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x0EC;		(a0).w+ = d1.w;
+				(a0).w+ = 0x100;		(a0).w+ = 0x4200;
+	_cop_write = a0;
+}
+
+void Cop_NoSprites()
+{
+	a0 = _cop_write;
+		(a0).w+ = 0x096;		(a0).w+ = [0x0000|(1<<5)];
+	_cop_write = a0;
+}
+
+void Cop_TickSprite()
+{
+	a0 = _cop_write;
+
+	d1 = _TICK_SPR_POINTER;
+				(a0).w+ = 0x122;	(a0).w+ = d1.w;
+	swap d1;	(a0).w+ = 0x120;	(a0).w+ = d1.w;
+	
+	d1 = _NULL_SPR_POINTER;
+	(a0).w+ = 0x126;	(a0).w+ = d1.w;
+	(a0).w+ = 0x12A;	(a0).w+ = d1.w;
+	(a0).w+ = 0x12E;	(a0).w+ = d1.w;
+	(a0).w+ = 0x132;	(a0).w+ = d1.w;
+	(a0).w+ = 0x136;	(a0).w+ = d1.w;
+	(a0).w+ = 0x13A;	(a0).w+ = d1.w;
+	(a0).w+ = 0x13E;	(a0).w+ = d1.w;
+	swap d1;
+	(a0).w+ = 0x124;	(a0).w+ = d1.w;
+	(a0).w+ = 0x128;	(a0).w+ = d1.w;
+	(a0).w+ = 0x12C;	(a0).w+ = d1.w;
+	(a0).w+ = 0x130;	(a0).w+ = d1.w;
+	(a0).w+ = 0x134;	(a0).w+ = d1.w;
+	(a0).w+ = 0x138;	(a0).w+ = d1.w;
+	(a0).w+ = 0x13C;	(a0).w+ = d1.w;
+
+	(a0).w+ = 0x096;	(a0).w+ = 0x8020;	// enable sprites
+
+	_cop_write = a0;
+}
+
+
+
+void Cop_BitMod(word mod1 @ d0, word mod2 @ d1)
+{
+	a0 = _cop_write;
+		(a0).w+ = 0x108;		(a0).w+ = d0.w;		// BPL1MOD
+		(a0).w+ = 0x10A;		(a0).w+ = d1.w;		// BPL2MOD
+	_cop_write = a0;
+}
+
+
+void Cop_ColorMap(word *colormap @ a1)
+{
+	d0.w = (a1).w+;		// color count
+	d1.w = 0x180;
+
+	a0 = _cop_write;
+	{
+		(a0).w+ = d1.w;		(a0).w+ = (a1).w+;
+		d1.w+=2;
+		d0.w-=1;
+	}!=;
+
+	_cop_write = a0;
+}
+
+void Cop_Palette(word *palette @ a1, word count @ d0)
+{
+	d1.w = 0x180;
+
+	a0 = _cop_write;
+	{
+		(a0).w+ = d1.w;		(a0).w+ = (a1).w+;
+		d1.w+=2;
+		d0.w-=1;
+	}!=;
+
+	_cop_write = a0;
+}
+
+void Cop_Palette_NZ(word *palette @ a1, word count @ d0)
+{
+	d1.w = 0x182;
+
+	a0 = _cop_write;
+	{
+		(a0).w+ = d1.w;		(a0).w+ = (a1).w+;
+		d1.w+=2;
+		d0.w-=1;
+	}!=;
+
+	_cop_write = a0;
+}
+
+// Fading:
+//	fade = 0		- only black
+//	fade = 1..15	- darken
+//	fade = 16		- no color change
+//	fade = 17..31	- fade to white
+//	fade = 32		- white
+void Cop_Palette_Fade(word *colormap @ a1, word count @ d0, word fade @ d7)
+{
+	save d2-d4/d6;
+
+	d1.w = 0x180;
+
+	a0 = _cop_write;
+	d7.w < 17 {
+		// fade to black
+		{
+			(a0).w+ = d1.w;
+			d2.w = (a1).w+;
+
+			d3.w = d2.w;
+			d3.w &= 0xF0F;		// red & blue
+			d3.w *= d7.w;
+			d3.w &= 0xF0F0;
+
+			d2.w &= 0x0F0;		// green
+			d2.w *= d7.w;
+			d2.w &= 0x0F00;
+			d3.w += d2.w;
+			d3.w >>= 4;
+
+			(a0).w+ = d3.w;
+
+			d1.w+=2;
+			d0.w-=1;
+		}!=;
+		goto .end;
+	}
+
+	// fade to white
+	d6.w = 32;
+	d6.w -= d7.w;
+	{
+		(a0).w+ = d1.w;
+		d2.w = (a1).w+;
+		d2.w ^= 0xFFF;
+
+		d3.w = d2.w;
+		d3.w &= 0xF0F;		// red & blue
+		d3.w *= d6.w;
+		d3.w &= 0xF0F0;
+
+		d2.w &= 0x0F0;		// green
+		d2.w *= d6.w;
+		d2.w &= 0x0F00;
+		d3.w += d2.w;
+		d3.w >>= 4;
+		
+		d3.w ^= 0xFFF;
+
+		(a0).w+ = d3.w;
+
+		d1.w+=2;
+		d0.w-=1;
+	}!=;
+
+.end:
+	_cop_write = a0;
+}
+
+
+// Fading:
+//	fade = 0		- only black
+//	fade = 1..15	- darken
+//	fade = 16		- no color change
+//	fade = 17..31	- fade to white
+//	fade = 32		- white
+void ColorMap_Fade(word count @ d0,word *colormap @ a1,word fade @ d7)
+{
+	save d2-d4/d6;
+
+	a0 = 0xdff180;
+	d7.w < 17 {
+		// fade to black
+		{
+			d2.w = (a1).w+;
+
+			d3.w = d2.w;
+			d3.w &= 0xF0F;		// red & blue
+			d3.w *= d7.w;
+			d3.w &= 0xF0F0;
+
+			d2.w &= 0x0F0;		// green
+			d2.w *= d7.w;
+			d2.w &= 0x0F00;
+			d3.w += d2.w;
+			d3.w >>= 4;
+
+			(a0).w+ = d3.w;
+
+			d0.w-=1;
+		}!=;
+		goto .end;
+	}
+
+	// fade to white
+	d6.w = 32;
+	d6.w -= d7.w;
+	{
+		d2.w = (a1).w+;
+		d2.w ^= 0xFFF;
+
+		d3.w = d2.w;
+		d3.w &= 0xF0F;		// red & blue
+		d3.w *= d6.w;
+		d3.w &= 0xF0F0;
+
+		d2.w &= 0x0F0;		// green
+		d2.w *= d6.w;
+		d2.w &= 0x0F00;
+		d3.w += d2.w;
+		d3.w >>= 4;
+		
+		d3.w ^= 0xFFF;
+
+		(a0).w+ = d3.w;
+
+		d0.w-=1;
+	}!=;
+
+.end:
+	_cop_write = a0;
+}
+
+
+//	d2:		color register #1
+//	a1:		rainbow pointer #1
+//	d3:		color register #2
+//	a2:		rainbow pointer #1
+//	d1:		rainbow length
+void Cop_Rainbow2(word reg1 @ d2, word *grad1 @ a1, word reg2 @ d3, word *grad2 @ a2, word len @ d1)
+{
+	save /a2/;
+
+	a0 = _cop_write;
+	d0.w = _cop_write_y;
+	d0.w <<= 8;
+	d0.w |= 0x0F;
+	_cop_write_y += d1.w;
+	
+	{
+		(a0).w+ = d0.w;		(a0).w+ = 0xFFFE;		// wait
+		(a0).w+ = d2.w;		(a0).w+ = (a1).w+;		// color #1
+		(a0).w+ = d3.w;		(a0).w+ = (a2).w+;		// color #2
+		d0.w += 0x100;
+		d0.w==0x000F { (a0).l+ = 0xFFDFFFFE; }
+		d1.w -= 1;
+	} d1.w>0;
+
+	_cop_write = a0;
+}
+
+
+void Cop_Rainbow4(
+			word reg1 @ d1, word *grad1 @ a1,
+			word reg2 @ d2, word *grad2 @ a2,
+			word reg3 @ d3, word *grad3 @ a3,
+			word reg4 @ d4, word *grad4 @ a4,
+			word len @ d5)
+{
+	save a2-a4;
+
+	a0 = _cop_write;
+	d0.w = _cop_write_y;
+	d0.w <<= 8;
+	d0.w |= 0x0F;
+	_cop_write_y += d5.w;
+	
+	{
+		(a0).w+ = d0.w;		(a0).w+ = 0xFFFE;		// wait
+		(a0).w+ = d1.w;		(a0).w+ = (a1).w+;		// color #1
+		(a0).w+ = d2.w;		(a0).w+ = (a2).w+;		// color #2
+		(a0).w+ = d3.w;		(a0).w+ = (a3).w+;		// color #3
+		(a0).w+ = d4.w;		(a0).w+ = (a4).w+;		// color #4
+		d0.w += 0x100;
+		d0.w==0x000F { (a0).l+ = 0xFFDFFFFE; }
+		d5.w -= 1;
+	} d5.w>0;
+
+	_cop_write = a0;
+}
+
+void Cop_Rainbow4x(
+			word reg1 @ d1, word *grad1 @ a1,
+			word reg2 @ d2, word *grad2 @ a2,
+			word reg3 @ d3, word *grad3 @ a3,
+			word reg4 @ d4, word *grad4 @ a4,
+			word *grad5 @ a5,
+			word len @ d5)
+{
+	save a2-a5/d5;
+
+	a0 = _cop_write;
+	d0.w = _cop_write_y;
+	d0.w <<= 8;
+	d0.w |= 0x0F;
+	_cop_write_y += d5.w;
+	
+	{
+		(a0).w+ = d0.w;		(a0).w+ = 0xFFFE;		// wait
+		(a0).w+ = 0x0188;	(a0).w+ = (a1).w;		// color X
+		(a0).w+ = 0x018A;	(a0).w+ = (a1).w;		// color X
+		(a0).w+ = 0x018C;	(a0).w+ = (a1).w;		// color X
+		(a0).w+ = 0x018E;	(a0).w+ = (a1).w+;		// color X
+		(a0).w+ = d1.w;		(a0).w+ = (a1).w+;		// color #1
+		(a0).w+ = d2.w;		(a0).w+ = (a2).w+;		// color #2
+		(a0).w+ = d3.w;		(a0).w+ = (a3).w+;		// color #3
+		(a0).w+ = d4.w;		(a0).w+ = (a4).w+;		// color #4
+		d0.w += 0x100;
+		d0.w==0x000F { (a0).l+ = 0xFFDFFFFE; }
+		d5.w -= 1;
+	} d5.w>0;
+
+	_cop_write = a0;
+}
+
+
+void Cop_RainbowWildcat_Init(
+			word *offmap @ a1,
+			word *copbase @ d7,
+			word len @ d5 )
+{
+	//	d0	- wait instruction
+	//	d5	- counter
+	//	d7	- real copper base
+	//
+	//	a0	- copper pointer
+	//	a1	- offset map table	(to be filled)
+	//	
+	save a2-a6/d2-d5;
+
+	a0 = _cop_write;
+
+	d0.w = _cop_write_y;
+	d0.w <<= 8;
+	d0.w |= 0x0F;
+	_cop_write_y += d5.w;
+	
+	d1.w = 0x0000;	// init all to black
+
+	{
+		(a0).w+ = d0.w;		(a0).w+ = 0xFFFE;	// wait
+		(a0).w+ = 0x0188;	
+		d2=a0; d2-=d7; d2>>=1; (a1).w+ = d2.w;	// save this offset
+							(a0).w+ = d1.w;		// color X	+0
+		(a0).w+ = 0x018A;	(a0).w+ = d1.w;		// color X	+2
+		(a0).w+ = 0x018C;	(a0).w+ = d1.w;		// color X	+4
+		(a0).w+ = 0x018E;	(a0).w+ = d1.w;		// color X	+8
+
+		(a0).w+ = 0x0198;	(a0).w+ = d1.w;		// color #1	+10
+		(a0).w+ = 0x019A;	(a0).w+ = d1.w;		// color #2	+12
+		(a0).w+ = 0x019C;	(a0).w+ = d1.w;		// color #3	+14
+		(a0).w+ = 0x019E;	(a0).w+ = d1.w;		// color #4	+16
+
+		d0.w += 0x100;
+		d0.w==0x000F { (a0).l+ = 0xFFDFFFFE; }
+		d5.w -= 1;
+	} d5.w>0;
+
+	_cop_write = a0;
+}
+
+void Cop_Wait()
+{
+	a0 = _cop_write;
+	d0.w = _cop_write_y;
+	d0.w <<= 8;
+	d0.w |= 0x0F;
+	
+	(a0).w+ = d0.w;		(a0).w+ = 0xFFFE;		// wait
+	d0.w += 0x100;
+	d0.w==0x000F { (a0).l+ = 0xFFDFFFFE; }
+
+	_cop_write = a0;
+}
+
+void Cop_Wait256()
+{
+	a0 = _cop_write;
+	d0.w = _cop_write_y;
+	d0.w <<= 8;
+	d0.w |= 0x0F;
+	
+	(a0).l+ = 0xFFDFFFFE;						// wait 256
+	(a0).w+ = d0.w;		(a0).w+ = 0xFFFE;		// wait
+
+	_cop_write = a0;
+}
+
+
+
+void Cop_End()
+{
+	a0 = _cop_write;
+	(a0).l+ = 0xFFFFFFFE;
+	_cop_write = a0;
+}
+
+
+
+
+void Cop_SplitList( void *copper @ a0, void *splitlist @ a1, void *frame_streams @ a4, void *pal_streams @ a5, void *pal_data @ a6, void *sprites @ a3 )
+{
+	save d2/a2;
+
+	(a0).w+ = 0x102;		(a0).w+ = 0;		// BPLCON1 = 0
+	(a0).w+ = 0x108;		(a0).w+ = 0;		// BPL1MOD = 0
+	(a0).w+ = 0x10A;		(a0).w+ = 0;		// BPL2MOD = 0
+
+	d0 = (a3).l+;
+	d0!=0 {
+						(a0).w+ = 0x122;	(a0).w+ = d0.w;
+		swap d0;		(a0).w+ = 0x120;	(a0).w+ = d0.w;
+		d0 = (a3).l+;	(a0).w+ = 0x126;	(a0).w+ = d0.w;
+		swap d0;		(a0).w+ = 0x124;	(a0).w+ = d0.w;
+		d0 = (a3).l+;	(a0).w+ = 0x12A;	(a0).w+ = d0.w;
+		swap d0;		(a0).w+ = 0x128;	(a0).w+ = d0.w;
+		d0 = (a3).l+;	(a0).w+ = 0x12E;	(a0).w+ = d0.w;
+		swap d0;		(a0).w+ = 0x12C;	(a0).w+ = d0.w;
+
+		d0 = (a3).l+;	(a0).w+ = 0x132;	(a0).w+ = d0.w;
+		swap d0;		(a0).w+ = 0x130;	(a0).w+ = d0.w;
+		d0 = (a3).l+;	(a0).w+ = 0x136;	(a0).w+ = d0.w;
+		swap d0;		(a0).w+ = 0x134;	(a0).w+ = d0.w;
+		d0 = (a3).l+;	(a0).w+ = 0x13A;	(a0).w+ = d0.w;
+		swap d0;		(a0).w+ = 0x138;	(a0).w+ = d0.w;
+		d0 = (a3).l+;	(a0).w+ = 0x13E;	(a0).w+ = d0.w;
+		swap d0;		(a0).w+ = 0x13C;	(a0).w+ = d0.w;
+
+		(a0).w+ = 0x096;		// enable sprites
+		(a0).w+ = 0x8020;
+	}
+	else
+	{
+		(a0).w+ = 0x096;		// disable sprites
+		(a0).w+ = 0x0020;
+	}
+	
+
+
+	d0 = 0;		// keep $0000xxxx
+	d1 = 0;		// keep $000000xx
+
+	.loop:
+		d1.b = (a1).b;
+		d0.w = (a1).w+;		// split command
+
+		// handle command
+		d0 btst 1; != {
+			d0 btst 0; == {
+				//	xxxxyyyy 00000010	+	BPLCON1						H -> playfields scroll value
+				(a0).w+ = 0x102;
+				(a0).w+ = d1.w;
+			} else {
+				//	xxxxxxxx 00001111	!	Wait						C -> wait position				( $xx >= $2C )
+				(a0).w+ = d0.w;
+				(a0).w+ = 0xFFFE;
+			}
+		} else {
+			d0 btst 7; != {
+				d0 btst 6; != {
+					//	111xxx10 11-yyy0-		Set bitplane pointer		H-> low address register			C & $1C -> stream offset	
+					// byte *ptr = *(byte**)stream_data[STREAM_FRAME_0 + ((d0&0x1C)>>2)] + (short)(*splitlist++);
+
+					d0.w &= 0x1C;		// offset in stream pointers table
+					a2 = (a4,d0).l;		//	get stream pointer
+
+					d2.w = (a1).w+;		// load picture offset from stream
+					ext d2;				//	(signed)
+					d2 += (a2).l;
+
+					(a0).w+ = d1.w;
+					(a0).w+ = d2.w;
+					d1.b -= 2;
+					swap d2;
+					(a0).w+ = d1.w;
+					(a0).w+ = d2.w;
+
+				} else {
+					//	00000000 1000010x		BPL1MOD BPL2MOD				C*2 -> register address
+					d0.w += d0.w;
+					(a0).w+ = d0.w;
+					(a0).w+ = (a1).w+;
+				}
+			} else {
+				d0 btst 0; != {
+					//	         .     ..
+					//	xxxx0010 00000001		BPLCON0						C -> register data
+					(a0).w+ = 0x100;
+					(a0).w+ = d0.w;
+				} else {
+					d0 btst 2; != {
+						//	0000xx00 0----100		Set palette					H -> stream offset
+						a2 = (a5,d1);		// load stream pointer
+						d0.w = (a2).w;		// get palette offset from stream
+						d0.w += d0.w;
+						a2 = &(a6,d0);		// compute palette address
+
+						d1.w = (a2).w+;		// color count
+						d0.w = 0x180;
+						{
+							(a0).w+ = d0.w;		(a0).w+ = (a2).w+;
+							d0.w += 2;
+							d1.w -= 1;
+						}!=;
+
+					} else {
+						//	-------- 0----000		End
+						goto .end;
+					}
+				}
+			}
+		}
+
+	goto .loop
+
+
+.end:
+	(a0).l+ = 0xFFFFFFFE;
+}
+
+
+
+void Cop_Gradient(word *grad @ a1)
+{
+	a0 = _cop_write;
+	
+	d0.w = (a1).w+;
+	{
+		d0.w >= 0x1000 {
+			// write color
+			d1.w = d0.w;
+			d1.w >>= 8;
+			d1.w >>= 4;
+			d1.w <<= 1;
+			d1.w += 0x180;
+			(a0).w+ = d1.w;		(a0).w+ = d0.w;
+
+		} else {
+			// wait
+			d1.w = _cop_write_y;
+			d0.w += d1.w;
+			_cop_write_y = d0.w;
+
+			d1.w ^= d0.w;
+			d1.w &= 0xFF00;
+			!={
+				(a0).l+ = 0xFFDFFFFE;						// wait 256
+			}
+
+			d0.w <<= 8;
+			d0.w |= 0x0F;
+			(a0).w+ = d0.w;		(a0).w+ = 0xFFFE;		// wait
+
+		}
+		d0.w = (a1).w+;
+	} d0.w != 0;
+
+	
+	_cop_write = a0;
+}

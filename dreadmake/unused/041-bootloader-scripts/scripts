@@ -1,0 +1,69 @@
+
+		dc.w			BCMD_ALLOC_CHIP, 0				;	Allocate Chip
+		dc.l			$40000
+		dc.w			BCMD_PRINT_NEWLINE				;	Print allocation result
+		dc.w			BCMD_PRINT_STRING
+		dc.b			">>> SECTION 0 AT $",0
+		even
+		dc.w			BCMD_PRINT_ADDR, 0
+;		dc.w			BCMD_PRINT_MEM_STATS			;	Print memory stats
+;
+;		dc.w			BCMD_ALLOC_FAST, 1				;	Allocate Fast
+;		dc.l			$40000
+;		dc.w			BCMD_PRINT_NEWLINE				;	Print allocation result
+;		dc.w			BCMD_PRINT_STRING
+;		dc.b			">>> SECTION 1 AT $",0
+;		even
+;		dc.w			BCMD_PRINT_ADDR, 1
+;		dc.w			BCMD_PRINT_MEM_STATS			;	Print memory stats
+;
+;		dc.w			BCMD_FINALIZE					;	Free system resources
+;		dc.w			BCMD_PRINT_NEWLINE				;	Print info about it
+;		dc.w			BCMD_PRINT_STRING
+;		dc.b			">>> BOOTLOADER RESOURCES RELEASED",0
+;		even
+;		dc.w			BCMD_PRINT_MEM_STATS			;	Print memory stats
+
+
+		dc.w			BCMD_PRINT_NEWLINE				;	New line
+		dc.w			BCMD_FILL, 0, 0, 0, 0, 400, $CAFE	;	Debug fill
+		dc.w			BCMD_PRINT_DATA_DWORD, 0, 0, 0	;	Old value
+		dc.w			BCMD_PROGRESS,  0
+		dc.w			BCMD_TRACK_LOAD, 20*2			;	Load track #20
+		dc.w			BCMD_TRACK_WAIT
+		dc.w			BCMD_PROGRESS,  55
+		dc.w			BCMD_PRINT_STRING
+		dc.b			" -> ",0
+		even
+		dc.w			BCMD_TRACK_DECODE, 0, 0, 0, 0, 11
+		dc.w			BCMD_PROGRESS,  100
+		dc.w			BCMD_PRINT_DATA_DWORD, 0, 0, 0	;	New value
+
+		dc.w			BCMD_TRACK_LOAD, 20*2+1			;	Load track #20
+		dc.w			BCMD_TRACK_WAIT
+		dc.w			BCMD_TRACK_DECODE, 0, 0, 11*512, 0, 6
+		dc.w			BCMD_PROGRESS,  110
+
+;		dc.w			BCMD_PROGRESS,  0,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS,  5,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 10,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 15,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 20,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 25,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 30,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 35,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 40,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 45,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 50,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 55,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 60,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 65,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 70,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 75,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 80,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 85,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 90,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS, 95,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS,100,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS,105,	BCMD_WAIT, 20
+;		dc.w			BCMD_PROGRESS,110,	BCMD_WAIT, 20

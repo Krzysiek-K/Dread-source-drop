@@ -1,0 +1,46 @@
+
+volatile word weapintnum;
+
+word			view_weapon_frame;
+word			view_weapon_reload;
+
+
+
+	// weapon firing
+	//if( view_weapon_reload==0 )
+	//{
+	//	dword index = render_columns.chunk2[80].thing_num;
+	//	if( index )
+	//	{
+	//		index--;
+	//		if( index < e_n_things )
+	//		{
+	//			EngineThing *th = e_things + index;
+	//			e_globals.player_armor++;
+	//			if( th->hitnum == (word)(index+1) )
+	//			{
+	//				e_globals.damage = 1;
+	//				//e_globals.player_armor = index;
+	//				Script_OnDamage(th);
+	//			}
+	//		}
+	//	}
+	//}
+
+	// weapon swing
+	if( mwalk | mside )
+		view_weapon_swing += ticks>>1;
+	else if( view_weapon_swing & 0x7F )
+	{
+		word pswing = view_weapon_swing;
+		if( view_weapon_swing & 0x40 )	view_weapon_swing += ticks;
+		else							view_weapon_swing -= ticks;
+		if( (pswing^view_weapon_swing) & 0x80 )
+			view_weapon_swing = 0;
+	}
+
+	// weapon reload timer
+	if( view_weapon_reload < 300 )
+		view_weapon_reload += ticks;
+	if( view_weapon_reload >= 300 )
+		view_weapon_frame = 0;

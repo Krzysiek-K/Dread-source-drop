@@ -1,0 +1,320 @@
+
+extern const word Sprite_SPOSA1[];
+extern const word Sprite_SPOSB1[];
+extern const word Sprite_SPOSC1[];
+extern const word Sprite_SPOSD1[];
+extern const word Sprite_SPOSE1[];
+extern const word Sprite_SPOSF1[];
+extern const word Sprite_SPOSG1[];
+extern const word Sprite_SPOSH0[];
+extern const word Sprite_SPOSI0[];
+extern const word Sprite_SPOSJ0[];
+extern const word Sprite_SPOSK0[];
+extern const word Sprite_SPOSL0[];
+extern const word Sprite_SPOSM0[];
+extern const word Sprite_SPOSN0[];
+extern const word Sprite_SPOSO0[];
+extern const word Sprite_SPOSP0[];
+extern const word Sprite_SPOSQ0[];
+extern const word Sprite_SPOSR0[];
+extern const word Sprite_SPOSS0[];
+extern const word Sprite_SPOST0[];
+extern const word Sprite_SPOSU0[];
+
+
+struct _GameObject;
+typedef struct _GameObject GameObject;
+
+
+typedef void(*think_fn)(GameObject *obj, word ticks);
+
+typedef struct {
+	const word		*frame;			// Visible frame
+	word			delay;			// Time in 1/300s until next frame
+	think_fn		enter_func;		// Called when state is entered
+	think_fn		move_func;		// Called every tick
+	short			next_state;		// -1 if just go to the next one
+} SpriteState;
+
+struct _GameObject {
+	const SpriteState	*state;		// NULL = inactive
+	int					xpos;		// fixed.16
+	int					ypos;		// fixed.16
+	word				delay;
+	word				health;
+};
+
+
+void SPOS_Aim(GameObject *obj, word ticks);				// Decide whether to go into shoot state (record shooting direction)
+void SPOS_Idle(GameObject *obj, word ticks);			// Decide whether to start walking
+void SPOS_Walk(GameObject *obj, word ticks);			// Move the enemy
+void SPOS_Shoot(GameObject *obj, word ticks);			// Fire at the player
+
+//const SpriteState Actor_SPOS[] = {
+//	// Idle
+//	{ Sprite_SPOSA1,  96,	SPOS_Idle,	NULL,		-1	},		//  0
+//	{ Sprite_SPOSD1,  96,	SPOS_Aim,	NULL,		 0	},		//  1
+//	// Walk														    
+//	{ Sprite_SPOSA1,  48,	SPOS_Aim,	SPOS_Walk,	-1	},		//  2
+//	{ Sprite_SPOSB1,  48,	NULL,		SPOS_Walk,	-1	},		//  3
+//	{ Sprite_SPOSC1,  48,	NULL,		SPOS_Walk,	-1	},		//  4
+//	{ Sprite_SPOSD1,  48,	NULL,		SPOS_Walk,	 2	},		//  5
+//	// Shoot													    
+//	{ Sprite_SPOSE1,  96,	NULL,		NULL,		-1	},		//  6
+//	{ Sprite_SPOSF1,  48,	SPOS_Shoot,	NULL,		-1	},		//  7
+//	{ Sprite_SPOSE1,  48,	NULL,		NULL,		 2	},		//  8
+//	// Pain														    
+//	{ Sprite_SPOSG1,  48,	NULL,		NULL,		-1	},		//  9
+//	{ Sprite_SPOSA1,  48,	NULL,		NULL,		 2	},		// 10
+//	// Die
+//	{ Sprite_SPOSG1,  48,	NULL,		NULL,		-1	},		// 11
+//	{ Sprite_SPOSH0,  48,	NULL,		NULL,		-1	},		// 12
+//	{ Sprite_SPOSI0,  48,	NULL,		NULL,		-1	},		// 13
+//	{ Sprite_SPOSJ0,  48,	NULL,		NULL,		-1	},		// 14
+//	{ Sprite_SPOSK0,  48,	NULL,		NULL,		-1	},		// 15
+//	{ Sprite_SPOSL0,  48,	NULL,		NULL,		16	},		// 16
+//};
+
+
+
+
+#define MAX_GAME_OBJECTS	1
+
+GameObject game_objects[MAX_GAME_OBJECTS];
+
+
+//void SPOS_Aim(GameObject *obj, word ticks)
+//{
+//	int dx = (view_fine_pos_x - obj->xpos);
+//	int dy = (view_fine_pos_y - obj->ypos);
+//	int len = line_len(dx>>8, dy>>8)>>8;
+//	if( len < 192 && krand()%100 < 20 )
+//		obj->state = Actor_SPOS + 6;
+//}
+//
+//void SPOS_Idle(GameObject *obj, word ticks)
+//{
+//	int dx = (view_fine_pos_x - obj->xpos);
+//	int dy = (view_fine_pos_y - obj->ypos);
+//	int len = line_len(dx>>8, dy>>8)>>8;
+//	if( len>128 )
+//	{
+//		obj->state = Actor_SPOS + 2;
+//		return;
+//	}
+//}
+//
+//void SPOS_Walk(GameObject *obj, word ticks)
+//{
+//	// Speed = 64
+//	// Delta = dx/len*(1<<16)*ticks/300*speed		(float)
+//	//
+//	int dx = (view_fine_pos_x - obj->xpos);
+//	int dy = (view_fine_pos_y - obj->ypos);
+//	int len = line_len(dx>>8, dy>>8)>>8;
+//	if( len<196 )
+//	{
+//		obj->state = Actor_SPOS + 0;
+//		return;
+//	}
+//	obj->xpos += dx/300*64*ticks/len;
+//	obj->ypos += dy/300*64*ticks/len;
+//}
+//
+//void SPOS_Shoot(GameObject *obj, word ticks)
+//{
+//}
+//
+//
+//void Dread_Init_Objects(void)
+//{
+//	GameObject *obj = game_objects + 0;
+//	obj->xpos = 128<<16;
+//	obj->ypos = 0<<16;
+//	obj->state = Actor_SPOS + 2;
+//	obj->delay = 0;
+//	obj->health = 3;
+//}
+
+//void Dread_Handle_Objects(word ticks)
+//{
+//	for( int i=0; i<MAX_GAME_OBJECTS; i++ )
+//	{
+//		GameObject *obj = game_objects + i;
+//		if( !obj->state )
+//			continue;
+//
+//		word obticks = ticks;
+//		while( obj->delay <= obticks )
+//		{
+//			// Delay expired
+//			obticks -= obj->delay;
+//
+//			if( obj->state->next_state < 0 )
+//				obj->state++;
+//			else
+//				obj->state = Actor_SPOS + obj->state->next_state;
+//			
+//			if( obj->state->enter_func )
+//				obj->state->enter_func(obj, ticks);
+//
+//			if(!obj->state)
+//				continue;
+//
+//			obj->delay = obj->state->delay;
+//		}
+//		obj->delay -= obticks;
+//
+//		if( obj->state->move_func )
+//			obj->state->move_func(obj, ticks);
+//
+//		// TBD: sort
+//		Dread_DrawSprite(obj->xpos>>16, obj->ypos>>16, obj->state->frame);
+//	}
+//}
+
+
+
+
+extern const DataThing MAP_THINGS[];
+
+//void Dread_Draw_Test_Objects(void)
+//{
+//	for( const DataThing *p = MAP_THINGS; p->sprite; p++ )
+//		Dread_DrawSprite(p->xp, p->yp, p->sprite);
+//}
+
+void Dread_Draw_Test_Objects2(void)
+{
+	// Process subsector visibility and add new things to the list
+	const word *thingvis = view_subsector->thingvis;
+	word last_frame = (word)(view_frame_number-1);
+
+	//while( *thingvis!=0xFFFF )
+	//{
+	//	EngineSubSector *ss = e_subsectors + (*thingvis++);
+	//	if( ss->visframe!=last_frame )
+	//	{
+	//		EngineThing *th = ss->first_thing;
+	//		while( th )
+	//		{
+	//			if( !th->visible && e_n_visthings<ENGINE_MAX_VISTHINGS )
+	//			{
+	//				e_visthings[e_n_visthings++] = th;
+	//				th->visible = 1;
+	//			}
+	//
+	//			th = th->ss_next;
+	//		}
+	//	}
+	//
+	//	ss->visframe = view_frame_number;
+	//}
+	//Dread_VisSprites(thingvis);
+	Dread_DrawSprites();
+
+	// Rewrite the list and remove invisible things
+	//word new_size = 0;
+	//for( int i=0; i<e_n_visthings; i++ )
+	//{
+	//	EngineThing *th = e_visthings[i];
+	//	if( th->subsector->visframe != view_frame_number )
+	//		th->visible = 0;
+	//	else
+	//	{
+	//		e_visthings[new_size++] = th;
+	//
+	//		// Compute thing transforms and stuff
+	//		short spx = th->xp - view_pos_x;
+	//		short spy = th->yp - view_pos_y;
+	//		th->tr_x = (((int)spx)*view_rotate_dx - ((int)spy)*view_rotate_dy)>>14;
+	//		th->tr_y = (((int)spx)*view_rotate_dy + ((int)spy)*view_rotate_dx)>>14;
+	//	}
+	//}
+	//e_n_visthings = new_size;
+	//{
+	//	EngineThing **read_ptr = e_visthings;
+	//	EngineThing **write_ptr = e_visthings;
+	//	while( read_ptr < e_visthings_end )
+	//	{
+	//		EngineThing *th = *read_ptr++;
+	//		if( th->subsector->visframe != view_frame_number )
+	//			th->visible = 0;
+	//		else
+	//		{
+	//			*write_ptr++ = th;
+
+	//			// Compute thing transforms and stuff
+	//			short spx = th->xp - view_pos_x;
+	//			short spy = th->yp - view_pos_y;
+	//			th->tr_x = (((int)spx)*view_rotate_dx - ((int)spy)*view_rotate_dy)>>14;
+	//			th->tr_y = (((int)spx)*view_rotate_dy + ((int)spy)*view_rotate_dx)>>14;
+	//		}
+	//	}
+	//	e_visthings_end = write_ptr;
+	//}
+
+	// Sort
+	//if( e_n_visthings > 0 )
+	//{
+	//	int mod = 0;
+	//	for( int i=1; i<e_n_visthings; i++ )
+	//	{
+	//		if( e_visthings[i-1]->tr_y > e_visthings[i]->tr_y )
+	//		{
+	//			EngineThing *th = e_visthings[i-1];
+	//			e_visthings[i-1] = e_visthings[i];
+	//			e_visthings[i] = th;
+	//			mod = 1;
+	//		}
+	//	}
+	//
+	//	if( mod )
+	//		for( int i=e_n_visthings-2; i>=0; i-- )
+	//		{
+	//			if( e_visthings[i]->tr_y > e_visthings[i+1]->tr_y )
+	//			{
+	//				EngineThing *th = e_visthings[i];
+	//				e_visthings[i] = e_visthings[i+1];
+	//				e_visthings[i+1] = th;
+	//			}
+	//		}
+	//}
+//	if( e_visthings_end > e_visthings )
+//	{
+//		int mod = 0;
+//		for( EngineThing **ptr = e_visthings+1; ptr<e_visthings_end; ptr++ )
+//		{
+//			if( ptr[-1]->tr_y > ptr[0]->tr_y )
+//			{
+//				EngineThing *th = ptr[-1];
+//				ptr[-1] = ptr[0];
+//				ptr[0] = th;
+//				mod = 1;
+//			}
+//		}
+//	
+//		if( mod )
+//			for( EngineThing **ptr = e_visthings_end-2; ptr>=e_visthings; ptr-- )
+//			{
+//				if( ptr[0]->tr_y > ptr[1]->tr_y )
+//				{
+//					EngineThing *th = ptr[0];
+//					ptr[0] = ptr[1];
+//					ptr[1] = th;
+//				}
+//			}
+//	}
+
+	// Draw all things
+	//for( int i=e_n_visthings-1; i>=0; i-- )
+	//{
+	//	EngineThing *th = e_visthings[i];
+	//	Dread_DrawSprite(th->tr_x, th->tr_y, th->sprite);
+	//}
+//	for( EngineThing **ptr = e_visthings_end; ptr>e_visthings; )
+//	{
+//		EngineThing *th = *--ptr;
+//		Dread_DrawSprite(th->tr_x, th->tr_y, th->sprite);
+//	}
+}

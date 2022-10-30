@@ -1,0 +1,54 @@
+
+
+// dread_framework.c
+
+
+byte Dread_ColorConvert(byte nibcol)
+{
+	//	dcbaDCBA -> AaBbCcDd
+	byte color = 0;
+	if( nibcol & 0x01 ) color |= 0x80;
+	if( nibcol & 0x02 ) color |= 0x20;
+	if( nibcol & 0x04 ) color |= 0x08;
+	if( nibcol & 0x08 ) color |= 0x02;
+	if( nibcol & 0x10 ) color |= 0x40;
+	if( nibcol & 0x20 ) color |= 0x10;
+	if( nibcol & 0x40 ) color |= 0x04;
+	if( nibcol & 0x80 ) color |= 0x01;
+	return color;
+}
+
+void Dread_PutPixel(int x, int y, byte color)
+{
+	color = Dread_ColorConvert(color);
+	byte *ptr = render_buffer;
+	if( x&1 ) ptr += 8080;
+	if( x&2 ) ptr += 200;
+	if( x&4 ) ptr++;
+	ptr += (x>>3)*402;
+	ptr[y<<1] = color;
+}
+
+
+
+	//while( 1 )
+	//{
+	//	MarkFrame();
+	//}
+
+	while( 1 )
+	{
+		VScreen_BeginFrame();
+
+		//word slow = rawintnum;
+		//memset(render_buffer, 0xF0, 16160);
+
+		Dread_SoftTest();
+		//Dread_TestA7(render_buffer+40*10+0, Dread_ColorConvert(0xED) );		// 0b01101111	$ED	1110 1101 0x6F					400
+		//Dread_TestA7(render_buffer+40*10+1, Dread_ColorConvert(0x59) );		// 0b11001001	$59 0101 1001 0xC9					401
+
+		//for( int i=0; i<100; i++ )
+		//	Dread_PutPixel(i, i, (i<(debug_vars[0]>>4)) ? 0xED : 0x59);
+
+		VScreen_EndFrame();
+	}

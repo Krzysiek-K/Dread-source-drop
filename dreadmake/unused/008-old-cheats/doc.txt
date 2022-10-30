@@ -1,0 +1,95 @@
+
+
+* Cheat engine:
+
+	> Line functions
+
+		$0: Ceil + 64px + Floor							| first, low wall, door
+		$1: Ceil + 128px + Floor							| first, high wall
+
+							== Ceil
+			fn1					CONST:	Fill func
+			trim (fn1,d0)		LUT.w:	Ceil length			(x4)									(Z = -64 / -128)
+			jsr (fn1)
+			untrim (fn1,d0)
+							== Upper
+			fn2					LUT.l:	Scaler func			(jump directly to proper Y offset)		(Z = -64 / -128)
+			trim (fn2,d0)		LUT.w:	Tex length			(x6)									(L = -64..0 / -128..0)
+			jsr (fn2)
+			untrim (fn2,d0)
+							== Floor
+			jsr (fn1,d0)		LUT.w:	Fill func start		(x4)	(fills to screen end)
+
+			ymax = 0										(block further visibility)
+
+
+
+		$2: Ceil + upper 64px + (sector) + Floor			| first, high wall with opening
+
+
+							== Ceil
+			fn1					CONST:	Fill func
+			trim (fn1,d0)		LUT.w:	Ceil length			(x4)									(Z = -128)
+			jsr (fn1)
+			untrim (fn1,d0)
+							== Upper
+			fn2					LUT.l:	Scaler func			(jump directly to proper Y offset)		(Z = -128)
+			trim (fn2,d0)		LUT.w:	Tex length			(x6)									(L = -128..-64)
+			jsr (fn2)
+			untrim (fn2,d0)
+	!!!		ymin				LUT.w:	Opening ceil start	(x4)
+							== Floor
+			jsr (fn1,sy2)		LUT.w:	Fill func start		(x4)	(fills to screen end)
+	!!!		ymax = sy2												(fill start is fill end for the next sector)
+
+
+
+
+		$3: [YMIN] Ceil + 64px + Floor [YMAX]				| low sector visible through opening
+
+	!!!		if(!YMAX) continue;
+							== Ceil
+			fn1					CONST:	Fill func
+			trim (fn1,d0)		LUT.w:	Full ceil length	(x4)									(Z = -64 )
+	!!!		jsr (fn1,ymin)
+			untrim (fn1,d0)
+							== Upper
+			fn2					LUT.l:	Scaler func			(jump directly to proper Y offset)		(Z = -64 )
+			trim (fn2,d0)		LUT.w:	Tex length			(x6)									(L = -64..0 )
+			jsr (fn2)
+			untrim (fn2,d0)
+							== Floor
+	!!!		trim (fn1,ymax)
+			jsr (fn1,d0)		LUT.w:	Fill func start		(x4)	(fills to ymax)
+	!!!		untrim (fn1,ymax)
+
+			ymax = 0										(block further visibility)
+
+	> per-size LUT values:
+
+			short	ceil_len_m64;				//	$0			$3
+			short	ceil_len_m128;				//		$1	$2
+			word	*upper_start_m64;			//	$0			$3
+			word	*upper_start_m128;			//		$1	$2
+			short	upper_len_m64_0;			//	$0			$3
+			short	upper_len_m128_0;			//		$1
+			short	upper_len_m128_m64;			//			$2
+			short	floor_start_0;				//	$0	$1	$2	$3
+			short	other_ceil_start_m64;		//			$2
+											// 22 bytes
+
+
+
+
+* Line functions:
+
+	> Ceil + Upper + (sector) + Floor
+
+
+	> Sky + Upper + Floor
+	> Ceil + Upper + Floor
+	> Sky + Upper + (sector) + Floor
+
+	> (sector)
+	> Ceil + Upper + (sector) + Lower + Floor
+	> Sky + Upper + (sector) + Lower + Floor

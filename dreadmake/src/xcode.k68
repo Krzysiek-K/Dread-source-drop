@@ -1,0 +1,58 @@
+
+word DMACONR   @ *0xdff002;			//   *R   AP      DMA control (and blitter status) read
+
+word BLTCON0   @ *0xdff040;			//   ~W   A       Blitter control register 0
+word BLTCON1   @ *0xdff042;			//   ~W   A( E )  Blitter control register 1
+dword BLTAWM   @ *0xdff044;			//   ~W   A       Blitter first word mask for source A
+word BLTAFWM   @ *0xdff044;			//   ~W   A       Blitter first word mask for source A
+word BLTALWM   @ *0xdff046;			//   ~W   A       Blitter last word mask for source A
+dword BLTCPT   @ *0xdff048;			// + ~W   A       Blitter pointer to source C (high 3 bits)
+word BLTCPTH   @ *0xdff048;			// + ~W   A       Blitter pointer to source C (high 3 bits)
+word BLTCPTL   @ *0xdff04A;			// + ~W   A       Blitter pointer to source C (low 15 bits)
+dword BLTBPT   @ *0xdff04C;			// + ~W   A       Blitter pointer to source B (high 3 bits)
+word BLTBPTH   @ *0xdff04C;			// + ~W   A       Blitter pointer to source B (high 3 bits)
+word BLTBPTL   @ *0xdff04E;			// + ~W   A       Blitter pointer to source B (low 15 bits)
+dword BLTAPT   @ *0xdff050;			// + ~W   A( E )  Blitter pointer to source A (high 3 bits)
+word BLTAPTH   @ *0xdff050;			// + ~W   A( E )  Blitter pointer to source A (high 3 bits)
+word BLTAPTL   @ *0xdff052;			// + ~W   A       Blitter pointer to source A (low 15 bits)
+dword BLTDPT   @ *0xdff054;			// + ~W   A       Blitter pointer to destination D (high 3 bits)
+word BLTDPTH   @ *0xdff054;			// + ~W   A       Blitter pointer to destination D (high 3 bits)
+word BLTDPTL   @ *0xdff056;			// + ~W   A       Blitter pointer to destination D (low 15 bits)
+word BLTSIZE   @ *0xdff058;			//   ~W   A       Blitter start and size (window width,height)
+word BLTCON0L  @ *0xdff05A;			//   ~W   A( E )  Blitter control 0, lower 8 bits (minterms)
+word BLTSIZV   @ *0xdff05C;			//   ~W   A( E )  Blitter V size (for 15 bit vertical size)
+word BLTSIZH   @ *0xdff05E;			//   ~W   A( E )  Blitter H size and start (for 11 bit H size)
+word BLTCMOD   @ *0xdff060;			//   ~W   A       Blitter modulo for source C
+word BLTBMOD   @ *0xdff062;			//   ~W   A       Blitter modulo for source B
+word BLTAMOD   @ *0xdff064;			//   ~W   A       Blitter modulo for source A
+word BLTDMOD   @ *0xdff066;			//   ~W   A       Blitter modulo for destination D
+word BLTCDAT   @ *0xdff070;			// % ~W   A       Blitter source C data register
+word BLTBDAT   @ *0xdff072;			// % ~W   A       Blitter source B data register
+word BLTADAT   @ *0xdff074;			// % ~W   A       Blitter source A data register
+
+
+extern long _screen1;
+extern long _screen2;
+
+
+
+void CopyRect_Cpu( void *src @ a0, long src_skip @ d2, void *dst @ a1, long dst_skip @ d3, word width_words @ d4, word height @ d1 )
+{
+	{
+		d1.w = d4.w;
+		{
+			(a1).w+ = (a0).w+;
+			d1.w-=1;
+		}!=;
+
+		a0 += d2;
+		a1 += d3;
+		d1-=1;
+	}!=;
+}
+
+
+
+
+// ------------------------------------------------ TrackLoader functions ------------------------------------------------
+

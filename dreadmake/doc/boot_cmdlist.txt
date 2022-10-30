@@ -1,0 +1,28 @@
+
+
+* Boot loader commands:
+
+
+		BCMD_END															- End	(enter infinite loop)
+
+		BCMD_ALLOC_CHIP			<index> <size><>							- Allocate section <index> as CHIP memory from the bottom
+		BCMD_ALLOC_CHIP_TOP		<index> <size><>							- Allocate section <index> as CHIP memory from the top
+		BCMD_ALLOC_FAST			<index> <size><>							- Allocate section <index> as FAST (fallback to CHIP if not possible) memory from the bottom
+		BCMD_ALLOC_FAST_TOP		<index> <size><>							- Allocate section <index> as FAST (fallback to CHIP if not possible) memory from the top
+
+		BCMD_TRACK_LOAD			<trackhead>									- Load track data from FDD to track buffer											[TBD: use double buffering]
+		BCMD_TRACK_WAIT														- Wait for trackloading completion
+		BCMD_TRACK_DECODE		<index> <offset><> <startsec> <numsec>		- Decode data from track buffer to section <index> at offset <offset>				[TBD: use double buffering]
+		BCMD_DEFLATE			<index> <dstoffs><> <srcoffs><>				- DEFLATE data in section <index>
+		BCMD_VERIFY_CRC			<index> <offset><> <size><> <crc><>			- Verify CRC of data in section <index>
+		BCMD_FILL				<index> <offset><> <size><> <value><>		- Fill data in section <index>
+
+		BCMD_START				<index> <offset><>							- Jump to specified location in section <index>			(end bootloader, start main program)
+
+		BCMD_PRINT_STRING		<string>...									- Print string on console
+		BCMD_PRINT_ADDR			<index>										- Print base address of section <index> on console
+		BCMD_PRINT_DATA_DWORD	<index> <offset><>							- Print dword of data from section <index> from offset <offset><>
+		BCMD_PRINT_DATA_STRING	<index> <offset><>							- Print string from section <index> from offset <offset><>
+
+		BCMD_PROGRESS			<width>										- Update progress bar position to <width> pixels
+		BCMD_WAIT				<time>										- Wait <time> vsyncs

@@ -1,0 +1,232 @@
+
+
+extern short _minimap_zoom;
+extern short _minimap_xpos;
+extern short _minimap_ypos;
+extern short _minimap_xmid;
+extern short _minimap_ymid;
+extern short _minimap_xscreen;
+extern short _minimap_yscreen;
+extern short _minimap_screen_stride;
+extern short _minimap_xclip;
+extern short _minimap_yclip;
+
+
+
+
+void Minimap_DrawLine( short x1 @ d0, short y1 @ d1, short x2 @ d2, short y2 @ d3, void *ptr @ d5 )
+{
+	// locals
+	short con1	@ d4;
+
+	-(a7).l = /d2-d5/;
+
+	x2-=x1;
+	>={
+		y2-=y1;
+		>= {
+			x2<y2 {	con1=[0*4+1];	goto swap1 }
+					con1=[4*4+1];	goto noswap
+		}
+		neg y2;
+			x2<y2 {	con1=[1*4+1];	goto swap1 }
+					con1=[6*4+1];	goto noswap
+	}
+		neg x2;
+		y2-=y1;
+		>= {
+			x2<y2 {	con1=[2*4+1];	goto swap1 }
+					con1=[5*4+1];	goto noswap
+		}
+		neg y2;
+			x2<y2 {	con1=[3*4+1];	goto swap1 }
+					con1=[7*4+1];	goto noswap
+
+swap1:
+	x2 ^= y2;
+	y2 ^= x2;
+	x2 ^= y2;
+noswap:
+
+	y2 <<= 2;
+	x2 <<= 1;
+
+
+	BLTBMOD = y2;
+
+	y2 -= x2;	<{ con1 |= [1<<6]; }
+
+	BLTCON1 = con1;
+	BLTAPTL = y2;
+
+	con1 = x1;			// con0
+	con1 <<= 8;
+	con1 <<= 4;
+	con1 |= 0x0BFA;
+	BLTCON0 = con1;
+
+	y2 -= x2;
+	BLTAMOD = y2;
+
+	con1 = 0xFFFF;
+	BLTADAT = 0x8000;
+	BLTAFWM = con1;
+	BLTALWM = con1;
+	BLTBDAT = con1;
+	
+	x1 >>= 4;
+	x1 <<= 1;
+	y1 *= _minimap_screen_stride;
+	x1 += y1;
+	ptr.w += x1;
+	
+	BLTCPT = ptr;
+	BLTDPT = ptr;
+	BLTCMOD = _minimap_screen_stride;
+	BLTDMOD = _minimap_screen_stride;
+
+	x2 <<= 5;
+	x2 += [(1<<6)+2];
+	BLTSIZE = x2;
+
+	/d2-d5/ = (a7).l+;
+}
+
+
+void Minimap_DrawLineClip(short px1 @ d4,short py1 @ d5, short px2 @ d0, short py2 @ d1, word *screen @ a2)
+{
+	save d2-d7/a3;
+
+	px1 -= _minimap_xpos;	px1 *= _minimap_zoom;	d4.l >>= 8;		px1 += _minimap_xmid;
+	py1 -= _minimap_ypos;	py1 *= _minimap_zoom;	d5.l >>= 8;		py1 += _minimap_ymid;
+	px2 -= _minimap_xpos;	px2 *= _minimap_zoom;	d0.l >>= 8;		px2 += _minimap_xmid;
+	py2 -= _minimap_ypos;	py2 *= _minimap_zoom;	d1.l >>= 8;		py2 += _minimap_ymid;
+
+	short  A	 @ d3;
+	short  B	 @ d7;
+
+	py1<0 { py2 ? 0; < goto .ret; }
+	py1>_minimap_yclip { py2 ? _minimap_yclip; > goto .ret; }
+	px1>_minimap_xclip { px2 ? _minimap_xclip; > goto .ret; }
+
+	px1<0 {
+		px2 ? 0; < goto .ret;
+		// y1 += divs(muls(y1-y2, x1), x2-x1);
+		A = py1;
+		A -= py2;
+		A *= px1;
+		B = px2;
+		B -= px1;
+		A /= B;
+		py1 += A;
+		px1 = 0;
+	}	
+	else {
+		px2<0 {
+			// y2 += divs(muls(y1-y2, x2), x2-x1);
+			A = py1;
+			A -= py2;
+			A *= px2;
+			B = px2;
+			B -= px1;
+			A /= B;
+			py2 += A;
+			px2 = 0;
+		}
+	}
+
+	py1<0 {
+		py2 ? 0; < goto .ret;
+		// x1 += divs(muls(x1-x2, y1), y2-y1);
+		A = px1;
+		A -= px2;
+		A *= py1;
+		B = py2;
+		B -= py1;
+		A /= B;
+		px1 += A;
+		py1 = 0;
+	}	
+	else {
+		py2<0 {
+			// x2 += divs(muls(x1-x2, y2), y2-y1);
+			A = px1;
+			A -= px2;
+			A *= py2;
+			B = py2;
+			B -= py1;
+			A /= B;
+			px2 += A;
+			py2 = 0;
+		}
+	}
+
+	px1>_minimap_xclip {
+		px2 ? _minimap_xclip; > goto .ret;
+		// y1 += divs(muls(y2-y1, XMAX-x1), x2-x1);
+		A = py2;
+		A -= py1;
+		B = _minimap_xclip;
+		B -= px1;
+		A *= B;
+		B = px2;
+		B -= px1;
+		A /= B;
+		py1 += A;
+		px1 = _minimap_xclip;
+	}	
+	else {
+		px2>_minimap_xclip {
+			// y2 += divs(muls(y2-y1, XMAX-x2), x2-x1);
+			A = py2;
+			A -= py1;
+			B = _minimap_xclip;
+			B -= px2;
+			A *= B;
+			B = px2;
+			B -= px1;
+			A /= B;
+			py2 += A;
+			px2 = _minimap_xclip;
+		}
+	}
+
+	py1>_minimap_yclip {												// LINPROJ: Y clipping (search for "199")
+		py2 ? _minimap_yclip; > goto .ret;
+		// x1 += divs(muls(x2-x1, yMAy-y1), y2-y1);
+		A = px2;
+		A -= px1;
+		B = _minimap_yclip;
+		B -= py1;
+		A *= B;
+		B = py2;
+		B -= py1;
+		A /= B;
+		px1 += A;
+		py1 = _minimap_yclip;
+	}	
+	else {
+		py2>_minimap_yclip {
+			// x2 += divs(muls(x2-x1, yMAy-y2), y2-y1);
+			A = px2;
+			A -= px1;
+			B = _minimap_yclip;
+			B -= py2;
+			A *= B;
+			B = py2;
+			B -= py1;
+			A /= B;
+			px2 += A;
+			py2 = _minimap_yclip;
+		}
+	}
+
+	d3.w = d1.w;
+	d2.w = d0.w;
+	d1.w = d5.w;
+	d0.w = d4.w;
+	d5 = a2;
+	_Minimap_DrawLine();
+
+	.ret:
+}

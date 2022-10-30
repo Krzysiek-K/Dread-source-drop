@@ -1,0 +1,25 @@
+
+void ST_DrawWeapon(const WeaponFrameInfoST *info)
+{
+	word *dst = screen + (info->screen_start>>1) + (ENGINE_Y_MAX-100)*40*4;
+	word stride = 40*4 - info->width*4;
+	const word *src = info->data;
+	for( word y=0; y<info->height; y++ )
+	{
+		for( word x=0; x<info->width; x++ )
+		{
+			word mask = *src++;
+			if( mask )
+			{
+				mask ^= 0xFFFF;
+				*dst = (*dst & mask) | *src++;		dst++;
+				*dst = (*dst & mask) | *src++;		dst++;
+				*dst = (*dst & mask) | *src++;		dst++;
+				*dst = (*dst & mask) | *src++;		dst++;
+			}
+			else
+				dst+=4;
+		}
+		dst += stride;
+	}
+}

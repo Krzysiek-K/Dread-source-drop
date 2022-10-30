@@ -1,0 +1,44 @@
+perftim_count:			dc.l	0
+
+
+
+
+; ================================================================ _st_install_perftimer ================================================================
+	public		_st_install_perftimer
+_st_install_perftimer:
+	pea       int_timera		; Offset 8
+	move.w    #134,-(sp)		; Offset 6		data
+	move.w    #7,-(sp)			; Offset 4		control
+	move.w    #0,-(sp)			; Offset 2		timer A
+	move.w    #31,-(sp)			; Offset 0
+	trap      #14				; Call XBIOS
+	lea       $C(sp),sp			; Correct stack
+	rts
+
+
+; ================================================================ int_timera ================================================================
+int_timera:
+	sub.l		#$100,	perftim_count
+	bclr		#5, $fffffa0f	
+	rte
+
+
+; ================================================================ _st_get_perftimer ================================================================
+	public		_st_get_perftimer
+_st_get_perftimer:
+	move.l		perftim_count, d0
+	move.b		$FFFFFA1F, d0
+	rts
+
+
+ 	
+;; ================================================================ _st_xbtimer ================================================================
+;	public _st_xbtimer
+;_st_xbtimer:
+;	pea       vector        ; Offset 8
+;	move.w    data,-(sp)    ; Offset 6
+;	move.w    control,-(sp) ; Offset 4
+;	move.w    timer,-(sp)   ; Offset 2
+;	move.w    #31,-(sp)     ; Offset 0
+;	trap      #14           ; Call XBIOS
+;	lea       $C(sp),sp     ; Correct stack

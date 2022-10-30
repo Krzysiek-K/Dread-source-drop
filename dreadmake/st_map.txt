@@ -1,0 +1,284 @@
+Files:
+  st_asm.s:  code 0(107c), DATA 4c2a0(1c) hex
+  src\st_main.c:  CODE 107c(4ec), DATA 4c2bc(20), BSS 4c2dc(23a84) hex
+  src\st_framework.c:  CODE 1568(168), BSS 6fd60(43e84) hex
+  src\dread_mapload.c:  CODE 16d0(3f63c), CHIP_DATA 40d0c(b594) hex
+
+
+Section mapping (numbers in hex):
+------------------------------
+  00000000 .text  (size 4c2a0, allocated 4c29d)
+           00000000 - 0000107c st_asm.s(code)
+           0000107c - 00001568 src\st_main.c(CODE)
+           00001568 - 000016d0 src\st_framework.c(CODE)
+           000016d0 - 00040d0c src\dread_mapload.c(CODE)
+           00040d0c - 0004c2a0 src\dread_mapload.c(CHIP_DATA)
+------------------------------
+  0004c2a0 .data  (size 3c, allocated 3b)
+           0004c2a0 - 0004c2bc st_asm.s(DATA)
+           0004c2bc - 0004c2dc src\st_main.c(DATA)
+------------------------------
+  0004c2dc .bss  (size 67908, allocated 0)
+           0004c2dc - 0006fd60 src\st_main.c(BSS)
+           0006fd60 - 000b3be4 src\st_framework.c(BSS)
+
+
+Symbols of .text:
+  _test: global reloc, value 0x8a, size 0
+  _reset: global reloc, value 0xae, size 0
+  exit: local reloc, value 0x38, size 0
+  _c2p_asm: global reloc, value 0xb2, size 0
+  _set_supervisor: global reloc, value 0xa2, size 0
+  start: local reloc, value 0x0, size 0
+  _basepage: local reloc, value 0x44, size 0
+  _memcpy: global reloc, value 0x4c, size 0
+  _len: local reloc, value 0x48, size 0
+  l10: local reloc, value 0x1098, size 0
+  l50: local reloc, value 0x12d4, size 0
+  l11: local reloc, value 0x10ae, size 0
+  l51: local reloc, value 0x12e4, size 0
+  l32: local reloc, value 0x1202, size 0
+  l52: local reloc, value 0x141a, size 0
+  l13: local reloc, value 0x10a8, size 0
+  l53: local reloc, value 0x1422, size 0
+  l14: local reloc, value 0x10ac, size 0
+  l54: local reloc, value 0x1418, size 0
+  l15: local reloc, value 0x10ae, size 0
+  l55: local reloc, value 0x14f4, size 0
+  l57: local reloc, value 0x155e, size 0
+  l37: local reloc, value 0x1560, size 0
+  l58: local reloc, value 0x152c, size 0
+  l19: local reloc, value 0x11a2, size 0
+  l39: local reloc, value 0x1248, size 0
+  l59: local reloc, value 0x155c, size 0
+  l40: local reloc, value 0x1272, size 0
+  l1: local reloc, value 0x107c, size 0
+  l41: local reloc, value 0x1278, size 0
+  l2: local reloc, value 0x1092, size 0
+  l22: local reloc, value 0x111e, size 0
+  l42: local reloc, value 0x1270, size 0
+  l43: local reloc, value 0x1282, size 0
+  l4: local reloc, value 0x108c, size 0
+  l24: local reloc, value 0x114a, size 0
+  l44: local reloc, value 0x12ae, size 0
+  l5: local reloc, value 0x1090, size 0
+  l45: local reloc, value 0x12b4, size 0
+  l6: local reloc, value 0x1092, size 0
+  l26: local reloc, value 0x1176, size 0
+  l46: local reloc, value 0x12ac, size 0
+  l47: local reloc, value 0x12b8, size 0
+  l28: local reloc, value 0x11a2, size 0
+  l48: local reloc, value 0x12d6, size 0
+  l49: local reloc, value 0x12de, size 0
+  _set_pixel: global reloc, value 0x10b4, size 0
+  _render_pixel: global reloc, value 0x11a8, size 0
+  _main: global reloc, value 0x1208, size 0
+  _perform_c2p: global reloc, value 0x1694, size 0
+  l10: local reloc, value 0x1584, size 0
+  l30: local reloc, value 0x15c8, size 0
+  l11: local reloc, value 0x159a, size 0
+  l32: local reloc, value 0x15d4, size 0
+  l13: local reloc, value 0x1594, size 0
+  l53: local reloc, value 0x16c6, size 0
+  l14: local reloc, value 0x1598, size 0
+  l34: local reloc, value 0x15e0, size 0
+  l15: local reloc, value 0x159a, size 0
+  l36: local reloc, value 0x15ec, size 0
+  l38: local reloc, value 0x15f8, size 0
+  l19: local reloc, value 0x1658, size 0
+  l40: local reloc, value 0x1604, size 0
+  l1: local reloc, value 0x1568, size 0
+  l21: local reloc, value 0x15b4, size 0
+  l2: local reloc, value 0x157e, size 0
+  l22: local reloc, value 0x1650, size 0
+  l42: local reloc, value 0x1610, size 0
+  l23: local reloc, value 0x1658, size 0
+  _init_c2p_lut: global reloc, value 0x15a0, size 0
+  l4: local reloc, value 0x1578, size 0
+  l44: local reloc, value 0x161c, size 0
+  l24: local reloc, value 0x164e, size 0
+  l5: local reloc, value 0x157c, size 0
+  l25: local reloc, value 0x15ba, size 0
+  l6: local reloc, value 0x157e, size 0
+  l26: local reloc, value 0x1646, size 0
+  l27: local reloc, value 0x164e, size 0
+  l28: local reloc, value 0x1644, size 0
+  l48: local reloc, value 0x168c, size 0
+  __movep_l: global reloc, value 0x1660, size 0
+  _Object_PUFFA0: global reloc, value 0x1f390, size 0
+  _Object_PUFFC0: global reloc, value 0x1f488, size 0
+  _Object_BLUDA0: global reloc, value 0x1f770, size 0
+  _Object_BLUDC0: global reloc, value 0x1f8d4, size 0
+  _Object_BEXPC0: global reloc, value 0x1fdac, size 0
+  _Object_MISLC0: global reloc, value 0x21394, size 0
+  _Object_SHOTA0: global reloc, value 0x2438c, size 0
+  _Object_MGUNA0: global reloc, value 0x246dc, size 0
+  _Object_LAUNA0: global reloc, value 0x24bb4, size 0
+  _Object_CLIPA0: global reloc, value 0x25150, size 0
+  _Object_AMMOA0: global reloc, value 0x25208, size 0
+  _Object_SHELA0: global reloc, value 0x254e8, size 0
+  _Object_SBOXA0: global reloc, value 0x25600, size 0
+  _Object_ROCKA0: global reloc, value 0x25898, size 0
+  _Object_BROKA0: global reloc, value 0x25a04, size 0
+  _Object_MEDIA0: global reloc, value 0x260cc, size 0
+  _Object_ARM1A0: global reloc, value 0x26414, size 0
+  _Object_BKEYA0: global reloc, value 0x266c4, size 0
+  _Object_YKEYA0: global reloc, value 0x26848, size 0
+  _Object_RKEYA0: global reloc, value 0x269cc, size 0
+  _Object_TRE2A0: global reloc, value 0x26b50, size 0
+  _Object_SPOSI0: global reloc, value 0x2b0b4, size 0
+  _Object_SPOSK0: global reloc, value 0x2bde0, size 0
+  _Object_CPOSI0: global reloc, value 0x2ffcc, size 0
+  _Object_CPOSK0: global reloc, value 0x30ddc, size 0
+  _Object_HEADI0: global reloc, value 0x385d0, size 0
+  _Object_HEADK0: global reloc, value 0x3af0c, size 0
+  _Object_BAL2C0: global reloc, value 0x3cb8c, size 0
+  _Object_BAL2E0: global reloc, value 0x3d7a8, size 0
+  _WEAPONFRAME_SHTGB0: global reloc, value 0x40c10, size 0
+  _WEAPONFRAME_SHTGD0: global reloc, value 0x40c48, size 0
+  _WEAPONFRAME_CHGGB0: global reloc, value 0x40c64, size 0
+  _WEAPONFRAME_CHGFB0: global reloc, value 0x40c9c, size 0
+  _WEAPONFRAME_MISFB0: global reloc, value 0x40cd4, size 0
+  _WEAPONFRAME_MISFD0: global reloc, value 0x40cf0, size 0
+  l10: local reloc, value 0x16ec, size 0
+  _TEXTURE_DATA: global reloc, value 0xd390, size 0
+  _SKYTEX_DATA: global reloc, value 0x1d390, size 0
+  _Object_SPOSA1: global reloc, value 0x2850c, size 0
+  _Object_SPOSC1: global reloc, value 0x295e8, size 0
+  _Object_SPOSE1: global reloc, value 0x29b3c, size 0
+  _Object_SPOSG1: global reloc, value 0x2a440, size 0
+  _Object_CPOSA1: global reloc, value 0x2c834, size 0
+  _Object_CPOSC1: global reloc, value 0x2dda4, size 0
+  _Object_CPOSE1: global reloc, value 0x2e474, size 0
+  _Object_CPOSG1: global reloc, value 0x2efec, size 0
+  _Object_HEADA1: global reloc, value 0x31914, size 0
+  _Object_HEADC1: global reloc, value 0x336e8, size 0
+  _Object_HEADE1: global reloc, value 0x355a8, size 0
+  _WEAPONFRAME_SHTFB1: global reloc, value 0x40bd8, size 0
+  l11: local reloc, value 0x1702, size 0
+  _MAP_NODES: global reloc, value 0x1708, size 0
+  _MAP_CONDITIONS: global reloc, value 0x42cc, size 0
+  _MAP_VIS: global reloc, value 0x4320, size 0
+  _MAP_LINES: global reloc, value 0x3e96c, size 0
+  _MAP_THINGS: global reloc, value 0x40ad4, size 0
+  _MAP_LOCATIONS: global reloc, value 0x40afc, size 0
+  l13: local reloc, value 0x16fc, size 0
+  l14: local reloc, value 0x1700, size 0
+  _Object_MISLA5: global reloc, value 0x242c8, size 0
+  l15: local reloc, value 0x1702, size 0
+  _Object_PUFFB0: global reloc, value 0x1f3e8, size 0
+  _Object_PUFFD0: global reloc, value 0x1f588, size 0
+  _Object_BLUDB0: global reloc, value 0x1f804, size 0
+  _Object_BAR1B0: global reloc, value 0x1f9fc, size 0
+  _Object_MISLB0: global reloc, value 0x20418, size 0
+  _Object_MISLD0: global reloc, value 0x228dc, size 0
+  _Object_SPOSH0: global reloc, value 0x2aa14, size 0
+  _Object_SPOSJ0: global reloc, value 0x2b768, size 0
+  _Object_SPOSL0: global reloc, value 0x2c3a0, size 0
+  _Object_CPOSH0: global reloc, value 0x2f784, size 0
+  _Object_CPOSJ0: global reloc, value 0x3066c, size 0
+  _Object_CPOSL0: global reloc, value 0x3147c, size 0
+  _Object_HEADH0: global reloc, value 0x37380, size 0
+  _Object_HEADJ0: global reloc, value 0x39aa0, size 0
+  _Object_HEADL0: global reloc, value 0x3bf94, size 0
+  _Object_BAL2B0: global reloc, value 0x3ca24, size 0
+  _Object_BAL2D0: global reloc, value 0x3cfb0, size 0
+  _WEAPONFRAME_PISGA0: global reloc, value 0x40b68, size 0
+  _WEAPONFRAME_PISFA0: global reloc, value 0x40b84, size 0
+  _WEAPONFRAME_PISGC0: global reloc, value 0x40ba0, size 0
+  _WEAPONFRAME_SHTGA0: global reloc, value 0x40bbc, size 0
+  _WEAPONFRAME_SHTGC0: global reloc, value 0x40c2c, size 0
+  _WEAPONFRAME_CHGFA0: global reloc, value 0x40c80, size 0
+  _WEAPONFRAME_MISGA0: global reloc, value 0x40cb8, size 0
+  _Object_SPOSD1: global reloc, value 0x28abc, size 0
+  _Object_SPOSB1: global reloc, value 0x29044, size 0
+  _Object_SPOSF1: global reloc, value 0x29fa4, size 0
+  _Object_CPOSD1: global reloc, value 0x2cfe0, size 0
+  _Object_CPOSB1: global reloc, value 0x2d6b0, size 0
+  _Object_CPOSF1: global reloc, value 0x2ea30, size 0
+  _Object_HEADB1: global reloc, value 0x3282c, size 0
+  _Object_HEADD1: global reloc, value 0x34648, size 0
+  _Object_HEADF1: global reloc, value 0x364a4, size 0
+  _WEAPONFRAME_SHTFA1: global reloc, value 0x40bf4, size 0
+  l1: local reloc, value 0x16d0, size 0
+  l2: local reloc, value 0x16e6, size 0
+  _MAP_SUBSECTORS: global reloc, value 0x3fac, size 0
+  _MAP_MACHINES: global reloc, value 0x40b34, size 0
+  _MAP_COLLISION_BSP_ROOT: global reloc, value 0xd388, size 0
+  _MAP_HITSCAN_BSP_ROOT: global reloc, value 0xd38c, size 0
+  l4: local reloc, value 0x16e0, size 0
+  l5: local reloc, value 0x16e4, size 0
+  l6: local reloc, value 0x16e6, size 0
+  _MAP_VTX: global reloc, value 0x3e3e0, size 0
+  _WEAPON_PISGA0: global reloc, value 0x40d0c, size 0
+  _WEAPON_PISFA0: global reloc, value 0x4120c, size 0
+  _WEAPON_PISGC0: global reloc, value 0x4184c, size 0
+  _WEAPON_SHTGA0: global reloc, value 0x41dec, size 0
+  _WEAPON_SHTGC0: global reloc, value 0x43f04, size 0
+  _WEAPON_CHGFA0: global reloc, value 0x46bd4, size 0
+  _WEAPON_MISGA0: global reloc, value 0x47d10, size 0
+  _GFX_STTNUM0: global reloc, value 0x4acb8, size 0
+  _GFX_STYSNUM0: global reloc, value 0x4b810, size 0
+  _GFX_STGNUM0: global reloc, value 0x4bc20, size 0
+  _GFX_STKEYS0: global reloc, value 0x4c030, size 0
+  _WEAPON_SHTFA1: global reloc, value 0x42a6c, size 0
+  _GFX_STTNUM1: global reloc, value 0x4adc0, size 0
+  _GFX_STYSNUM1: global reloc, value 0x4b878, size 0
+  _GFX_STGNUM1: global reloc, value 0x4bc88, size 0
+  _GFX_STKEYS1: global reloc, value 0x4c088, size 0
+  _GFX_STTNUM2: global reloc, value 0x4aec8, size 0
+  _GFX_STYSNUM2: global reloc, value 0x4b8e0, size 0
+  _GFX_STGNUM2: global reloc, value 0x4bcf0, size 0
+  _GFX_STKEYS2: global reloc, value 0x4c0e0, size 0
+  _GFX_STTNUM3: global reloc, value 0x4afd0, size 0
+  _GFX_STYSNUM3: global reloc, value 0x4b948, size 0
+  _GFX_STGNUM3: global reloc, value 0x4bd58, size 0
+  _GFX_STKEYS3: global reloc, value 0x4c138, size 0
+  _GFX_STTNUM4: global reloc, value 0x4b0d8, size 0
+  _GFX_STYSNUM4: global reloc, value 0x4b9b0, size 0
+  _GFX_STGNUM4: global reloc, value 0x4bdc0, size 0
+  _GFX_STKEYS4: global reloc, value 0x4c1b0, size 0
+  _GFX_STTNUM5: global reloc, value 0x4b1e0, size 0
+  _GFX_STYSNUM5: global reloc, value 0x4ba18, size 0
+  _GFX_STGNUM5: global reloc, value 0x4be28, size 0
+  _GFX_STKEYS5: global reloc, value 0x4c228, size 0
+  _GFX_STTNUM6: global reloc, value 0x4b2e8, size 0
+  _GFX_STYSNUM6: global reloc, value 0x4ba80, size 0
+  _GFX_STGNUM6: global reloc, value 0x4be90, size 0
+  _GFX_STTNUM7: global reloc, value 0x4b3f0, size 0
+  _GFX_STYSNUM7: global reloc, value 0x4bae8, size 0
+  _GFX_STGNUM7: global reloc, value 0x4bef8, size 0
+  _GFX_STTNUM8: global reloc, value 0x4b4f8, size 0
+  _GFX_STYSNUM8: global reloc, value 0x4bb50, size 0
+  _GFX_STGNUM8: global reloc, value 0x4bf60, size 0
+  _GFX_STTNUM9: global reloc, value 0x4b600, size 0
+  _GFX_STYSNUM9: global reloc, value 0x4bbb8, size 0
+  _GFX_STGNUM9: global reloc, value 0x4bfc8, size 0
+  _WEAPON_SHTGB0: global reloc, value 0x4307c, size 0
+  _WEAPON_SHTGD0: global reloc, value 0x451e4, size 0
+  _WEAPON_CHGGB0: global reloc, value 0x46544, size 0
+  _WEAPON_CHGFB0: global reloc, value 0x475ac, size 0
+  _WEAPON_MISFB0: global reloc, value 0x48500, size 0
+  _WEAPON_MISFD0: global reloc, value 0x48e60, size 0
+  _GFX_STBAR0: global reloc, value 0x498b0, size 0
+  _WEAPON_SHTFB1: global reloc, value 0x423c8, size 0
+  _GFX_STTPRCNT: global reloc, value 0x4b708, size 0
+
+Symbols of .data:
+  hello: local reloc, value 0x4c2a0, size 0
+  _Actor_ARM1: global reloc, value 0x4c2bc, size 0
+  _Actor_SPOS: global reloc, value 0x4c2bc, size 0
+  _Actor_SHOT: global reloc, value 0x4c2bc, size 0
+  _Actor_RKEY: global reloc, value 0x4c2bc, size 0
+  _PAL: global reloc, value 0x4c2bc, size 0
+
+Symbols of .bss:
+  __screen: global reloc, value 0x50160, size 0
+  _e_skymap: global reloc, value 0x6f760, size 0
+  _screen: global reloc, value 0x4c2dc, size 0
+  _render_screen: global reloc, value 0x4c2e0, size 0
+  _c2p_lut2: global reloc, value 0xafd60, size 0
+  _render_screen2: global reloc, value 0xafd64, size 0
+  _c2p_lut: global reloc, value 0x6fd60, size 0
+
+Linker symbols:

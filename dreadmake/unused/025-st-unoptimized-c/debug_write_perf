@@ -1,0 +1,27 @@
+
+void debug_write_perf(word *screenpos, int value)
+{
+	word bitmap[6];
+
+	const byte *D3 = NUMFONT + value%10*6;		value/=10;
+	const byte *D2 = NUMFONT + value%10*6;		value/=10;
+	const byte *D1 = NUMFONT + value*6;
+
+	// ----------------
+	// ####_._####_####
+	bitmap[0] = (((word)*D1++)<<12) | (((word)*D2++)<<5) | (((word)*D3++));
+	bitmap[1] = (((word)*D1++)<<12) | (((word)*D2++)<<5) | (((word)*D3++));
+	bitmap[2] = (((word)*D1++)<<12) | (((word)*D2++)<<5) | (((word)*D3++));
+	bitmap[3] = (((word)*D1++)<<12) | (((word)*D2++)<<5) | (((word)*D3++));
+	bitmap[4] = (((word)*D1++)<<12) | (((word)*D2++)<<5) | (((word)*D3++));
+	bitmap[5] = (((word)*D1++)<<12) | (((word)*D2++)<<5) | (((word)*D3++)) | 0x0400;
+
+	for( int y=0; y<6; y++ )
+	{
+		word *dst = screenpos + 80*y;
+		dst[0] = 0;
+		dst[1] = bitmap[y];
+		dst[2] = bitmap[y];
+		dst[3] = 0;
+	}
+}

@@ -1,0 +1,30 @@
+;	move.w		gv_skill(a5), d0
+;	cmp.w		#0, d0
+;	bgt			.noteasy
+;	lsr.w		#1, d7						; easy -> half damage
+;.noteasy:
+;	move.w		d7, d6
+;	lsl.w		#2, d6
+;	cmp.w		#40, d6
+;	bge			.min_glow
+;	move.w		#40, d6
+;.min_glow:
+;	add.w		d6, gv_player_red_glow(a5)
+;
+;	move.w		d7, d6
+;	add.w		#1, d7						; d7 = 1/2 damage (rounded up)
+;	asr.w		#1, d7						;
+;	asr.w		#1, d6						; d6 = 1/2 damage (rounded down)
+;
+;	sub.w		d7, gv_player_armor(a5)
+;	bpl			.armor_holds
+;	sub.w		gv_player_armor(a5), d6		; d6 -= player_armor;			<player_armor> became nategive, add that value
+;	move.w		#0, gv_player_armor(a5)
+;.armor_holds:
+;	sub.w		d6, gv_player_health(a5)
+;	beq			.dead
+;	bmi			.dead
+;	rts										; not dead
+;
+;.dead:
+;	move.w		#0, gv_player_health(a5)

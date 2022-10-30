@@ -1,0 +1,122 @@
+
+# ---------------- Build parameters ----------------
+
+
+
+
+
+# ---------------- Build directories ----------------
+
+SRCDIR = ./src
+OBJDIR = ./objst
+LSTDIR = ./lst
+IMGDIR = ./img
+
+OBJECTS = $(patsubst %,$(OBJDIR)/%,$(_OBJECTS))
+HEADERS = $(patsubst %,$(SRCDIR)/%,$(_HEADERS))
+
+FINALEXE=./out/auto/main.prg
+
+
+
+# ---------------- Build sources ----------------
+
+
+
+# ---------------- Build objects ----------------
+
+_OBJECTS+= st_asm.o
+_OBJECTS+= st_main.o
+_OBJECTS+= st_framework.o
+#_OBJECTS+= dread_estructs.o
+_OBJECTS+= dread_mapload.o
+#_OBJECTS+= dread_asm.o
+
+
+LIBS = lib/vc.lib
+
+
+
+# ---------------- Build tools ----------------
+
+K68		= c:/LocalProjects/_amiga/k68/Release/k68.exe
+VASM	= vasmm68k_mot_win32.exe
+VC		= vc
+LINK	= vlink
+
+HATARI		= c:/Progs/Hatari/hatari.exe 
+HATARI_OPT	+= --tos c:/Progs/Hatari/tos.img
+HATARI_OPT	+= --confirm-quit 0
+HATARI_OPT	+= --fast-boot 1
+HATARI_OPT	+= --harddrive c:/LocalProjects/_amiga/dreadmake/out
+
+
+# ---------------- Build options ----------------
+
+
+DEFS	+= -DATARI_ST
+
+CFLAGS	+= $(DEFS)
+#CFLAGS	+= -O4 -notmpfile
+# #CFLAGS	+= -O=23999 -maxoptpasses=32
+# #CFLAGS	+= -O3 -maxoptpasses=32 -notmpfile
+CFLAGS	+= -nostdlib
+CFLAGS	+= -I. -Isrc
+
+ASMFLAGS	+= -m68000 -spaces -Fhunk $(BUILD_PARM) -x
+ASMFLAGS	+= -nowarn=62									# warning 62: imported symbol <...> was not referenced
+
+
+
+# Disable nasty warnings:
+#	 81	- casting number to address				//	(word*)0xdff001
+#	170	- dead code elliminated
+#	 65	- unused variable
+#	152 - loop eliminated						//	do{...}while(0);
+#	172	- optimizer passes						//	Dread_Build_Fillers()
+#	 79	- offset equals size of object			//	e_visthings_max = e_visthings + ENGINE_MAX_VISTHINGS;
+
+CFLAGS += -dontwarn=81 -dontwarn=170 -dontwarn=65 -dontwarn=152 -dontwarn=172 -dontwarn=79
+
+
+
+
+# ---------------- Build commands ----------------
+
+
+## Build
+ALLDEPS += $(FINALEXE)
+all: $(ALLDEPS)
+
+## Compile
+$(OBJDIR)/%.o : $(SRCDIR)/%.c $(HEADERS)
+	$(VC) $(CFLAGS) -c $< -o $@
+
+$(OBJDIR)/%.o : $(SRCDIR)/%.s $(HEADERS)
+	$(VASM) $(ASMFLAGS) -o $@ $<
+
+## Link
+$(FINALEXE): $(OBJECTS)
+	$(LINK) $(LINKFLAGS) -b ataritos -o $(FINALEXE) $(OBJECTS) $(LIBS)
+
+
+
+
+# ---------------- Build targets ----------------
+
+
+all: $(FINALEXE)
+
+rebuild: clean all
+
+clean:
+	-rm -rf ./$(OBJDIR)/*.o
+	-rm -rf $(FINALEXE)
+	-rm -rf ./$(LSTDIR)/*.lst
+
+
+run_st: $(FINALEXE)
+	$(HATARI) $(HATARI_OPT)
+
+
+.PHONY: all rebuild clean run_st

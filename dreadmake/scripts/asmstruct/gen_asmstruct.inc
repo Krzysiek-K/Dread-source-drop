@@ -1,0 +1,85 @@
+
+; struct node
+node_A                  equ   0
+node_B                  equ   2
+node_C                  equ   4
+node_left               equ   8
+node_right              equ  10
+node_sizeof             equ  12
+
+; struct actor
+actor_num               equ   0
+actor_cb_create         equ   2
+actor_cb_damage         equ   6
+actor_sizeof            equ  10
+
+; struct vtx
+vtx_xp                  equ   0
+vtx_yp                  equ   2
+vtx_tr_x                equ   4
+vtx_tr_y                equ   6
+vtx_sizeof              equ   8
+
+; struct line
+line_v1                 equ   0
+line_v2                 equ   4
+line_next               equ   8
+line_other_sector       equ  12
+line_tex_upper          equ  16
+line_tex_lower          equ  20
+line_xcoord1            equ  24
+line_xcoord2            equ  26
+line_y1                 equ  28
+line_y2                 equ  30
+line_y3                 equ  32
+line_ceil_col           equ  34
+line_floor_col          equ  35
+line_modes              equ  36
+line_sizeof             equ  38
+
+; struct subsector
+subsector_vis           equ   0
+subsector_thingvis      equ   4
+subsector_first_thing   equ   8
+subsector_visframe      equ  12
+subsector_sizeof        equ  14
+
+; struct thing
+thing_ss_next           equ   0
+thing_ss_prev           equ   4
+thing_subsector         equ   8
+thing_visible           equ  12
+thing_blocker_size      equ  13
+thing__pad              equ  14
+thing_block_x1          equ  16
+thing_block_y1          equ  18
+thing_block_x2          equ  20
+thing_block_y2          equ  22
+thing_actor             equ  24
+thing_sprite            equ  28
+thing_xp                equ  32
+thing_yp                equ  34
+thing_tr_x              equ  36
+thing_tr_y              equ  38
+thing_script_fn         equ  40
+thing_timer_delay       equ  44
+thing_timer_attack      equ  46
+thing_timer_walk        equ  48
+thing_sizeof            equ  50
+
+; struct statbar
+statbar_ammo            equ   0
+statbar_ammo_100        equ   2
+statbar_ammo_10         equ   4
+statbar_ammo_1          equ   6
+statbar_health          equ   8
+statbar_health_100      equ  10
+statbar_health_10       equ  12
+statbar_health_1        equ  14
+statbar_health_prc      equ  16
+statbar_armor           equ  18
+statbar_armor_100       equ  20
+statbar_armor_10        equ  22
+statbar_armor_1         equ  24
+statbar_armor_prc       equ  26
+statbar_sizeof          equ  28

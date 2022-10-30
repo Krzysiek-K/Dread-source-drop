@@ -1,0 +1,338 @@
+
+
+
+* Disk directory:
+
+	<u16:next_id>				2			offset of next entry
+	<u16:descriptor_size>		2			size of data block descriptor	(control block in RAM with relocations and stuff)
+	<u32:length>				4			length/flags, including decompression leeway		(if leeway is required, leeway is added on the START of the data)
+											zero for map entries
+												flags:	$8000000	- data must be placed in Chip RAM
+														$4000000	- compressed
+	<u16:leeway>				2			offset to start of packed payload		(unused for map entries)
+	<u16:sector_start>			2			first sector of the data, linear
+	<u16:num_deps>				2
+		<u16:dep_id>...			0~32		dependencies, block ID is the offset in the directory to the entry requested
+	<str0:name>...				4~16
+
+
+* Data block descriptor		(runtime, in memory)
+
+	<u16:id>
+	<p32:data_pointer>								unused (zero) on disk
+	<u16:num_deps> {
+		<u16:dep_id>
+		<p32:dep_pointer>							unused (zero) on disk
+		<u16:num_relocs>
+			<u16:offset>...		[x num_relocs]		offset in words, relative to data start
+	} [x num_deps]
+
+
+* File data block:
+
+	< raw descriptor bytes >	[x descriptor_size]
+	< raw data bytes >			[x length]
+
+
+
+
+
+
+
+
+
+
+* Cheat engine:
+
+	> Line functions
+
+		$0: Ceil + 64px + Floor							| first, low wall, door
+		$1: Ceil + 128px + Floor							| first, high wall
+
+							== Ceil
+			fn1					CONST:	Fill func
+			jsr (fn1,d0)		LUT.w:	Ceil length (100-x)	(x2)									(Z = -64 / -128)
+							== Upper
+			fn2					LUT.l:	Scaler func			(jump directly to proper Y offset)		(Z = -64 / -128)
+			trim (fn2,d0)		LUT.w:	Tex length			(x4)									(L = -64..0 / -128..0)
+			jsr (fn2)
+			untrim (fn2,d0)
+							== Floor
+			jsr (fn1,d0)		LUT.w:	Fill func start		(x2)	(fills to screen end)
+
+			ymax = 0										(block further visibility)
+
+
+
+		$2: Ceil + upper 64px + (sector) + Floor			| first, high wall with opening
+
+
+							== Ceil
+			fn1					CONST:	Fill func
+			trim (fn1,d0)		LUT.w:	Ceil length			(x2)									(Z = -128)
+			jsr (fn1)
+			untrim (fn1,d0)
+							== Upper
+			fn2					LUT.l:	Scaler func			(jump directly to proper Y offset)		(Z = -128)
+			trim (fn2,d0)		LUT.w:	Tex length			(x6)									(L = -128..-64)
+			jsr (fn2)
+			untrim (fn2,d0)
+	!!!		ymin				LUT.w:	Opening ceil start	(x4)
+							== Floor
+			jsr (fn1,sy2)		LUT.w:	Fill func start		(x4)	(fills to screen end)
+	!!!		ymax = sy2												(fill start is fill end for the next sector)
+
+
+
+
+		$3: [YMIN] Ceil + 64px + Floor [YMAX]				| low sector visible through opening
+
+	!!!		if(!YMAX) continue;
+							== Ceil
+			fn1					CONST:	Fill func
+			trim (fn1,d0)		LUT.w:	Full ceil length	(x4)									(Z = -64 )
+	!!!		jsr (fn1,ymin)
+			untrim (fn1,d0)
+							== Upper
+			fn2					LUT.l:	Scaler func			(jump directly to proper Y offset)		(Z = -64 )
+			trim (fn2,d0)		LUT.w:	Tex length			(x6)									(L = -64..0 )
+			jsr (fn2)
+			untrim (fn2,d0)
+							== Floor
+	!!!		trim (fn1,ymax)
+			jsr (fn1,d0)		LUT.w:	Fill func start		(x4)	(fills to ymax)
+	!!!		untrim (fn1,ymax)
+
+			ymax = 0										(block further visibility)
+
+	> per-size LUT values:
+
+			short	ceil_len_m64;				//	$0			$3
+			short	ceil_len_m128;				//		$1	$2
+			word	*upper_start_m64;			//	$0			$3
+			word	*upper_start_m128;			//		$1	$2
+			short	upper_len_m64_0;			//	$0			$3
+			short	upper_len_m128_0;			//		$1
+			short	upper_len_m128_m64;			//			$2
+			short	floor_start_0;				//	$0	$1	$2	$3
+			short	other_ceil_start_m64;		//			$2
+											// 22 bytes
+
+
+
+* Sprite data format:
+
+	word	width;
+	short	off_x;								// Y offset is included in span data
+	long	multi_ptr;							// multi-sprite pointer	(NULL if normal sprite)
+	short	span_offsets[<width>+2];			// relative to &span_offsets[1]
+												// span_offsets[1] is offset for X=0
+												// +2 extra offsets to empty guard spans (dc.w 0) on each side
+
+	* Span format:
+
+		short	data_offs;		// relative to sprite header address (0: end of column)					tex_base = (byte*)sprite_frame + (view_pos_z - line->y1)				TBD: switch engine column order!!!
+		short	y1;				// start
+		short	y2;				// end
+		// next span in the column follows immediately
+
+
+		; a3	= &span_offsets[1]
+		; a1	= _tex_base
+		; d0.w	= tx<<1
+		move.l	a3, a1						; a1 = pointer to first span info
+		add.w	(a3,d0.w), a1
+		move.l	_tex_base, a2				; a2 = pointer to texture data
+
+		move.w	(a1)+, d0
+		beq.b	.end_of_spans
+		lea.l	(a1,d0.w), a2
+		; y1 = (a1)+
+		; y2 = (a1)+
+
+
+
+* Line perspective calculation:
+
+	u1s = tx1*s1						(watch out for 128 multiplier)
+	u2s = tx2*s2
+	P(x) = us(x)/s(x)						// perspective
+	L(x) = tx(x)							// linear
+	E(x) = ( us(x)/s(x) - tx(x) )*s(x)		// error (scaled by size - closer more noticeable)
+
+	tx(y) = us(x)/s(x)
+	tx+dtx*y = (us+dus*x)/(s+ds*x)			// max abs(x-y) in x1-x2 range
+		(tx+dtx*y)*(s+ds*x) = (us+dus*x)
+		tx*s + dtx*s*y + tx*ds*x + dtx*y*ds*x = us + dus*x
+
+	tx+dtx*y = (us+dus*x)/(s+ds*x)					// compute abs(x-y) for given x - find y
+		err = ((us+dus*x)/(s+ds*x)-tx)/dtx - x
+
+	err = ( (u1s+u2s)/(s1+s2) - (tx1+tx2)/2 ) / dtx	 - (x1+x2)/2							// assume x=(x1+x2)/2
+	err = ( tx1*s1/(s1+s2) + tx2*s2/(s1+s2) - (tx1+tx2)/2 ) / (tx2-tx1)  - (x1+x2)/2
+
+		tx1*s1/(s1+s2) = 1/( (s1+s2)/(tx1*s1) )
+			(s1+s2)/(tx1*s1) = 1/tx1 + s2/(tx1*s1)
+
+		(u1s+u2s)/(s1+s2) - (tx1+tx2)/2
+		( (u1s+u2s)/(s1/2+s2/2) - tx1 - tx2 )/2
+
+
+
+
+	u1s = 0
+	u2s = tlen*s2
+
+
+	err = ( (u1s+u2s)/(s1+s2) - (tx1+tx2)/2 ) / dtx	 - (x1+x2)/2
+	
+		tlen*s2/(s1+s2) - tlen/2				// error for the line center (screen space), in texels
+		(u1s+u2s)/(s1+s2) - (tx1+tx2)/2			// alternatively
+
+
+	> Simplify tx1:
+	
+		(tx1-d)*s1/(s1+s2) + (tx2-d)*s2/(s1+s2) + d		?=		tx1*s1/(s1+s2) + tx2*s2/(s1+s2)
+
+		( (tx1-d)*s1 + (tx2-d)*s2 )/(s1+s2) + d
+		( (tx1-d)*s1 + (tx2-d)*s2 + d*(s1+s2) )/(s1+s2)
+		( tx1*s1 - d*s1 + tx2*s2 - d*s2 + d*s1 + d*s2) )/(s1+s2)
+		( tx1*s1 + tx2*s2 )/(s1+s2)
+
+		tx1*s1/(s1+s2) + tx2*s2/(s1+s2)
+		( tx1*s1 + tx2*s2 )/(s1+s2)
+
+
+
+
+* Performance:
+									[initial]	[asm]	[now]		[items            ]		[vis+]			[a1200]	[+IC]				(no music)
+	1	Map start					4.28		3.35				3.61	.58		3.47	3.42			2.70	2.54
+	2	Inner hub (0,0)				4.62		3.78				4.14	.01		4.01	3.84			2.95	2.65
+	3	Entry room					5.48		3.90				4.18	.10		4.01	4.01			2.83	2.45
+	4	West loading area			5.52		4.13				4.32			4.25	4.15			3.00	2.43
+	5	East storage				5.00		4.00				4.57		.47	4.30	4.28			3.00	2.77
+	6	Outdoor boxes				4.25		3.32				3.39			3.36	3.33			2.67	2.50
+	7	Old starting point			4.32		3.51				3.68			3.59	3.53			2.77	2.53
+	8	Lighted corridors			5.00		4.00	4.20?		4.26			4.21	4.18			3.00	2.53
+	9	West hangar					4.38		3.51				3.86			3.72	3.63			2.66	2.27
+
+
+
+* Things lists
+
+	- Thing:
+		SubSector	*subsector;
+		Thing		*ss_next;
+		Thing		*ss_prev;
+		byte		visible;				// 0: not in <visthings>	1: in <visthings>
+	
+	- SubSector:
+		Thing		*first_thing;
+
+	- Thing	*visthings[];
+	- word	 n_visthings;
+
+
+	* Algorithm:
+
+		# Set thing position
+			- Find new subsector in BSP
+				- Same: do nothing
+				- Different:
+					- Unlink from previous subsector (unless NULL)
+					- Link to new subsector
+
+		# Prepare visthings list
+			- For every visible subsector:
+				- If the sector was NOT visible last frame:
+					- For every thing in the sector:
+					- If the thing is NOT visible already (thing->visible==0)
+							- Add thing to end of the vis list
+							- thing->visible = 1
+				- Set subsector visibility mark to current frame value
+
+			- Rewrite visthings list:
+				- For every thing on the list:
+					- If thing->subsector is NOT visible (mark!=cur_frame):
+						- Set thing->visible = 0
+						- Skip the thing in list rewrite
+					- If the thing IS visible
+						- Add it to the new list being (re)written
+						- Compute its transforms and stuff
+
+			- Sort (partially?) vis list by depth
+				- 2 passes (up and down) of shake sort
+
+
+* Vis list commands:
+
+
+		0xxxxxxxx xxxxxxxm		$0000..$7FFF	- Line + mode
+		10xxxxxxx xxxxxxxx		$8000..			- Things subsector
+		110xxxxxx xxxxxxxx		$C000..			- Batch group			(only outside group)
+		111xxxxxx xxxxxxxx		$E000..			- Check condition		(only outside group)
+		111111111 11111111		$FFFF			- End of list
+
+
+	* Alternative:
+
+		0xxxxxxxx xxxxxxxm		$0000..$7FFF	- Visible line/mode
+		10xxxxxxx xxxxxxxx		$8000..$BFFF	- Visible thing subsector
+		110000000 00000000		$C000			- End of list	(batch or main)
+		110xxxxxx xxxxxxxx		$C001..$DFFF	- Check condition, switch to line mode
+		111xxxxxx xxxxxxxx		$E000..$FFFF	- Batch group, switch to line mode		(only outside group)
+
+
+
+
+* BSP Collisions:
+
+	HitCheckBSP (node n,vector v0,vector v1)
+	{
+		int hit = 0;
+		vector w0, w1;
+
+		if(n is an empty leaf)
+			return 0;
+		
+		if(n is a solid leaf)
+		{
+			Impact = v0;
+			return 1;
+		}
+		if( dot_product(n.normal,v1-v0) > 0 ) {
+			if rayunder(n shift up,v0,v1,&w0,&w1)
+				hit = HitCheckBSP(n.under,w0,w1)
+			if hit==1
+				v1 = Impact
+			if rayover(n shift down,v0,v1,&w0,&w1)
+				hit |= HitCheckBSP(n.over,w0,w1)
+			return hit
+		}
+		else
+		same thing, but in the other direction
+	}
+
+
+* Indexed textures:
+
+	* Persp:
+
+														;1 d0-2----- a01-3----       === Texcoord
+		move.l      d6, d0                              ;1 d--2----- a01-3----   4   word tx = u1s /divu/ s1;
+		divu.w      d4, d0                              ;1 d--2----- a01-3---- 140   
+		and.w       #$1F80, d0                          ;1 d--2----- a01-3----   8   tx &= $1F80;
+		move.l      _asm_tex_base(pc), a2               ;1 d--2----- a01-3----  16   
+		add.w       d0, a2                              ;1 d--2----- a01-3----   8   void *tex @ a2 = _asm_tex_base + tx;
+
+
+														;1 d0-2----- a01-3----       === Texcoord
+		move.l      d6, d0                              ;1 d--2----- a01-3----   4   word tx = u1s /divu/ s1;			// texture coords are scaled by 2 in LineFix2	(instead of 128)
+		divu.w      d4, d0                              ;1 d--2----- a01-3---- 140   
+		and.w       #$01FE, d0                          ;1 d--2----- a01-3----   8   tx &= $01FE;						// 256px wrapping
+		move.l      _asm_tex_base(pc), a2               ;1 d--2----- a01-3----  16   
+		move.l      _asm_tex_map(pc), a3				;1 d--2----- a01-3----  16   
+		add.w       (a3,d0.w), a2                       ;1 d--2----- a01-3----  18   void *tex @ a2 = _asm_tex_base + _texmap[tx];
+														;
+														;					cost = 26 cycles		(10 cycles if addr is cached)

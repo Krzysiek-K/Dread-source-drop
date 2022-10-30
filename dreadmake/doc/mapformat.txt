@@ -1,0 +1,219 @@
+
+
+
+================================================================ File/engine containers, actions & structures ================================================================
+
+
+* Block numbers
+
+	0	TEXTURES
+	1	VERTEXES
+	2	LINES
+	3	VIS
+	4	BSP
+	5	SUBSECTORS
+	6	LOCATIONS
+	7	THINGS
+	8	MACHINES
+
+
+
+* Block information:
+
+	- data										// points to block data
+	- data_end									// points to first byte after the data
+	- init_data									// points to initialization data			(or NULL)
+	- init_data_end								// points to end of initialization data		(or NULL)
+	
+	- initialization function					// hardcoded in engine for each block type
+												//	- parses init_data[] and  initializes as much data[], as possible from it
+												//	- resets remaining entries in data[]
+												//	- may perform special init
+												//
+
+
+* File actions:
+
+	- HEADER			<file_format_version>
+	- BLOCK_RESERVE		<block_id> <size>								create block as empty space (zero-fill it)
+	- BLOCK_LOAD		<block_id> <size>								load raw block (raw data follows)
+	- BLOCK_INIT		<block_id> <size> <init_size> <init_keep>		load and initialize block
+	- BLOCK_SETUP		<block_id> <init_size>							load only init data for the block
+	- LOAD_TEXTURE		<name> <offset> <mapping>...					load texture from external file
+
+
+* Precompiled executable actions:
+
+	- BLOCK_MEM_RAW		<block_id> <size>								register following memory as raw block to use
+	- BLOCK_MEM_INIT	<block_id> <size> <init_size>					allocate <size> for block data and use <init_size> of the following memory as init data
+	- BLOCK_MEM_SETUP	<block_id> <init_size>							use <init_size> of the following memory as init data
+
+
+* Block types:
+
+	- RAW block			- contains raw data, any number of words		(pointed by <data>)
+
+		- MEM:		point <data> to memory data
+		- FILE:		allocate <data> buffer and fill it with read data
+
+
+	- INIT block		- allocates specified number of engine <data> elements for the same number of supplied <init> structures
+
+		- MEM:		allocate <data> objects, point <init> to memory data
+		- FILE:		allocate <data> objects, allocate <init> objects, read <init> objects, initialize, trim <init> objects to dynamic objects count
+
+	
+	- SETUP block		- contains only structured <init> data
+
+		- MEM:		point <init> to memory data
+		- FILE:		allocate <init> buffer and fill it with read data
+
+
+
+================================================================ Loading from file / from memory ================================================================
+
+* Header:										HEADER
+	- parse header
+
+* Textures
+	- reserve space for textures				BLOCK_RESERVE/ BLOCK_LOAD		BLOCK_MEM_RAW
+	- load requested textures					LOAD_TEXTURE / -
+
+
+* Vertexes										BLOCK_INIT						BLOCK_MEM_INIT
+	- reserve space for vertexes
+	- load vertex data
+	- initialize vertexes
+	- trim vertex data to # of initial ones
+
+* Lines											BLOCK_INIT						BLOCK_MEM_INIT
+	- reserve space for lines
+	- load line data
+	- initialize lines
+	- trim line data to # of initial ones
+
+* Vis											BLOCK_LOAD						BLOCK_MEM_RAW
+	- raw data block
+
+* BSP											BLOCK_LOAD						BLOCK_MEM_RAW
+	- raw data block
+
+* Subsectors									BLOCK_INIT		(keep 0)		BLOCK_MEM_INIT
+	- reserve space for subsectors
+	- load subsector data
+	- initialize subsectors
+
+* Locations										BLOCK_LOAD						BLOCK_MEM_RAW
+	- raw data block
+
+* Things & Machines
+	- load thing data							BLOCK_SETUP						BLOCK_MEM_SETUP
+	- load machine data							BLOCK_SETUP						BLOCK_MEM_SETUP
+	- allocate space for machines				(the rest is done outside loading function)
+	- remaining space is allocated for things
+	- spawn things
+	- spawn machines
+
+* Done
+
+
+
+================================================================ Loading from precompiled structures ================================================================
+
+
+* Textures
+	- raw data block
+
+	* Vertexes
+		- reserve space for vertexes
+		- load vertex data
+		- initialize vertexes
+		- trim vertex data to # of initial ones
+
+	* Lines
+		- reserve space for lines
+		- load line data
+		- initialize lines
+		- trim line data to # of initial ones
+
+* Vis
+	- raw data block
+
+* BSP
+	- raw data block
+
+	* Subsectors
+		- reserve space for subsectors
+		- 
+
+* Locations
+	- raw data block
+
+	* Things & Machines
+		- load thing data
+		- load machine data
+		- allocate space for machines
+		- remaining space is allocated for things
+		- spawn things
+		- spawn machines
+
+	* Done
+
+
+================================================================ Data structures & initialization ================================================================
+
+
+
+* Textures
+
+	- load packed textures (4bpp)
+	- reindex & unpack for HD+
+
+
+* Vertexes	(e_vtx)					(initial # of verts are mutable - restore them on reload)
+
+	short	xp;						//	raw value
+	short	yp;						//	raw value
+	short	tr_x;					//	0
+	short	tr_y;					//	0
+
+
+* Lines		(e_n_lines)				(initial # of lines are mutable - restore them on reload)
+
+	EngineVertex	*v1;			//	reference to <e_vtx[#]>
+	EngineVertex	*v2;			//	reference to <e_vtx[#]>
+	const byte		*tex_upper;		//	reference to texture data
+	word			xcoord1;		//	raw value
+	word			xcoord2;		//	can be computed from line length + <xcoord1>
+	byte			ceil_col;		//	raw value
+	byte			floor_col;		//	raw value
+	byte			modes[2];		//	raw values
+
+
+* Vis		(e_map_vislist)		- raw data block
+
+* BSP		(e_map_bspnodes)	- raw data block
+
+
+* Subsectors	(e_subsectors)
+
+	const word		*vis;			//	pointer to somewhere in <e_map_vislist>
+	EngineThing		*first_thing;	//	0
+	word			visframe;		//	0
+									//	source data contains <type> information, that is currently read from there
+									//	compute <e_globals.levstat_secrets_max>
+
+* Things		
+									//	spawn actors from source data depending on flags
+
+
+* Machines		(e_machines)		// TBD: spawn machines from source data
+
+	word		type;				//	raw value
+	word		line_id;			//	raw value
+	short		direction;			//	1
+	word		position;			//	0x4000
+	EngineThing	*blocker;			//	spawn actor
+
+
+* Locations		MAP_LOCATIONS		- raw data block

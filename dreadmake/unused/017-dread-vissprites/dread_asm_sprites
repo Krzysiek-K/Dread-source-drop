@@ -1,0 +1,61 @@
+
+; ================================================================ _Dread_VisSprites ================================================================
+
+	; a0:	thingvis
+
+
+_Dread_VisSprites:
+	movem.l		d2-d7/a2-a6,-(a7)
+
+	move.w		_view_frame_number, d2				;	word last_frame = (word)(view_frame_number-1);						[d2: view_frame_number]		[d3: last_frame=view_frame_number-1]
+	move.w		d2, d3
+	subq.w		#1, d3
+
+	move.l		_e_visthings_end, a3			;	[a3: e_visthings_end]
+	move.l		_e_visthings_max, a4			;	[a4: e_visthings_max]
+
+	bra.b		.thingvis_start
+
+
+.thingvis_loop:									;	while( *thingvis!=0xFFFF )
+												;	{
+
+	mulu.w		#subsector_sizeof, d0			;		EngineSubSector *ss = e_subsectors + (*thingvis++);			[a1]
+	lea.l		_e_subsectors, a1
+	lea.l		(a1,d0), a1
+	
+	cmp.w		subsector_visframe(a1), d3		;		if( ss->visframe!=last_frame )
+	beq.b		.subsector_done					;		{
+
+	move.l		subsector_first_thing(a1), d0	;			EngineThing *th = ss->first_thing;						[d0/a2]
+
+	beq.b		.subsector_done					;			while( th )
+.thing_loop:									;			{
+	move.l		d0, a2
+
+	move.b		thing_visible(a2), d0			;				if( !th->visible && e_n_visthings<ENGINE_MAX_VISTHINGS )
+	bne.b		.thing_next						;				{
+	cmp.l		a4, a3							; [a3 ? a4]
+	bge.b		.end
+
+	move.l		a2, (a3)+						;					e_visthings[e_n_visthings++] = th;
+	move.b		#1, thing_visible(a2)			;					th->visible = 1;
+												;				}
+.thing_next:
+	move.l		thing_ss_next(a2), d0			;				th = th->ss_next;
+	bne.b		.thing_loop						;			}
+.subsector_done:								;		}
+
+	move.w		d2, subsector_visframe(a1)		;		ss->visframe = view_frame_number;
+
+
+.thingvis_start:								;	}
+	move.w		(a0)+, d0	
+	cmp.w		#$FFFF, d0
+	bne.b		.thingvis_loop
+
+.end:
+	move.l		a3, _e_visthings_end			;	save
+
+	movem.l		(a7)+,d2-d7/a2-a6
+	rts

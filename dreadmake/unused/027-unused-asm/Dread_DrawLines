@@ -1,0 +1,83 @@
+
+void Dread_DrawLines(__a0 const word *vis);
+
+
+	public _Dread_DrawLines
+
+
+
+; ================================================================ _Dread_DrawLines ================================================================
+
+_Dread_DrawLines:
+	movem.l		d2-d7/a2-a6,-(a7)
+	move.l		a0, .vis_orig_save
+
+	TRAP_ICACHE_DISABLE
+
+	move.l		.vis_orig_save, a0					;
+	move.w		(a0)+, d0							;		word linemode = MAP_VIS[vis++];
+	cmp.w		#$FFFF, d0							;		if( linemode==0xFFFF ) break;
+	beq.w		.end								; [nothing at all to draw - just exit]
+.loop:												;		while(1)
+													;		{
+	move.w		d0, d7								;			word mode = linemode & 1;
+	and.w		#1, d7								;
+	lsr.w		#1, d0								;			Dread_LineWall_Fix2_asm(e_lines + line, mode);
+	mulu.w		#line_sizeof, d0					;
+	lea.l		_e_lines, a5						;
+	lea.l		(a5,d0.l), a5						;
+	move.b		line_modes(a5,d7.w), d7				; [upper byte already cleared by AND]
+	move.l		a0, .vis_save						;
+	bsr.w		_Dread_LineWall_Fix2_asm			;
+	move.l		.vis_save, a0						;
+.loop_next:											;
+	move.w		(a0)+, d0							;			word line = MAP_VIS[vis++];
+	bpl.b		.loop								;			if( line < 0x8000 ) continue;
+	cmp.w		#$FFFF, d0							;			if( line==0xFFFF ) break;
+	beq.b		.draw_done							;		... if line >= 0x8000 --- handle visibility conditions
+
+.skip_check:
+	sub.w		#$8000, d0
+	lea.l		_e_condition_states, a1
+	move.b		(a1,d0.w), d1
+	bne.b		.loop_next							;	visibility enabled - continue
+	
+.skip_loop:
+	move.w		(a0)+, d0							;	skip lines until next visibility token
+	bpl.b		.skip_loop							;	line <  0x8000	- skip
+	cmp.w		#$FFFF, d0							;	line == 0xFFFF	- end	(fall through)
+	bne.b		.skip_check							;	line >= 0x8000	- vis condition
+
+
+.draw_done:
+
+	TRAP_ICACHE_ENABLE
+
+													;		// cleanup verts
+	lea.l		_e_lines, a5						; a5: e_lines
+	moveq.l		#0, d1								; d1: 0
+	move.l		.vis_orig_save, a0					;		vis = view_bspvis;
+	move.w		(a0)+, d0							;		word line = MAP_VIS[vis++];
+.clean_loop:										;		while(1)
+													;		{
+	lsr.w		#1, d0								;
+	mulu.w		#line_sizeof, d0					;
+	lea.l		(a5,d0.l), a1						;
+	move.l		line_v1(a1), a2						;			e_lines[line].v1->tr_x = 0;
+	move.l		d1, vtx_tr_x(a2)					;
+	move.l		line_v2(a1), a2						;			e_lines[line].v2->tr_x = 0;
+	move.l		d1, vtx_tr_x(a2)					;
+.clean_skip:										;		skip:
+	move.w		(a0)+, d0							;			word line = MAP_VIS[vis++];
+	bpl.b		.clean_loop							;			if( line < 0x8000 ) continue;
+	cmp.w		#$FFFF, d0							;			if( line==0xFFFF ) break;
+	bne.b		.clean_skip							;			if( line >= 0x8000 ) goto skip;
+													;		}
+
+.end:
+	movem.l		(a7)+,d2-d7/a2-a6
+	rts
+
+.vis_save:			dc.l	0
+.vis_orig_save:		dc.l	0
+
