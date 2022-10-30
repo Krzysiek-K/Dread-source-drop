@@ -1,0 +1,171 @@
+
+gfxgroup "DM Test" {
+	-path test
+	-masked
+	-object
+	-palette Main {
+		-colorspace rgb
+	}
+
+	gfx CUTTLEFISH	0 0 {
+		-lanczos 170 346 8 8 
+	}
+
+	gfx CUTTLEFISH_HD	0 0 {
+		-palette * {
+			-dither solid
+		}
+		-lanczos 170 346 4 8  pack
+	}
+
+	group Slug {
+		-masked
+		-object
+		-palette MainDither
+		-path objects/monster-slug
+		-downscale 1 2
+		-pixelpack xd_narrow
+	
+		#gfx M_SLUG_0	43 52
+		gfx M_SLUG_1	43 72
+		gfx M_SLUG_2	33 52
+		gfx M_SLUG_3	27 52
+		gfx M_SLUG_4	33 52
+		gfx M_SLUG_5	28 52
+	
+		anim Walk {
+			frame   80 M_SLUG_3
+			frame   80 M_SLUG_4
+			frame   80 M_SLUG_5
+			frame   80 M_SLUG_4
+		}
+	
+		anim Attack {
+			frame   48 M_SLUG_5
+			frame   48 M_SLUG_1
+			frame   72 M_SLUG_2
+			frame   48 M_SLUG_3
+			frame   300 M_SLUG_4
+		}
+	
+		anim Sequence {
+			frame   80 M_SLUG_3
+			frame   80 M_SLUG_4
+			frame   80 M_SLUG_5
+			frame   80 M_SLUG_4
+			frame   80 M_SLUG_3
+			frame   80 M_SLUG_4
+			frame   80 M_SLUG_5
+			frame   80 M_SLUG_4
+			frame   80 M_SLUG_3
+			frame   80 M_SLUG_4
+			frame   80 M_SLUG_5
+			frame   80 M_SLUG_4
+			frame   48 M_SLUG_5
+			frame   48 M_SLUG_1
+			frame   72 M_SLUG_2
+			frame   48 M_SLUG_3
+			frame   300 M_SLUG_4
+		}
+	}
+
+    gfxgroup MultiFrames {
+		multipart TEST_MSHOTX_M1 {
+			part TUBER0		 -9 -17
+			part TUBER0		  9 -17
+			part M_MSHOT_M1  0   0
+		}
+		multipart TEST_MSHOTX_M2 {
+			part TUBER0		 -9 -18
+			part TUBER0		  9 -18
+			part M_MSHOT_M2  0 0
+		}
+		multipart TEST_MSHOTX_M3 {
+			part TUBER0		 -9 -17
+			part TUBER0		  9 -17
+			part M_MSHOT_M3  0 0
+		}
+		multipart TEST_MSHOTX_M4 {
+			part TUBER0		 -9 -18
+			part TUBER0		  9 -18
+			part M_MSHOT_M4  0 0
+		}
+		multipart TEST_CHAINX_F1 {
+			part M_CHAIN_F1  0 0
+			part ARM1A0		 0 -16
+			part F_BBALL_1	16 -14
+		}
+		anim Walk {
+			frame   48 TEST_MSHOTX_M1
+			frame   48 TEST_MSHOTX_M2
+			frame   48 TEST_MSHOTX_M3
+			frame   48 TEST_MSHOTX_M4
+		}
+	}
+
+    gfxgroup PartsBenchmarking {
+		-masked
+		-object
+		-palette Main	
+		-downscale 1 2		// version Y/2
+		-pixelpack xd_narrow	
+		gfxgroup Frames {
+			gfx STG_FULL	17	54
+			gfx STG_CROP_1	11	54
+			gfx STG_CROP_2	17	42
+			gfx STG_CROP_3	7	16
+			gfx STG_CROP_4	17	42	
+			gfx STG_PARTS_1	7	54
+			gfx STG_PARTS_2	17	34
+			gfx STG_PARTS_3	15	44
+			gfx STG_PARTS_4	17	44	
+			gfx STG_XTRA_1	4	48 	
+			gfx STG_XTRA_2	18	34	
+		}
+		multipart STG_CROP_2SPRITES {
+			part STG_CROP_4	  0  0
+			part STG_CROP_1   0  0
+		}	
+		multipart STG_CROP_3SPRITES {
+			part STG_CROP_2	  0  0
+			part STG_CROP_3	  0  0
+			part STG_CROP_1   0  0
+		}
+		multipart STG_PARTS_2SPRITES {
+			part STG_PARTS_4   0  0
+			part STG_PARTS_1   0  0
+		}		
+		multipart STG_PARTS_3SPRITES {
+			part STG_PARTS_3   0  0
+			part STG_PARTS_2   0  0
+			part STG_PARTS_1   0  0
+		}
+		multipart STG_EXTRAS_2SPRITES {
+			part STG_FULL     0  0
+			part STG_XTRA_1   0  0
+		}
+		multipart STG_EXTRAS_3SPRITES {
+			part STG_FULL     0  0
+			part STG_XTRA_1   0  0
+			part STG_XTRA_2   0  0			
+		}
+	}
+
+	group AnimCodeTest {
+		anim DelayTest {
+			frame   300 M_MSHOT_M1
+			frame    64 M_MSHOT_F1
+		}
+		anim SoundTest {
+			frame   300 M_MSHOT_M1
+			frame   300 M_MSHOT_F1 $DSSHOTGN
+		}
+		anim ZPosTest {
+			frame   300 M_MSHOT_M3	0 0
+			frame   300 M_MSHOT_F1	0 -1
+		}
+	}
+}
+
+script "dread/code/test_parts.code"
+//script "dread/code/test_anim.code"

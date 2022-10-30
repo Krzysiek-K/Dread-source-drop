@@ -1,0 +1,18 @@
+	version BadST {
+			$000	$000		//	black
+			$222	$222		//	gray ramp
+			$333	$222		//	|
+			$555	$444		//	|
+			$777	$666		//	|
+			$BBB	$AAA		//	|
+			$FFF	$EEE		//	white
+			$343	$242		//	green ramp
+			$573	$462		//	|
+			$774	$664		//	|
+			$004	$004		//	blue
+			$320	$220		//	brown
+			$431	$420		//	brown
+			$CA5	$CA4		//	yellow
+			$C00	$C00		//	red
+			$600	$600		//	|
+	}

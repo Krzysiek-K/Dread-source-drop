@@ -1,0 +1,11 @@
+Zero Senki
+ — 
+25.04.2022
+"Word has it that an ancient library buried underground contains works on non-Euclidean geometry, magic and other esoteric topics. You get your trusty concussion pistol and make the trip to the industrial sector of Germany only to find that the alien PMCs have broken in first and have used some magic to seal some doors with their keys. Crash their party and show up on the other side." A short, fast-hitting map suited for the rush and team tactics the enemies of Dread employ. Easy, Medium, and Hard spawns are available for your skill level.
+https://cdn.discordapp.com/attachments/757316315911553084/968190051047579658/unknown.png
+https://cdn.discordapp.com/attachments/757316315911553084/968190051257311242/unknown.png
+https://cdn.discordapp.com/attachments/757316315911553084/968190051462807592/unknown.png
+https://cdn.discordapp.com/attachments/757316315911553084/968191782993133641/unknown.png
+https://cdn.discordapp.com/attachments/757316315911553084/968518321802706994/The_Library.wad
+HOTFIX: Forgot to mark the red key door as such
+UPDATE: It came to my attention thanks to jammerc64 that topdefs are rendered as expected in later versions of the Dread SDK, so I made another pass with unnecessary topdefs removed. I did notice a little performance bump in doing so with a UV-MAX test. 

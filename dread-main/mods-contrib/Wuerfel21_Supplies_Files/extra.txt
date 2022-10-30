@@ -1,0 +1,14 @@
+
+group Wuerfel21_Supplies {
+	-path textures-new
+	-texture
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_wrap
+
+        -lightlevel    255 1.0
+        -lightlevel    128 0.5
+	gfx SUPPLIES {
+		-pixelpack xd
+	}
+}

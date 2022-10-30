@@ -1,0 +1,91 @@
+
+
+//const MP_ItemRespawnTime = 11400;		// 38 seconds
+
+const MP_ItemRespawnTime = 3000;		// 10 seconds
+
+
+
+//	// -------------------------------- Shotgun (MP) --------------------------------
+//	
+//	actor MP_SHOT 0 {
+//		callback OnCreate	{
+//			pickup_on;
+//			frame #SHOTA0;
+//		}
+//		callback OnPulse	{
+//			if( pulse == 0 )
+//			{
+//				// local pickup
+//				if( statbar_weapon_1==0 )
+//				{
+//					if( skill <= 0 || skill >= 4 )	player_shells += 20;
+//					else							player_shells += 10;
+//					if( player_shells > player_shells_cap )
+//						player_shells = player_shells_cap;
+//					statbar_weapon_1 = GFX_STYSNUM3;
+//					weapon_send_pulse = 3;
+//					player_pal_flash = 9;
+//					sound $DSWEAP1;
+//					player_pulse 1;
+//					mp_pulse_remote_copy 1;
+//				}
+//			}
+//			else
+//			{
+//				// remote pickup
+//				sound $DSWEAP1 256;
+//			}
+//		}
+//	}
+
+
+
+// -------------------------------- Ammo: Shells --------------------------------
+
+
+//	actor MP_SBOX 0 {
+//		callback OnCreate	{
+//			pickup_on;
+//			frame #SBOXA0;
+//		}
+//		callback OnPulse	{ 
+//			if( pulse == 0 )
+//			{
+//				// local pickup
+//				if( player_shells < player_shells_cap )
+//				{
+//					pickup_off;
+//					if( skill <= 0 || skill >= 4 )	player_shells += 40;
+//					else							player_shells += 20;
+//					if( player_shells > player_shells_cap )
+//						player_shells = player_shells_cap;
+//					player_pal_flash = 9;
+//					sound $DSWPNUP;
+//					frame_none;
+//					mp_pulse_remote_copy 1;
+//					->WaitRespawn;
+//				}
+//			}
+//			else
+//			{
+//				// remote pickup
+//				pickup_off;
+//				sound $DSWPNUP;
+//				frame_none;
+//				->WaitRespawn;
+//			}
+//		}
+//	
+//		state WaitRespawn {
+//			delay 1500;
+//			vector_aim;
+//			spawn_missile ItemTeleportFx;
+//			sound $DSTELEPORT 256;
+//			delay 100;
+//			pickup_on;
+//			frame #SBOXA0;
+//			done;
+//		}
+//	
+//	}

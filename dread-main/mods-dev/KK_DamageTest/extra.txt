@@ -1,0 +1,2 @@
+
+script "dread/code/test_damage_dummies.code"

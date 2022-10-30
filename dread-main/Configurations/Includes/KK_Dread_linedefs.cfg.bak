@@ -1,0 +1,208 @@
+
+misc
+{
+	
+	0
+	{
+		title = "None";
+		prefix = "";
+	}
+}
+
+
+door
+{
+	title = "Door";
+	
+	1
+	{
+		title = "Default door";
+		prefix = "DR";
+	}
+
+	2
+	{
+		title = "Blue door";
+		prefix = "DK";
+	}
+
+	3
+	{
+		title = "Yellow door";
+		prefix = "DK";
+	}
+
+	4
+	{
+		title = "Red door";
+		prefix = "DK";
+	}
+
+	5
+	{
+		title = "Door stay open";
+		prefix = "D1";
+	}
+
+	6
+	{
+		title = "Blue door stay open";
+		prefix = "DK";
+	}
+
+	7
+	{
+		title = "Yellow door stay open";
+		prefix = "DK";
+	}
+
+	8
+	{
+		title = "Red door stay open";
+		prefix = "DK";
+	}
+
+	9
+	{
+		title = "Remote controlled door";
+		prefix = "DS";
+	}
+
+	10
+	{
+		title = "Remote controlled door (slow)";
+		prefix = "DS";
+	}
+}
+
+switch
+{
+	21
+	{
+		title = "Toggle switch";
+		prefix = "SW";
+	}
+
+	22
+	{
+		title = "One-time toggle switch";
+		prefix = "S1";
+	}
+
+	23
+	{
+		title = "Toggle switch (follow tag state)";
+		prefix = "SW";
+	}
+
+	24
+	{
+		title = "Switch tag ON, reusable, follow";
+		prefix = "SW";
+	}
+
+	25
+	{
+		title = "Switch tag OFF, reusable, follow";
+		prefix = "SW";
+	}
+
+	26
+	{
+		title = "Exit level switch";
+		prefix = "SW";
+	}
+
+	27
+	{
+		title = "Fake lift down switch (location <tag> to <tag+1>)";
+		prefix = "SW";
+	}
+
+	28
+	{
+		title = "Fake lift up switch (location <tag+1> to <tag>)";
+		prefix = "SW";
+	}
+
+
+	29
+	{
+		title = "Blue toggle switch (follow tag)";
+		prefix = "SK";
+	}
+
+	30
+	{
+		title = "Yellow toggle switch (follow tag)";
+		prefix = "SK";
+	}
+
+	31
+	{
+		title = "Red toggle switch (follow tag)";
+		prefix = "SK";
+	}
+}
+
+animation
+{
+	50
+	{
+		title = "Slow texture X scroll";
+		prefix = "AT";
+	}
+
+	51
+	{
+		title = "Random texture X offsets";
+		prefix = "AT";
+	}
+}
+
+texturing
+{
+	title = "Texturing";
+	
+	104
+	{
+		title = "Front facade height 64px";
+		prefix = "TX";
+	}
+
+	106
+	{
+		title = "Front facade height 96px";
+		prefix = "TX";
+	}
+
+	108
+	{
+		title = "Front facade height 128px";
+		prefix = "TX";
+	}
+
+	114
+	{
+		title = "Force brightness 128";
+		prefix = "TX";
+	}
+
+	118
+	{
+		title = "Force brightness 255";
+		prefix = "TX";
+	}
+
+	120
+	{
+		title = "Y-wrap texture once (top edge)";
+		prefix = "TX";
+	}
+
+	121
+	{
+		title = "Y-wrap texture once (bottom edge)";
+		prefix = "TX";
+	}
+}

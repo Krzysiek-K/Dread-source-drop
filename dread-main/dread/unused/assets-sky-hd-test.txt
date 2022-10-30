@@ -1,0 +1,18 @@
+
+//	gfx SKY {
+//		-downscale 1 2
+//		-palette Main {
+//			-dither half_closest
+//			-mixpenalty 0.4
+//			-pairorder solid_checker
+//		}
+//		-pixelpack hd
+//	}
+//	gfx HDSKY {
+//		-downscale 1 2
+//		-palette Main {
+//			-dither half_closest
+//			-pairorder solid_checker
+//		}
+//		-pixelpack hd
+//	}

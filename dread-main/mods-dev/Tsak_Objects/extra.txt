@@ -1,0 +1,223 @@
+
+
+group "DM Tsak Objects" {
+
+	-path objects/decor
+	-masked
+	-object
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_narrow
+
+	gfxgroup Barrel {
+		gfx BARW1_A		14	34
+		gfx BARW1_B		14	34
+	}
+	gfxgroup Altar {
+		gfx ALTR1_A1 		18	42
+		gfx ALTR1_A2 		18	42
+		gfx ALTR1_B1 		18	30
+		gfx ALTR1_B2 		18	30	
+
+		anim AltarAnim {
+			frame 60 ALTR1_B1
+			frame 60 ALTR1_B2
+		}		
+	}
+	gfxgroup LightsGround {
+		gfx LMP3G_A 	8	54
+		gfx LMP3G_B 	11	70		
+		gfx LMP3G_C 	11	86		
+		gfx LMP3G_D 	11	102
+		
+		gfx CNDL1_A1    11   38
+		gfx CNDL1_A2    11   38
+		gfx CNDL1_A3    11   38
+
+		gfx CNDL1_B1    11   70 // Altar ALTR1_B1 height
+		gfx CNDL1_B2    11   70
+		gfx CNDL1_B3    11   70		
+
+		anim CandlesAnim {
+			frame 30 CNDL1_A1
+			frame 30 CNDL1_A2		
+			frame 30 CNDL1_A1
+			frame 30 CNDL1_A3
+		}			
+	}
+	gfxgroup LightsHang {
+		gfx LMP1BH_A2    5    96
+		gfx LMP1BH_A3    5    64
+		gfx LMP1BH_B1    5    128
+		gfx LMP1BH_B2    5    96
+		gfx LMP1BH_C1    5    128
+		gfx LMP1BH_C2    5    96
+		gfx LMP1RH_A2    5    96
+		gfx LMP1RH_A3    5    64
+		gfx LMP1RH_B1    5    128
+		gfx LMP1RH_B2    5    96
+		gfx LMP1RH_C1    5    128
+		gfx LMP1RH_C2    5    96
+
+		gfx LMP2H_A2    12    96
+		gfx LMP2H_B1    12    128
+		gfx LMP2H_B2    12    96
+		gfx LMP2H_C1    12    128
+		gfx LMP2H_C2    12    96		
+
+		gfx LMP3H_A2    8    96
+		gfx LMP3H_B1    8    128
+		gfx LMP3H_B2    8    96
+		gfx LMP3H_C1    8    128
+		gfx LMP3H_C2    8    96
+		
+		gfx LMP3H2_A2    8    96
+		gfx LMP3H2_B1    8    128
+		gfx LMP3H2_B2    8    96
+		gfx LMP3H2_C1    8    128
+		gfx LMP3H2_C2    8    96		
+		
+	}
+	gfxgroup LightsWall {
+		gfx TORCH1_A1 		4	76
+		gfx TORCH1_A2 		4	74
+		gfx TORCH1_A3 		4	76
+		gfx TORCH1_A4 		3	76		
+		gfx TORCH1_H1 		3	54		
+		gfx TORCH1_B1 		4	66
+		gfx TORCH1_B2 		4	64
+		gfx TORCH1_B3 		4	66
+		gfx TORCH1_B4 		3	66		
+		gfx TORCH1_H2 		3	44
+		
+		gfx LMP3W_A1 		8	78
+		gfx LMP3W_A2 		8	78
+		gfx LMP3W_A3 		8	78
+		gfx LMP3W_A4 		8	78
+		gfx LMP3W_H1 		4	60
+		gfx LMP3W_B1 		8	64
+		gfx LMP3W_B2 		8	64
+		gfx LMP3W_B3 		8	64
+		gfx LMP3W_B4 		8	64
+		gfx LMP3W_H2 		4	46		
+
+		anim TorchAnim {
+			frame 30 TORCH1_A1
+			frame 30 TORCH1_A2
+			frame 30 TORCH1_A3
+			frame 30 TORCH1_A4			
+		}
+		anim LampAnim {
+			frame 30 LMP3W_A1
+			frame 30 LMP3W_A2
+			frame 30 LMP3W_A3
+			frame 30 LMP3W_A4			
+		}		
+	}
+	
+	gfxgroup Chains {
+		gfx CHAIN_A2       	3	96
+		gfx CHAIN_A3       	3	64
+		gfx CHAIN_B1       	3	128
+		gfx CHAIN_B2       	3	96
+		gfx CHAIN_B3       	3	64
+		gfx CHAIN_C1       	3	128
+		gfx CHAIN_C2       	3	96
+		gfx CHAIN_D1       	3	128
+		gfx CHAIN_D2       	3	96
+		gfx CHAIN_E1      	3	128
+		gfx CHAIN_E2      	3	96
+		gfx CHAIN_F1      	3	128
+		gfx CHAIN_A2D      	3	96
+		gfx CHAIN_A3D      	3	64
+		gfx CHAIN_B1D      	3	128
+		gfx CHAIN_B2D      	3	96
+		gfx CHAIN_B3D      	3	64
+		gfx CHAIN_C1D      	3	128
+		gfx CHAIN_C2D      	3	96
+		gfx CHAIN_D1D      	3	128
+		gfx CHAIN_D2D      	3	96
+		gfx CHAIN_E1D      	3	128
+		gfx CHAIN_E2D      	3	96
+		gfx CHAIN_F1D      	3	128
+		
+		gfx CHOOK_A2      	3	96
+		gfx CHOOK_A3      	3	64
+		gfx CHOOK_B1      	6	128
+		gfx CHOOK_B2      	6	96
+		gfx CHOOK_B3      	6	64
+		gfx CHOOK_C1      	3	128
+		gfx CHOOK_C2      	3	96
+		gfx CHOOK_D1      	6	128
+		gfx CHOOK_D2      	6	96
+		gfx CHOOK_E1      	3	128
+		gfx CHOOK_F1      	6	128
+	}
+	
+	gfxgroup Columns {
+		gfx COL1_A1 			3	32
+		gfx COL1_A2 			3	64
+		gfx COL1_A3 			3	96
+		gfx COL1_A4 			3	128
+		gfx COL1_B1 			3	32
+		gfx COL1_B2 			3	64
+		gfx COL1_B3 			3	96
+		gfx COL1_B4 			3	128
+		gfx COL2_A1 			5	32
+		gfx COL2_A2 			5	64
+		gfx COL2_A3 			5	96
+		gfx COL2_A4	 			5	128		
+		gfx COL3_A1 			8	32
+		gfx COL3_A2 			8	64
+		gfx COL3_A3 			8	96
+		gfx COL3_A4 			8	128
+		gfx COL3_B2 			8	64
+		gfx COL3_B3 			8	96
+		gfx COL3_B4	 			8	128
+		gfx COL4_A1 			5	32
+		gfx COL4_A2 			5	64
+		gfx COL4_A3 			5	96
+		gfx COL4_A4 			5	128
+		gfx COL4_B1 			5	32
+		gfx COL4_B2 			5	64
+		gfx COL4_B3 			5	96
+		gfx COL4_B4	 			5	128
+		gfx COL5_A1 			4	32
+		gfx COL5_A2 			4	64
+		gfx COL5_A3 			4	96
+		gfx COL5_A4 			4	128
+		gfx COL6_A1 			6	32
+		gfx COL6_A2 			6	64
+		gfx COL6_A3 			6	96
+		gfx COL6_A4 			6	128
+		gfx COL7_A1 			4	32
+		gfx COL7_A2 			4	64
+		gfx COL7_A3 			4	96
+		gfx COL7_A4	 			4	128		
+	}	
+	gfxgroup ColumnsHang {
+		gfx COL1_A1H 			3	96
+		gfx COL1_A2H 			3	128
+		gfx COL1_B1H 			3	96
+		gfx COL1_B2H 			3	128	
+		gfx COL2_A1H 			5	96
+		gfx COL2_A2H 			5	128
+		gfx COL3_A1H 			8	96
+		gfx COL3_A2H 			8	128
+		gfx COL3_B2H 			8	128
+		gfx COL4_A1H 			5	96
+		gfx COL4_A2H 			5	128
+		gfx COL4_B1H 			5	96
+		gfx COL4_B2H 			5	128
+		gfx COL5_A1H 			4	96
+		gfx COL5_A2H 			4	128
+		gfx COL6_A1H 			6	96
+		gfx COL6_A2H 			6	128
+		gfx COL7_A1H 			4	96
+		gfx COL7_A2H 			4	128		
+	}
+
+}
+
+
+script "dread/code/decoration2.code"

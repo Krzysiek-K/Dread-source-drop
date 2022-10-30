@@ -1,0 +1,4 @@
+Wuerfel_21
+ — 
+26.11.2021
+This is just the Chasm map, but now with the new chasm effect that it itself inspired. All comes full circle. Also is a bit easier on the new SDK, so there's that.

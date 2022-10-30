@@ -1,0 +1,12 @@
+bartekmil
+ — 
+15.09.2022
+=========================
+Bartekmil - Gamma Knife
+Medium length map, as of the current SDK version you should play it without optBSP because with it turned on triggered doors are broken
+There are very little changes between difficulties(mainly more health on easy mode) and the map overall is pretty hard for a blind playthrough, but with a careful approach and good ammo strategy you should be able to breeze through it 🙂 even though encounters are hard all difficulties are showered with rocket ammo so blast away to your heart's content
+I still want to update it both visually and maybe add more secrets so feedback is very welcome
+
+Story:
+You are a mercenary commando working for an industrial conglomerate - your employer's biggest competitor, an aerospace megacorporation responsible for colonizing Mars and experimenting with teleportation technology has attained an artifact (visible on bottom right photo) from a strange castle dimension. The artifact has allowed them to warp in easier on their targets and granted them great advantage over our troops. 
+We need you to infiltrate their facility, cross over to the other side, and turn off the artifact (operated by the gargoyle switch) to disable their military transport - only then will we open up your exit lift. Good luck soldier, the base is riddled with gunners and tamed alien organisms they supposedly found on Mars (we believe they come from the strange dimension) - be careful as their technology allows their troops to orchestrate teleport ambushes. There may also be some secret caches with ammo and supplies

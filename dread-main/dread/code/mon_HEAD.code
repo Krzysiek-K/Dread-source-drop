@@ -1,0 +1,273 @@
+
+
+actor HEAD 12 #M_HEAD_M1
+{
+	callback OnCreate {
+		levstat_monsters_max = levstat_monsters_max + 1;
+
+		if( value & THING_FLAG_SPECIAL )
+		{
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_BLUE_KEY )
+				special_monsters_blue_key = special_monsters_blue_key + 1;
+
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_YELLOW_KEY )
+				special_monsters_yellow_key = special_monsters_yellow_key + 1;
+
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_RED_KEY )
+				special_monsters_red_key = special_monsters_red_key + 1;
+
+			if( (value2 & 0xFF) == SECTOR_TYPE_SPECMONSTER_TELEPORT_IN )
+				->TeleportOnTag;
+		}
+
+		->Spawn;
+	}
+
+	callback OnDamage {
+		if( damage > 0 )
+		{
+			health -= damage;
+			// timer_attack = 172 + rand();
+			if( health <= 0 )
+			{
+				damage = 0;
+				hitbox_off;
+				->Die;
+			}
+			if( damage >= 16 )
+			{
+				damage = 0;
+				->Pain;
+			}
+
+			damage = 0;
+			if( rand() & 1 )
+				->ShortPain;
+		}
+	}
+
+	func IdleWatch {
+		if( timer_attack <= 0 )
+		{
+			vector_aim;
+			vector_distance;
+		
+			if( vector_hitscan() )
+			{
+				timer_attack = (172 + rand())>>1;	// 300 +/- 128
+				->Walk;
+			}
+			else
+				timer_attack = (172 + rand())>>1;	// 300 +/- 128
+		}
+	}
+
+	state Spawn {
+		collision_set 20;
+		hitbox_on;
+		health = 500;
+		timer_attack = 100;
+
+		if( value & THING_FLAG_DEAF )
+			->Idle;
+		else
+			->Walk;
+	}
+	
+	state Idle {
+		frame #M_HEAD_I1;				delay 36;
+		frame #M_HEAD_M1;	IdleWatch;	delay 80;
+		frame #M_HEAD_I1;				delay 36;
+		frame #M_HEAD_M2;	IdleWatch;	delay 80;
+	}
+	
+	func HuntWalk {
+		if( timer_attack<=0 )
+		{
+			vector_aim;
+			vector_distance;
+
+			if( vector_hitscan() )
+				->Shoot;
+			else
+				timer_attack = (172 + rand())>>1;	// 300 +/- 128
+		}
+
+		if( timer_walk <= 0 )
+		{
+			vector_aim;
+			vector_distance;
+
+			if( distance >= 128 )
+			{
+				if( rand() & 1 )
+				{
+					if( rand() & 1 )	vector_align 256,  256;
+					else				vector_align 256, -256;
+				}
+			}
+			else
+			{
+				if( rand() & 1 )	vector_align -256,  256;
+				else				vector_align -256, -256;
+			}
+			
+
+			move_walk 16, rand() + 300;
+		}
+	}
+
+	func Fire {
+		vector_aim;
+		spawn_missile HeadMissile;
+		sound $DSHEADATK 256;
+	}
+
+
+	func DyingFn {
+		move_stop;
+		collision_off;
+		hitbox_off;
+		
+		if( value & THING_FLAG_SPECIAL )
+		{
+			value = value - THING_FLAG_SPECIAL;
+
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_BLUE_KEY && special_monsters_blue_key > 0 )
+			{
+				special_monsters_blue_key = special_monsters_blue_key - 1;
+				if( special_monsters_blue_key == 0 )
+					spawn_missile BKEY_Drop;
+			}
+
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_YELLOW_KEY && special_monsters_yellow_key > 0 )
+			{
+				special_monsters_yellow_key = special_monsters_yellow_key - 1;
+				if( special_monsters_yellow_key == 0 )
+					spawn_missile YKEY_Drop;
+			}
+
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_RED_KEY && special_monsters_red_key > 0 )
+			{
+				special_monsters_red_key = special_monsters_red_key - 1;
+				if( special_monsters_red_key == 0 )
+					spawn_missile RKEY_Drop;
+			}
+
+			if( (value2 & 0xFF) == SECTOR_TYPE_SPECMONSTER_ACTIVATE_TAG )
+			{
+				switch_flags |= 1 << ((value2>>8)-1);
+			}
+
+			if( (value2 & 0xFF) == SECTOR_TYPE_SPECMONSTER_DEACTIVATE_TAG )
+			{
+				switch_flags &= 0xFFFF - (1 << ((value2>>8)-1));
+			}
+		}
+	}
+
+	state Walk {
+		frame #M_HEAD_I1;	HuntWalk;	delay 40;
+		frame #M_HEAD_M1;	HuntWalk;	delay 70;
+		frame #M_HEAD_I1;	HuntWalk;	delay 40;
+		frame #M_HEAD_M2;	HuntWalk;	delay 70;
+	}
+
+	state Shoot {
+		move_stop;	timer_walk = 0;
+		frame #M_HEAD_F1;			delay 30;
+		frame #M_HEAD_F2;			delay 30;
+		frame #M_HEAD_F3;	Fire;	delay 48;
+		frame #M_HEAD_F2;			delay 30;
+		frame #M_HEAD_F1;			delay 30;
+		timer_attack = 172 + rand();
+		->Walk;
+	}
+
+	state Pain {
+		move_stop;
+		sound $DSHEADPAIN1 256;
+		frame #M_HEAD_H1;	delay 24;
+		frame #M_HEAD_H2;	delay 96;
+		frame #M_HEAD_H1;	delay 30;
+		->Walk;
+	}
+	state ShortPain {
+		sound $DSHEADPAIN2 256;
+		frame #M_HEAD_H1;	delay 24;
+		frame #M_HEAD_H2;	delay 48;
+		frame #M_HEAD_H1;	delay 24;
+		->Walk;
+	}
+	state Die {
+		move_stop;
+		sound $DSHEADDTH 256;
+		frame #M_HEAD_D1;	delay 30;	DyingFn;
+		frame #M_HEAD_D2;	delay 28;
+		frame #M_HEAD_D3;	delay 26;
+		frame #M_HEAD_D4;	delay 24;
+		frame #M_HEAD_D5;	delay 26;
+		levstat_monsters = levstat_monsters + 1;
+		->Dead;
+	}
+	state Dead {
+		frame #M_HEAD_DD;	delay 5000;
+	}
+
+	state TeleportOnTag {
+		delay rand()+100;
+		->TeleportOnTagWait;
+	}
+	state TeleportOnTagWait {
+		if( tag_check(value2>>8) )
+		{
+			vector_aim;
+			spawn_missile TeleportFx;
+			sound $DSTELEPORT 256;
+			delay 100;
+			->Spawn;
+		}
+		delay 300;
+	}
+}
+
+
+actor HeadMissile 0
+{
+	callback OnCreate {
+		collision_off;
+		hitbox_off;
+		move_collide = 2;
+		frame #F_BBALL_1;
+		zp = -28<<6;
+		->Fly;
+	}
+
+	callback OnPulse {
+		move_collide = 0;
+		if( pulse==2 )
+		{
+			player_damaged 20 + (rand()&7)*3;
+		}
+		->Splash;
+	}
+
+	state Fly {
+		move_missile 60, 10000;
+		if( timer_walk <= 8 )
+		{
+			move_collide = 0;
+			->Splash;
+		}
+		temp1 = timer_walk;
+		delay temp1;
+	}
+
+	state Splash {
+		frame #F_BBEXP_1;		delay 36;
+		frame #F_BBEXP_2;		delay 36;
+		frame #F_BBEXP_3;		delay 36;
+		frame #F_BBEXP_4;		delay 36;
+		destroyed;
+	}
+}

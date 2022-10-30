@@ -1,0 +1,95 @@
+
+
+// ================================================================================ Main palette ================================================================================================
+
+
+palette Main_Amiga {
+	-dither solid	//half_closest
+	-pairorder sort
+	-errordiffuse 0 0 0 0	//0.328 0.141 0.234 0.047
+	-mixpenalty 0.1
+	-colorspace badlab
+	
+	$000
+	$222
+	$666
+	$AAA
+	$FFF
+	$003
+	$005
+	$009
+	$00F
+	$4B0
+	$470
+	$CC0
+	$421
+	$642
+	$953
+	$F00
+
+	-palexport_amiga PALETTE_MAIN 16
+	-colormap  1 0x11FF0000		//  15, 0x100		// 1 - red tint
+	-colormap  2 0x22FF0000		//	14, 0x200		// 2 |
+	-colormap  3 0x33FF0000		//	13, 0x300		// 3 |
+	-colormap  4 0x44FF0000		//	12, 0x400		// 4 |
+	-colormap  5 0x55FF0000		//	11, 0x500		// 5 |
+	-colormap  6 0x66FF0000		//	10, 0x600		// 6 |
+	-colormap  7 0x77FF0000		//	 9, 0x700		// 7 |
+	-colormap  8 0x88FF0000		//	 8, 0x800		// 8 |
+	-colormap  9 0x44FFFF88		//	12, 0x442		// 9 - yellow flash
+
+
+	version !ST {
+		-namealias Main
+		-mainpal
+
+		//palette MainWeapon {
+		//	-colorspace yuv
+		//
+		//	-diffuseweights 1.0 0.0 0.0
+		//	-mixpenalty 0.8
+		//	-dither solid
+		//	-pairorder solid_checker
+		//
+		//	palette MainWeapon_NoDither {
+		//		-diffuseweights 0.0 0.0 0.0
+		//		-dither solid
+		//		-pairorder keep
+		//	}
+		//}
+	}
+}
+
+
+
+
+
+// ================================================================================ HUD palettes ================================================================================================
+
+
+
+palette HUD {
+	version !ST {
+		-hudpal
+	}
+	-colorspace badlab
+
+	$000		//	black
+	$222		//	grey ramp
+	$333		//	|
+	$555		//	|
+	$777		//	|
+	$AAA		//	|
+	$431		//	brown ramp
+	$642		//	|
+	$963		//	|
+	$B74		//	|
+	$E96		//	skintones
+	$FB9		//	|
+	$400		//	red ramp
+	$800		//	|
+	$B00		//	|
+	$00C		//	blue
+
+	-palexport_amiga PALETTE_HUD 16
+}

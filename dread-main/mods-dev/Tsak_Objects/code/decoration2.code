@@ -1,0 +1,492 @@
+
+
+
+// ---------------------------- Decor Obstacles-----------------------------
+actor BARW1_A 100 #BARW1_A {
+	callback OnCreate	{ collision_set 16;		frame #BARW1_A;	}
+}
+actor BARW1_B 101 #BARW1_B {
+	callback OnCreate	{ collision_set 16;		frame #BARW1_B;	}
+}
+//---------
+actor ALTR1_A1 120 #ALTR1_A1 {
+	callback OnCreate	{ ->Anim;	
+	}
+	state Anim {
+	frame #ALTR1_A1;	delay 60;
+	frame #ALTR1_A2;	delay 60;		
+	}
+}
+actor ALTR1_B1 121 #ALTR1_B1 {
+	callback OnCreate	{ ->Anim;	
+	}
+	state Anim {
+	frame #ALTR1_B1;	delay 60;
+	frame #ALTR1_B2;	delay 60;		
+	}	
+}
+
+// ---------------------------- Decor Columns-----------------------------
+actor COL1_A1 200 #COL1_A1 {
+	callback OnCreate	{ collision_set 8;		frame #COL1_A1;	}
+}
+actor COL1_A2 201 #COL1_A2 {
+	callback OnCreate	{ collision_set 8;		frame #COL1_A2;	}
+}
+actor COL1_A3 202 #COL1_A3 {
+	callback OnCreate	{ collision_set 8;		frame #COL1_A3;	}
+}
+actor COL1_A4 203 #COL1_A4 {
+	callback OnCreate	{ collision_set 8;		frame #COL1_A4;	}
+}
+actor COL1_B1 204 #COL1_B1 {
+	callback OnCreate	{ collision_set 8;		frame #COL1_B1;	}
+}
+actor COL1_B2 205 #COL1_B2 {
+	callback OnCreate	{ collision_set 8;		frame #COL1_B2;	}
+}
+actor COL1_B3 206 #COL1_B3 {
+	callback OnCreate	{ collision_set 8;		frame #COL1_B3;	}
+}
+actor COL1_B4 207 #COL1_B4 {
+	callback OnCreate	{ collision_set 8;		frame #COL1_B4;	}
+}
+actor COL2_A1 208 #COL2_A1 {
+	callback OnCreate	{ collision_set 8;		frame #COL2_A1;	}
+}
+actor COL2_A2 209 #COL2_A2 {
+	callback OnCreate	{ collision_set 8;		frame #COL2_A2;	}
+}
+actor COL2_A3 210 #COL2_A3 {
+	callback OnCreate	{ collision_set 8;		frame #COL2_A3;	}
+}
+actor COL2_A4 211 #COL2_A4 {
+	callback OnCreate	{ collision_set 8;		frame #COL2_A4;	}
+}
+actor COL3_A1 212 #COL3_A1 {
+	callback OnCreate	{ collision_set 8;		frame #COL3_A1;	}
+}
+actor COL3_A2 213 #COL3_A2 {
+	callback OnCreate	{ collision_set 8;		frame #COL3_A2;	}
+}
+actor COL3_A3 214 #COL3_A3 {
+	callback OnCreate	{ collision_set 8;		frame #COL3_A3;	}
+}
+actor COL3_A4 215 #COL3_A4 {
+	callback OnCreate	{ collision_set 8;		frame #COL3_A4;	}
+}
+actor COL3_B2 216 #COL3_B2 {
+	callback OnCreate	{ collision_set 8;		frame #COL3_B2;	}
+}
+actor COL3_B3 217 #COL3_B3 {
+	callback OnCreate	{ collision_set 8;		frame #COL3_B3;	}
+}
+actor COL3_B4 218 #COL3_B4 {
+	callback OnCreate	{ collision_set 8;		frame #COL3_B4;	}
+}
+actor COL4_A1 219 #COL4_A1 {
+	callback OnCreate	{ collision_set 8;		frame #COL4_A1;	}
+}
+actor COL4_A2 220 #COL4_A2 {
+	callback OnCreate	{ collision_set 8;		frame #COL4_A2;	}
+}
+actor COL4_A3 221 #COL4_A3 {
+	callback OnCreate	{ collision_set 8;		frame #COL4_A3;	}
+}
+actor COL4_A4 222 #COL4_A4 {
+	callback OnCreate	{ collision_set 8;		frame #COL4_A4;	}
+}
+actor COL4_B1 223 #COL4_B1 {
+	callback OnCreate	{ collision_set 8;		frame #COL4_B1;	}
+}
+actor COL4_B2 224 #COL4_B2 {
+	callback OnCreate	{ collision_set 8;		frame #COL4_B2;	}
+}
+actor COL4_B3 225 #COL4_B3 {
+	callback OnCreate	{ collision_set 8;		frame #COL4_B3;	}
+}
+actor COL4_B4 226 #COL4_B4 {
+	callback OnCreate	{ collision_set 8;		frame #COL4_B4;	}
+}
+actor COL5_A1 227 #COL5_A1 {
+	callback OnCreate	{ collision_set 8;		frame #COL5_A1;	}
+}
+actor COL5_A2 228 #COL5_A2 {
+	callback OnCreate	{ collision_set 8;		frame #COL5_A2;	}
+}
+actor COL5_A3 229 #COL5_A3 {
+	callback OnCreate	{ collision_set 8;		frame #COL5_A3;	}
+}
+actor COL5_A4 230 #COL5_A4 {
+	callback OnCreate	{ collision_set 8;		frame #COL5_A4;	}
+}
+actor COL6_A1 231 #COL6_A1 {
+	callback OnCreate	{ collision_set 8;		frame #COL6_A1;	}
+}
+actor COL6_A2 232 #COL6_A2 {
+	callback OnCreate	{ collision_set 8;		frame #COL6_A2;	}
+}
+actor COL6_A3 233 #COL6_A3 {
+	callback OnCreate	{ collision_set 8;		frame #COL6_A3;	}
+}
+actor COL6_A4 234 #COL6_A4 {
+	callback OnCreate	{ collision_set 8;		frame #COL6_A4;	}
+}
+actor COL7_A1 235 #COL7_A1 {
+	callback OnCreate	{ collision_set 8;		frame #COL7_A1;	}
+}
+actor COL7_A2 236 #COL7_A2 {
+	callback OnCreate	{ collision_set 8;		frame #COL7_A2;	}
+}
+actor COL7_A3 237 #COL7_A3 {
+	callback OnCreate	{ collision_set 8;		frame #COL7_A3;	}
+}
+actor COL7_A4 238 #COL7_A4 {
+	callback OnCreate	{ collision_set 8;		frame #COL7_A4;	}
+}
+
+// ---------------------------- Floor Lights-----------------------------
+actor LMP3G_A 300 #LMP3G_A {
+	callback OnCreate	{ collision_set 8;		frame #LMP3G_A;	}
+}
+actor LMP3G_B 301 #LMP3G_B {
+	callback OnCreate	{ collision_set 8;		frame #LMP3G_B;	}
+}
+actor LMP3G_C 302 #LMP3G_C {
+	callback OnCreate	{ collision_set 8;		frame #LMP3G_C;	}
+}
+actor LMP3G_D 303 #LMP3G_D {
+	callback OnCreate	{ collision_set 8;		frame #LMP3G_D;	}
+}
+//---------
+actor CNDL1_A1 320 #CNDL1_A1 {
+	callback OnCreate	{ ->Anim;		
+	}
+	state Anim {
+	frame #CNDL1_A1;	delay 30;
+	frame #CNDL1_A2;	delay 30;
+	frame #CNDL1_A1;	delay 30;
+	frame #CNDL1_A3;	delay 30;		
+	}	
+}	
+actor CNDL1_B1 321 #CNDL1_B1 {
+	callback OnCreate	{ ->Anim;		
+	}
+	state Anim {	
+	frame #CNDL1_B1;	delay 30;
+	frame #CNDL1_B2;	delay 30;
+	frame #CNDL1_B1;	delay 30;
+	frame #CNDL1_B3;	delay 30;
+	}	
+}
+
+// ---------------------------- Hang Lights-----------------------------
+actor LMP1BH_A2 400 #LMP1BH_A2 {
+	callback OnCreate	{ frame #LMP1BH_A2;	}
+}
+actor LMP1BH_A3 401 #LMP1BH_A3 {
+	callback OnCreate	{ frame #LMP1BH_A3;	}
+}
+actor LMP1BH_B1 402 #LMP1BH_B1 {
+	callback OnCreate	{ frame #LMP1BH_B1;	}
+}
+actor LMP1BH_B2 403 #LMP1BH_B2 {
+	callback OnCreate	{ frame #LMP1BH_B2;	}
+}
+actor LMP1BH_C1 404 #LMP1BH_C1 {
+	callback OnCreate	{ frame #LMP1BH_C1;	}
+}
+actor LMP1BH_C2 405 #LMP1BH_C2 {
+	callback OnCreate	{ frame #LMP1BH_C2;	}
+}
+actor LMP1RH_A2 406 #LMP1RH_A2 {
+	callback OnCreate	{ frame #LMP1RH_A2;	}
+}
+actor LMP1RH_A3 407 #LMP1RH_A3 {
+	callback OnCreate	{ frame #LMP1RH_A3;	}
+}
+actor LMP1RH_B1 408 #LMP1RH_B1 {
+	callback OnCreate	{ frame #LMP1RH_B1;	}
+}
+actor LMP1RH_B2 409 #LMP1RH_B2 {
+	callback OnCreate	{ frame #LMP1RH_B2;	}
+}
+actor LMP1RH_C1 410 #LMP1RH_C1 {
+	callback OnCreate	{ frame #LMP1RH_C1;	}
+}
+actor LMP1RH_C2 411 #LMP1RH_C2 {
+	callback OnCreate	{ frame #LMP1RH_C2;	}
+}
+//---------
+actor LMP2H_A2 430 #LMP2H_A2 {
+	callback OnCreate	{ frame #LMP2H_A2;	}
+}
+actor LMP2H_B1 431 #LMP2H_B1 {
+	callback OnCreate	{ frame #LMP2H_B1;	}
+}
+actor LMP2H_B2 432 #LMP2H_B2 {
+	callback OnCreate	{ frame #LMP2H_B2;	}
+}
+actor LMP2H_C1 433 #LMP2H_C1 {
+	callback OnCreate	{ frame #LMP2H_C1;	}
+}
+actor LMP2H_C2 434 #LMP2H_C2 {
+	callback OnCreate	{ frame #LMP2H_C2;	}
+}
+//---------
+actor LMP3H_A2 450 #LMP3H_A2 {
+	callback OnCreate	{ frame #LMP3H_A2;	}
+}
+actor LMP3H_B1 451 #LMP3H_B1 {
+	callback OnCreate	{ frame #LMP3H_B1;	}
+}
+actor LMP3H_B2 452 #LMP3H_B2 {
+	callback OnCreate	{ frame #LMP3H_B2;	}
+}
+actor LMP3H_C1 453 #LMP3H_C1 {
+	callback OnCreate	{ frame #LMP3H_C1;	}
+}
+actor LMP3H_C2 454 #LMP3H_C2 {
+	callback OnCreate	{ frame #LMP3H_C2;	}
+}
+actor LMP3H2_A2 455 #LMP3H2_A2 {
+	callback OnCreate	{ frame #LMP3H2_A2;	}
+}
+actor LMP3H2_B1 456 #LMP3H2_B1 {
+	callback OnCreate	{ frame #LMP3H2_B1;	}
+}
+actor LMP3H2_B2 457 #LMP3H2_B2 {
+	callback OnCreate	{ frame #LMP3H2_B2;	}
+}
+actor LMP3H2_C1 458 #LMP3H2_C1 {
+	callback OnCreate	{ frame #LMP3H2_C1;	}
+}
+actor LMP3H2_C2 459 #LMP3H2_C2 {
+	callback OnCreate	{ frame #LMP3H2_C2;	}
+}
+	
+
+// ---------------------------- Wall Lights-----------------------------
+actor LMP3W_H1 500 #LMP3W_H1 {
+	callback OnCreate	{ frame #LMP3W_H1;	}
+}
+actor LMP3W_H2 501 #LMP3W_H2 {
+	callback OnCreate	{ frame #LMP3W_H2;	}
+}
+//---------
+actor LMP3W_A1 510 #LMP3W_A1 {
+	callback OnCreate	{ ->Anim;	
+	}
+	state Anim {
+	frame #LMP3W_A1;	delay 30;
+	frame #LMP3W_A2;	delay 30;
+	frame #LMP3W_A3;	delay 30;
+	frame #LMP3W_A4;	delay 30;	
+	}	
+}
+actor LMP3W_B1 511 #LMP3W_B1 {
+	callback OnCreate	{ ->Anim;
+	}
+	state Anim {
+	frame #LMP3W_B1;	delay 30;
+	frame #LMP3W_B2;	delay 30;
+	frame #LMP3W_B3;	delay 30;
+	frame #LMP3W_B4;	delay 30;	
+	}	
+}
+//---------
+actor TORCH1_H1 550 #TORCH1_H1 {
+	callback OnCreate	{ frame #TORCH1_H1;	}
+}
+actor TORCH1_H2 551 #TORCH1_H2 {
+	callback OnCreate	{ frame #TORCH1_H2;	}
+}
+//---------	
+actor TORCH1_A1 560 #TORCH1_A1 {
+	callback OnCreate	{ ->Anim;	
+	}
+	state Anim {
+	frame #TORCH1_A1;	delay 30;
+	frame #TORCH1_A2;	delay 30;
+	frame #TORCH1_A3;	delay 30;
+	frame #TORCH1_A4;	delay 30;	
+	}	
+}
+actor TORCH1_B1 561 #TORCH1_B1 {
+	callback OnCreate	{ ->Anim;	
+	}
+	state Anim {
+	frame #TORCH1_B1;	delay 30;
+	frame #TORCH1_B2;	delay 30;
+	frame #TORCH1_B3;	delay 30;
+	frame #TORCH1_B4;	delay 30;
+	}	
+}	
+
+// ----------------------- Hang Decoration(Chains)---------------------------
+actor CHAIN_A2 600 #CHAIN_A2 {
+	callback OnCreate	{ frame #CHAIN_A2;	}
+}
+actor CHAIN_A2D 601 #CHAIN_A2D {
+	callback OnCreate	{ frame #CHAIN_A2D;	}
+}
+actor CHAIN_A3 602 #CHAIN_A3 {
+	callback OnCreate	{ frame #CHAIN_A3;	}
+}
+actor CHAIN_A3D 603 #CHAIN_A3D {
+	callback OnCreate	{ frame #CHAIN_A3D;	}
+}
+actor CHAIN_B1 604 #CHAIN_B1 {
+	callback OnCreate	{ frame #CHAIN_B1;	}
+}
+actor CHAIN_B1D 605 #CHAIN_B1D {
+	callback OnCreate	{ frame #CHAIN_B1D;	}
+}
+actor CHAIN_B2 606 #CHAIN_B2 {
+	callback OnCreate	{ frame #CHAIN_B2;	}
+}
+actor CHAIN_B2D 607 #CHAIN_B2D {
+	callback OnCreate	{ frame #CHAIN_B2D;	}
+}
+actor CHAIN_B3 608 #CHAIN_B3 {
+	callback OnCreate	{ frame #CHAIN_B3;	}
+}
+actor CHAIN_B3D 609 #CHAIN_B3D {
+	callback OnCreate	{ frame #CHAIN_B3D;	}
+}
+actor CHAIN_C1 610 #CHAIN_C1 {
+	callback OnCreate	{ frame #CHAIN_C1;	}
+}
+actor CHAIN_C1D 611 #CHAIN_C1D {
+	callback OnCreate	{ frame #CHAIN_C1D;	}
+}
+actor CHAIN_C2 612 #CHAIN_C2 {
+	callback OnCreate	{ frame #CHAIN_C2;	}
+}
+actor CHAIN_C2D 613 #CHAIN_C2D {
+	callback OnCreate	{ frame #CHAIN_C2D;	}
+}
+actor CHAIN_D1 614 #CHAIN_D1 {
+	callback OnCreate	{ frame #CHAIN_D1;	}
+}
+actor CHAIN_D1D 615 #CHAIN_D1D {
+	callback OnCreate	{ frame #CHAIN_D1D;	}
+}
+actor CHAIN_D2 616 #CHAIN_D2 {
+	callback OnCreate	{ frame #CHAIN_D2;	}
+}
+actor CHAIN_D2D 617 #CHAIN_D2D {
+	callback OnCreate	{ frame #CHAIN_D2D;	}
+}
+actor CHAIN_E1 618 #CHAIN_E1 {
+	callback OnCreate	{ frame #CHAIN_E1;	}
+}
+actor CHAIN_E1D 619 #CHAIN_E1D {
+	callback OnCreate	{ frame #CHAIN_E1D;	}
+}
+actor CHAIN_E2 620 #CHAIN_E2 {
+	callback OnCreate	{ frame #CHAIN_E2;	}
+}
+actor CHAIN_E2D 621 #CHAIN_E2D {
+	callback OnCreate	{ frame #CHAIN_E2D;	}
+}
+actor CHAIN_F1 622 #CHAIN_F1 {
+	callback OnCreate	{ frame #CHAIN_F1;	}
+}
+actor CHAIN_F1D 623 #CHAIN_F1D {
+	callback OnCreate	{ frame #CHAIN_F1D;	}
+}
+
+// -------------------- Hang Decoration (ChainHooks)-----------------------------
+actor CHOOK_A2 650 #CHOOK_A2 {
+	callback OnCreate	{ frame #CHOOK_A2;	}
+}
+actor CHOOK_A3 651 #CHOOK_A3 {
+	callback OnCreate	{ frame #CHOOK_A3;	}
+}
+actor CHOOK_B1 652 #CHOOK_B1 {
+	callback OnCreate	{ frame #CHOOK_B1;	}
+}
+actor CHOOK_B2 653 #CHOOK_B2 {
+	callback OnCreate	{ frame #CHOOK_B2;	}
+}
+actor CHOOK_B3 654 #CHOOK_B3 {
+	callback OnCreate	{ frame #CHOOK_B3;	}
+}
+actor CHOOK_C1 655 #CHOOK_C1 {
+	callback OnCreate	{ frame #CHOOK_C1;	}
+}
+actor CHOOK_C2 656 #CHOOK_C2 {
+	callback OnCreate	{ frame #CHOOK_C2;	}
+}
+actor CHOOK_D1 657 #CHOOK_D1 {
+	callback OnCreate	{ frame #CHOOK_D1;	}
+}
+actor CHOOK_D2 658 #CHOOK_D2 {
+	callback OnCreate	{ frame #CHOOK_D2;	}
+}
+actor CHOOK_E1 659 #CHOOK_E1 {
+	callback OnCreate	{ frame #CHOOK_E1;	}
+}
+actor CHOOK_F1 660 #CHOOK_F1 {
+	callback OnCreate	{ frame #CHOOK_F1;	}
+}
+
+// -------------------- Hang Decoration (Collumns)-----------------------------
+actor COL1_A1H 680 #COL1_A1H {
+	callback OnCreate	{ frame #COL1_A1H;	}
+}
+actor COL1_A2H 681 #COL1_A2H {
+	callback OnCreate	{ frame #COL1_A2H;	}
+}
+actor COL1_B1H 682 #COL1_B1H {
+	callback OnCreate	{ frame #COL1_B1H;	}
+}
+actor COL1_B2H 683 #COL1_B2H {
+	callback OnCreate	{ frame #COL1_B2H;	}
+}
+actor COL2_A1H 684 #COL2_A1H {
+	callback OnCreate	{ frame #COL2_A1H;	}
+}
+actor COL2_A2H 685 #COL2_A2H {
+	callback OnCreate	{ frame #COL2_A2H;	}
+}
+actor COL3_A1H 686 #COL3_A1H {
+	callback OnCreate	{ frame #COL3_A1H;	}
+}
+actor COL3_A2H 687 #COL3_A2H {
+	callback OnCreate	{ frame #COL3_A2H;	}
+}
+actor COL3_B2H 688 #COL3_B2H {
+	callback OnCreate	{ frame #COL3_B2H;	}
+}
+actor COL4_A1H 689 #COL4_A1H {
+	callback OnCreate	{ frame #COL4_A1H;	}
+}
+actor COL4_A2H 690 #COL4_A2H {
+	callback OnCreate	{ frame #COL4_A2H;	}
+}
+actor COL4_B1H 691 #COL4_B1H {
+	callback OnCreate	{ frame #COL4_B1H;	}
+}
+actor COL4_B2H 692 #COL4_B2H {
+	callback OnCreate	{ frame #COL4_B2H;	}
+}
+actor COL5_A1H 693 #COL5_A1H {
+	callback OnCreate	{ frame #COL5_A1H;	}
+}
+actor COL5_A2H 694 #COL5_A2H {
+	callback OnCreate	{ frame #COL5_A2H;	}
+}
+actor COL6_A1H 695 #COL6_A1H {
+	callback OnCreate	{ frame #COL6_A1H;	}
+}
+actor COL6_A2H 696 #COL6_A2H {
+	callback OnCreate	{ frame #COL6_A2H;	}
+}
+actor COL7_A1H 697 #COL7_A1H {
+	callback OnCreate	{ frame #COL7_A1H;	}
+}
+actor COL7_A2H 698 #COL7_A2H {
+	callback OnCreate	{ frame #COL7_A2H;	}
+}

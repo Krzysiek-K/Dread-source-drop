@@ -1,0 +1,131 @@
+
+gfxgroup Textures {
+group JammerSciFi {
+
+	-path textures-new
+	-texture
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_wrap
+
+	-lightlevel	255 1.0
+	-lightlevel	128 1.0 _128
+
+group Doors {
+	gfx DOR0101
+	gfx DOR0102
+	gfx DOR0103
+	gfx DOR0104
+	gfx DOR0105
+	gfx DOR0106
+}
+
+group Light {
+	gfx LIT0101A
+	gfx LIT0101B
+	gfx LIT0102A
+	gfx LIT0102B
+	gfx LIT0103A
+	gfx LIT0103B
+	gfx LIT0104A
+	gfx LIT0104B
+	gfx LIT0105A
+	gfx LIT0105B
+	gfx LIT0106A
+	gfx LIT0106B
+}
+
+group Panels {
+	gfx LBL0101
+}
+
+group Steps {
+	gfx STP0101
+	gfx STP0102
+	gfx STP0103
+	gfx STP0104
+}
+
+group Walls {
+	gfx WAL0101
+	gfx WAL0102
+	gfx WAL0103
+	gfx WAL0104
+	gfx WAL0105
+	gfx WAL0106
+	gfx WAL0201
+	gfx WAL0202
+	gfx WAL0203
+	gfx WAL0204
+	gfx WAL0205
+	gfx WAL0206
+	gfx WAL0301
+	gfx WAL0302
+	gfx WAL0303
+	gfx WAL0304
+	gfx WAL0305
+	gfx WAL0306
+	gfx WAL0401
+	gfx WAL0402
+	gfx WAL0403
+	gfx WAL0404
+	gfx WAL0405
+	gfx WAL0406
+	gfx WAL0501
+	gfx WAL0502
+	gfx WAL0503
+	gfx WAL0504
+	gfx WAL0505
+	gfx WAL0506
+	gfx WAL0601
+	gfx WAL0602
+	gfx WAL0603
+	gfx WAL0604
+	gfx WAL0605
+	gfx WAL0606
+}
+
+gfxgroup Flats {
+	flat FLAT00 0 0@128
+	flat FLAT01 0:1 0@128
+	flat FLAT11 1 0@128
+	flat FLAT12 1:2 0:1@128
+	flat FLAT22 2 1@128
+	flat FLAT23 2:3 1:2@128
+	flat FLAT33 3 2@128
+	flat FLAT34 3:4 2:3@128
+	flat FLAT44 4 3@128
+	flat FLAT45 4:5 3:4@128
+	flat FLAT55 5 4@128
+	flat FLAT56 5:6 4:7@128
+	flat FLAT66 6 7@128
+	flat FLAT67 6:7 7:8@128
+	flat FLAT77 7 8@128
+	flat FLAT78 7:8 8:9@128
+	flat FLAT88 8 9@128
+	flat FLAT89 8:9 9:10@128
+	flat FLAT99 9 10@128
+	flat FLAT9A 9:10 10:2@128
+	flat FLATAA 10 2@128
+	flat FLATAB 10:11 2:1@128
+	flat FLATBB 11 1@128
+	flat FLATBC 11:12 1:2@128
+	flat FLATCC 12 2@128
+	flat FLATCD 12:13 2:12@128
+	flat FLATDD 13 12@128
+	flat FLATDE 13:14 12:8@128
+	flat FLATEE 14 8@128
+	flat FLATEF 14:15 8:6@128
+	flat FLATFF 15 6@128
+	flat FLAT3A 3:10 2:2@128
+	flat FLAT3C 3:12 2:2@128
+	flat FLAT2C 2:12 1:2@128
+	flat FLAT49 4:9 3:10@128
+	flat FLAT57 5:7 4:8@128
+	flat FLAT58 5:8 4:9@128
+	flat FLAT5B 5:11 4:1@128
+	flat FLAT6E 6:14 7:8@128
+	flat FLAT8D 8:13 9:12@128
+}
+}
+}

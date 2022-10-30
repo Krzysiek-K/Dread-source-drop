@@ -1,0 +1,465 @@
+
+
+
+// Frames:		<yp>	<yoffs>		<swing>		<height>
+//	PISGA0		20		52			+/-4		32			(32)
+//	PISFA0		18		43						41			(39)
+//	PISGC0		20		44						40			(36)
+
+//	SHTGA0		20		54			+/-4		30			(30)
+//	SHTFB1		24		43						41			(33)
+//	SHTFA1		22		47						37			(31)
+//	SHTGB0		20		19						65			(61)
+//	SHTGC0		20		11						73			(69)
+//	SHTGD0		20		19						65			(61)
+
+//	CHGGB0		20		60			+/-4		24			(24)
+//	CHGFA0		24		41						43			(35)
+//	CHGFB0		24		49						35			(27)
+
+//	MISGA0		20		55			+/-4		32			(29)
+//	MISFB0		22		49						38			(29)
+//	MISFD0		20		48						39			(32)
+
+
+//	pisga0.png PNG 50x64 50x64+0+0 8-bit sRGB 1445B 0.016u 0:00.009
+//	pisfa0.png PNG 50x78 50x81+0+0 8-bit sRGB 8596B 0.016u 0:00.011
+//	pisgc0.png PNG 50x72 50x80+0+0 8-bit sRGB 1580B 0.000u 0:00.009
+//	shtga0.png PNG 78x60 78x60+0+0 8-bit sRGB 1816B 0.016u 0:00.010
+//	shtfb1.png PNG 78x66 78x81+0+0 8-bit sRGB 2261B 0.016u 0:00.011
+//	shtfa1.png PNG 78x62 78x74+0+0 8-bit sRGB 1886B 0.016u 0:00.010
+//	shtgb0.png PNG 91x122 91x129+0+0 8-bit sRGB 3627B 0.000u 0:00.010
+//	shtgc0.png PNG 98x138 98x146+0+0 8-bit sRGB 4128B 0.000u 0:00.010
+//	shtgd0.png PNG 114x122 114x129+0+0 8-bit sRGB 4399B 0.000u 0:00.013
+//	chggb0.png PNG 110x47 110x47+0+0 8-bit sRGB 2259B 0.000u 0:00.010
+//	chgfa0.png PNG 110x70 110x85+0+0 8-bit sRGB 10427B 0.000u 0:00.010
+//	chgfb0.png PNG 110x54 110x70+0+0 8-bit sRGB 9270B 0.000u 0:00.010
+//	misga0.png PNG 98x58 98x64+0+0 8-bit sRGB 2558B 0.000u 0:00.011
+//	misfb0.png PNG 114x58 114x75+0+0 8-bit sRGB 3199B 0.000u 0:00.010
+//	misfd0.png PNG 114x64 114x77+0+0 8-bit sRGB 3068B 0.000u 0:00.010
+
+//	shtfb1.png PNG 56x66 78x81+18+0 8-bit sRGB 2219B 0.016u 0:00.010
+//	shtfa1.png PNG 56x62 78x74+18+0 8-bit sRGB 1852B 0.016u 0:00.008
+//	shtgb0.png PNG 88x122 91x129+3+0 8-bit sRGB 3616B 0.016u 0:00.010
+//	shtgc0.png PNG 96x138 98x146+2+0 8-bit sRGB 4144B 0.016u 0:00.010
+//	shtgd0.png PNG 112x122 114x129+2+0 8-bit sRGB 4387B 0.000u 0:00.012
+//	chgfa0.png PNG 89x70 110x85+11+0 8-bit sRGB 10405B 0.000u 0:00.010
+//	chgfb0.png PNG 89x54 110x70+11+0 8-bit sRGB 9251B 0.000u 0:00.010
+//	misfb0.png PNG 96x58 114x75+9+0 8-bit sRGB 3181B 0.000u 0:00.009
+//	misfd0.png PNG 100x64 114x77+7+0 8-bit sRGB 3039B 0.016u 0:00.011
+
+	
+
+
+// ================================================ Pistol ================================================
+
+
+actor Pistol * {
+
+
+	callback OnCreate {
+		timer_attack = 0;
+		player_ammo = 999;
+		statbar_weapon_0 = GFX_STYSNUM2;
+		weapon_frame #PISGA0;	yp = 20;
+		weapon_sprite #SP_PISTOL_IDLE;
+		->Idle;
+	}
+
+	callback OnPulse {
+		if( timer_attack<=0 && player_health > 0 )
+		{
+			if( pulse & 0xF0 )
+			{
+				timer_attack = 120;
+				weapon_sprite #SP_PISTOL_FIRE;
+				weapon_frame #PISFA0;	yp = 18;
+				sound $DSPISTOL;
+				->Fire;
+			}
+			else
+			{
+				if( pulse==3 && statbar_weapon_1 ) { statbar_weapon_0 = GFX_STGNUM2;	become Shotgun;			}
+				if( pulse==4 && statbar_weapon_2 ) { statbar_weapon_0 = GFX_STGNUM2;	become Chaingun;		}
+				if( pulse==5 && statbar_weapon_3 ) { statbar_weapon_0 = GFX_STGNUM2;	become RocketLauncher;	}
+//				if( pulse==8 ) player_damaged 20;
+				if( pulse==9 )
+				{
+					statbar_weapon_1 = GFX_STGNUM3;
+					statbar_weapon_2 = GFX_STGNUM4;
+					statbar_weapon_3 = GFX_STGNUM5;
+					//player_bullets_cap = 400;
+					//player_shells_cap = 100;
+					//player_rockets_cap = 100;
+					//player_cells_cap = 600;
+					player_bullets	= player_bullets_cap;
+					player_shells	= player_shells_cap;
+					player_rockets	= player_rockets_cap;
+					//player_cells	= player_cells_cap;
+					player_health	= 100;
+					cheat_flags = cheat_flags | 1;
+				}
+			}
+		}
+	}
+
+	state Idle {
+		weapon_frame #PISGA0;	yp = 20;	delay 300;
+		damage = 0;
+	}
+
+	state Fire {
+		player_hitscan	0, 15;		//	15		(5/10/15)
+		damage = damage + 1;
+		if( damage >= 5 )
+			player_pulse 2;
+		mp_pulse_avatar 2;
+
+											delay 18;
+		weapon_frame #PISGC0;	yp = 20;	delay 18;
+		weapon_frame #PISGC0;	yp = 20;	delay 18;
+		weapon_frame #PISGA0;				delay 48;
+		->Idle;
+	}
+
+}
+
+
+
+// ================================================ Shotgun ================================================
+
+
+actor Shotgun 0 {
+
+	callback OnCreate {
+		timer_attack = 0;
+		player_ammo = player_shells;
+		statbar_weapon_1 = GFX_STYSNUM3;
+		weapon_frame #SHTGA0;	yp = 20;
+		weapon_sprite #SP_SHOTGUN_IDLE;
+		->Idle;
+	}
+
+	callback OnPulse {
+		if( timer_attack<=0 && player_health > 0 )
+		{
+			if( pulse & 0xF0 )
+			{
+				if( player_ammo > 0 )
+				{
+					timer_attack = 300;
+					weapon_sprite #SP_SHOTGUN_FIRE;
+					weapon_frame #SHTFB1;
+					sound $DSSHOTGN;
+					->Fire;
+				}
+				else
+					->St_SelectBestWeapon;
+			}
+			else
+			{
+				if( pulse==2					 ) { statbar_weapon_1 = GFX_STGNUM3;	become Pistol;			}
+				if( pulse==4 && statbar_weapon_2 ) { statbar_weapon_1 = GFX_STGNUM3;	become Chaingun;		}
+				if( pulse==5 && statbar_weapon_3 ) { statbar_weapon_1 = GFX_STGNUM3;	become RocketLauncher;	}
+				//if( pulse==9 ) player_shells = player_shells_cap;
+			}
+		}
+	}
+
+	state St_SelectBestWeapon {
+		SelectBestWeapon;
+		delay 1000;
+	}
+
+	func SelectBestWeapon {
+		if( statbar_weapon_2 && player_bullets>0 ) { statbar_weapon_1 = GFX_STGNUM3;	become Chaingun;	}
+		statbar_weapon_1 = GFX_STGNUM3;
+		become Pistol;
+	}
+
+	func Tick {
+		player_ammo = player_shells;
+	}
+
+	state Idle {
+		weapon_frame #SHTGA0;	yp = 20;	Tick;	delay 300;
+		damage = 0;
+	}
+
+	state Fire {
+		if( player_shells <= 0 )
+			SelectBestWeapon;
+		player_shells -= 1;
+		player_ammo = player_shells;
+		player_hitscan	 0, 20;		//	70		(30/70/105)
+		player_hitscan	-3, 15;
+		player_hitscan	 3, 15;
+		player_hitscan	-7, 10;
+		player_hitscan	 7, 10;
+		mp_pulse_avatar 3;
+
+		damage = damage + 1;
+		if( damage >= 3 )
+			player_pulse 2;
+
+		//											delay 18;
+		//weapon_frame #SHTFA1;	yp = 22;	Tick;	delay 18;
+		//weapon_frame #SHTGA0;	yp = 20;	Tick;	delay 18;
+		//weapon_frame #SHTGB0;				Tick;	delay 48;
+		//weapon_frame #SHTGC0;				Tick;	delay 48;
+		//weapon_frame #SHTGD0;				Tick;	delay 48;
+		//weapon_frame #SHTGC0;				Tick;	delay 48;
+		//weapon_frame #SHTGB0;				Tick;	delay 48;
+
+								Tick;	delay 24;
+		weapon_frame #SHTFA1;	Tick;	delay 24;
+		weapon_frame #SHTGA0;	Tick;	delay 24;
+		weapon_frame #SHTGB0;	Tick;	delay 24;
+		weapon_frame #SHTGD0;	Tick;	delay 60;
+		weapon_frame #SHTGC0;	Tick;	delay 74;
+		weapon_frame #SHTGD0;	Tick;	delay 48;
+		weapon_frame #SHTGB0;	Tick;	delay 24;
+
+		->Idle;
+	}
+}
+
+
+
+// ================================================ Chaingun ================================================
+
+
+actor Chaingun 0 {
+
+	callback OnCreate {
+		player_ammo = player_bullets;
+		statbar_weapon_2 = GFX_STYSNUM4;
+		weapon_frame #CHGGB0;	yp = 20;
+		weapon_sprite #SP_CHAINGUN_IDLE;
+		->Idle;
+	}
+
+	callback OnPulse {
+		if( pulse & 0xF0 )
+		{
+			if( damage == 0 && timer_attack <= 0 && player_health > 0 )
+			{
+				if( player_ammo > 0 )
+				{
+					weapon_sprite #SP_CHAINGUN_FIRE;
+					weapon_frame #CHGFA0;
+					sound $DSPISTOL;
+					timer_attack = 1000;
+					->Fire;
+				}
+				else
+					->St_SelectBestWeapon;
+			}
+		}
+		else
+		{
+			if( pulse==2					 ) { statbar_weapon_2 = GFX_STGNUM4;	become Pistol;			}
+			if( pulse==3 && statbar_weapon_1 ) { statbar_weapon_2 = GFX_STGNUM4;	become Shotgun;			}
+			if( pulse==5 && statbar_weapon_3 ) { statbar_weapon_2 = GFX_STGNUM4;	become RocketLauncher;	}
+			//if( pulse==9 ) player_bullets = player_bullets_cap;
+		}
+	}
+
+	state St_SelectBestWeapon {
+		SelectBestWeapon;
+		delay 1000;
+	}
+
+	func SelectBestWeapon {
+		if( statbar_weapon_1 && player_shells>0  ) { statbar_weapon_2 = GFX_STGNUM4;	become Shotgun;		}
+		statbar_weapon_2 = GFX_STGNUM4;
+		become Pistol;
+	}
+
+	func KeepShooting {
+		if( damage >= 2 )
+			if( (io_mouse_state & 0xF0)==0 || player_health <= 0 )
+			{
+				weapon_sprite #SP_CHAINGUN_SPINDOWN;
+				->Idle;
+			}
+		
+		if( player_bullets <= 0 )
+			SelectBestWeapon;
+		
+		player_bullets -= 1;
+		player_ammo = player_bullets;
+
+		if( damage < 25 )
+			damage += 1;
+		else
+			player_pulse 2;
+		
+		if( damage < 5 )
+			player_hitscan	rand()%((damage<<1)+1)-damage, 10;				// 10	(5/10/15)
+		else
+			player_hitscan	rand()%11-5, 10;
+		mp_pulse_avatar 4;
+		timer_attack = 1000;
+
+		if( damage > 1 )
+			sound $DSPISTOL;
+	}
+
+	state Idle {
+		weapon_frame #CHGGB0;	yp = 20;
+		timer_attack = 0;
+		damage = 0;
+		player_ammo = player_bullets;
+		delay 48;
+	}
+
+	state Fire {
+		KeepShooting;	weapon_frame #CHGFB0;	delay 24;
+		KeepShooting;	weapon_frame #CHGFA0;	delay 24;
+	}
+}
+
+
+
+// ================================================ Rocket launcher ================================================
+
+
+actor RocketLauncher 0 {
+
+	callback OnCreate {
+		timer_attack = 0;
+		player_ammo = player_rockets;
+		statbar_weapon_3 = GFX_STYSNUM5;
+		weapon_frame #MISGA0;	yp = 20;
+		weapon_sprite #SP_LAUNCHER_IDLE;
+		->Idle;
+	}
+
+	callback OnPulse {
+		if( timer_attack<=0 && player_health > 0 )
+		{
+			if( pulse & 0xF0 )
+			{
+				if( player_rockets > 0 )
+				{
+					timer_attack = 150;
+					weapon_sprite #SP_LAUNCHER_FIRE;
+					weapon_frame #MISGA0;
+					->Fire;
+				}
+				else
+					->St_SelectBestWeapon;
+			}
+			else
+			{
+				damage = 0;
+				if( pulse==2					 ) { statbar_weapon_3 = GFX_STGNUM5;	become Pistol;		}
+				if( pulse==3 && statbar_weapon_1 ) { statbar_weapon_3 = GFX_STGNUM5;	become Shotgun;		}
+				if( pulse==4 && statbar_weapon_2 ) { statbar_weapon_3 = GFX_STGNUM5;	become Chaingun;	}
+				//if( pulse==9 ) player_rockets = player_rockets_cap;
+			}
+		}
+	}
+
+	state St_SelectBestWeapon {
+		SelectBestWeapon;
+		delay 1000;
+	}
+
+	func SelectBestWeapon {
+		if( statbar_weapon_2 && player_bullets>0 ) { statbar_weapon_3 = GFX_STGNUM5;	become Chaingun;	}
+		if( statbar_weapon_1 && player_shells>0  ) { statbar_weapon_3 = GFX_STGNUM5;	become Shotgun;		}
+		statbar_weapon_3 = GFX_STGNUM5;
+		become Pistol;
+	}
+
+	func Tick {
+		player_ammo = player_rockets;
+	}
+
+	state Idle {
+		weapon_frame #MISGA0;	yp = 20;	Tick;	delay 300;
+		damage = 0;
+	}
+
+	state Fire {
+		if( player_rockets <= 0 )
+			SelectBestWeapon;		// ->Idle;
+		player_rockets -= 1;
+		player_ammo = player_rockets;
+
+		vector_camera;
+		spawn_missile Missile;
+		sound $DSRLAUNC;
+
+		damage = damage + 1;
+		if( damage >= 5 )
+			player_pulse 1;		// not a typo - happy firing!!
+
+
+		//weapon_frame #MISFB0;				delay 24;
+		//weapon_frame #MISFD0;	yp = 20;	delay 48;
+		//weapon_frame #MISGA0;				delay 100;
+
+		weapon_frame #MISFA0;	delay 24;
+		weapon_frame #MISFB0;	delay 24;
+		weapon_frame #MISFC0;	delay 24;
+		weapon_frame #MISFD0;	delay 24;
+		weapon_frame #MISFE0;	delay 24;
+
+		->Idle;
+	}
+}
+
+
+
+
+// ================================================ Missile (rocket) ================================================
+
+
+actor Missile 0
+{
+	callback OnCreate {
+		collision_off;
+		hitbox_off;
+		move_collide = 1;
+		frame #F_MISL_1;		// TBD: Animate with F_MISL_2
+		zp = -28<<6;
+		->Fly;
+	}
+
+	callback OnPulse {
+		move_collide = 0;
+		->Explode;
+	}
+
+	state Fly {
+		move_missile 80, 10000;
+		if( timer_walk <= 8 )
+		{
+			move_collide = 0;
+			->Explode;
+		}
+		temp1 = timer_walk;
+		delay temp1;
+	}
+
+	state Explode {
+		collision_off;
+		hitbox_off;
+		move_stop;
+		frame #F_EXPL_S1;
+		explosion_damage 128;
+		sound $DSBAREXP 512;
+							delay 30;
+		frame #F_EXPL_S2;	delay 30;
+		frame #F_EXPL_S3;	delay 30;
+		frame #F_EXPL_S4;	delay 30;
+		frame #F_EXPL_S5;	delay 30;
+		zp += 24<<7;
+		frame #F_EXPL_B6;	delay 30;
+		frame #F_EXPL_B7;	delay 30;
+		destroyed;
+	}
+}

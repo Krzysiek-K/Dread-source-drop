@@ -1,0 +1,51 @@
+
+group Wildcat3D {
+	-path tex-wolf
+	-texture
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_wrap
+
+    -lightlevel    255 1.0
+
+	gfx WOLF1
+	gfx WOLF1D -file WOLF1 {
+		-remap 001230567ACB0CDF
+	}
+	gfx WOLF2
+	gfx WOLF2D -file WOLF2 {
+		-remap 001230567ACB0CDF
+	}
+	gfx WOLF2A
+	gfx WOLF2AD -file WOLF2A  {
+		-remap 001230567ACB0CDF
+	}
+	gfx WOLF3
+	gfx WOLF3D -file WOLF3 {
+		-remap 001230567ACB0CDF
+	}
+	gfx WOLF4
+	gfx WOLF4D -file WOLF4 {
+		-remap 001230567ACB0CDF
+	}
+	gfx WOLF4A
+	gfx WOLF4AD -file WOLF4A {
+		-remap 001230567ACB0CDF
+	}
+	gfx WOLF5
+	gfx WOLF5D -file WOLF5 {
+		-remap 001230567ACB0CDF
+	}
+	gfx WOLF5P
+	gfx WOLF5PD -file WOLF5P {
+		-remap 001230567ACB0CDF
+	}
+	gfx WOLF6
+	gfx WOLF6D -file WOLF6 {
+		-remap 001230567ACB0CDF
+	}
+	gfx WOLF6A
+	gfx WOLF6AD -file WOLF6A {
+		-remap 001230567ACB0CDF
+	}
+}

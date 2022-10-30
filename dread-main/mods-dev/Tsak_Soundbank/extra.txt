@@ -1,0 +1,655 @@
+
+
+group "DM Tsak Soundbank" {
+	    group "Weapons Bank" {
+		trksound DSCHGN {
+			1	S	W_chaingun		50	+0
+			+	-	XXX				--	--
+			2	-	---     		30	+0
+			+	E	---				 0	--
+			+	-	XXX				--	--
+		}
+		trksound DSCHGN2 {
+			1	S	W_chaingun		50	+1
+			+	-	XXX				--	--
+			+	E	---				 0	--
+		}
+		trksound DSCHGN2B {
+			1	S	W_chaingun		45	+1
+			1	-	XXX				44	--
+			5	E	---				 0	--
+		}
+		trksound DSBLSTR1 {
+			 1	S	W_chaingun			64	0
+			 2	S	W_shtgn_Ra			64	-5
+			 2	S	V_teleport			64	10			 
+			 +	-	XXX				--	 --
+			 2	-	---				60	 6
+			 2	-	---				55	 2
+			 2	-	---				50	-2
+			 2	-	---				45	-6
+			 2	-	---				40	-10
+			 2	-	---				35	-14
+			 2	-	---				30	-18
+			 2	-	---				20	-22
+			 +	-	XXX				15	 --
+			 2	-	---				10	 0
+			5	E	---				 0	 --
+		}
+		trksound DSBLSTR1C {
+			 1	S	W_shotgun			64	0
+			 3	S	V_doors_a1			64	10	
+			 2	S	V_teleport			64	10			 
+			 +	-	XXX				--	 --
+			 2	-	---				60	 6
+			 2	-	---				55	 2
+			 2	-	---				50	-2
+			 2	-	---				45	-6
+			 2	-	---				40	-10
+			 2	-	---				35	-14
+			 2	-	---				30	-18
+			 2	-	---				20	-22
+			 +	-	XXX				15	 --
+			 2	-	---				10	 0
+			5	E	---				 0	 --
+		}
+		trksound DSBLSTR2 {
+			 1	S	W_mlauncher			64	0
+			 2	S	V_teleport			64	0			 
+			 +	-	XXX				--	 --
+			 2	-	---				60	 6
+			 2	-	---				55	 2
+			 2	-	--- 			50	-2
+			 2	-	---		45	-6
+			 2	-	---				40	-10
+			 2	-	---				35	-14
+			 2	-	---				30	-18
+			 2	-	---				20	-22
+			 +	-	XXX				15	 --
+			 2	-	---				10	 0
+			2	E	---				 0	 --
+		}
+		trksound DSBLSTR2B {
+			 1	S	W_shotgun			64	4
+			 3	S	V_teleport			64	0			 
+			 +	-	XXX				--	 --
+			 2	-	---				60	 6
+			 2	-	---				55	 2
+			 2	-	--- 			50	-2
+			 2	-	---		45	-6
+			 2	-	---				40	-10
+			 2	-	---				35	-14
+			 2	-	---				30	-18
+			 2	-	---				20	-22
+			 +	-	XXX				15	 --
+			 2	-	---				10	 0
+			2	E	---				 0	 --
+		}
+		trksound DSGLAUNCH1 {
+			 1	S	W_shotgun			50	0
+			 4	S	V_explosion			64	0
+			 4	S	V_doors_a1			64	10	
+			 5	S	V_doors_a2			64	-10			 
+			 +	-	XXX				--	 --
+			 2	-	---				60	 -10
+			 2	-	---				55	 -20
+			 2	-	--- 			50	-2
+			 2	-	---	        	45	-6
+			 2	-	---				40	-10
+			 2	-	---				35	-14
+			 2	-	---				30	-18
+			 2	-	---				20	-22
+			 +	-	XXX				5	 -22
+			 2	-	---				10	 -22
+			2	E	---				 0	 --
+		}
+		trksound DSGLAUNCH2 {
+			 1	S	V_explosion			64	0
+			 4	S	V_doors_a1			64	10	
+			 5	S	V_doors_a2			64	-10			 
+			 +	-	XXX				--	 --
+			 2	-	---				60	 -10
+			 2	-	---				55	 -20
+			 2	-	--- 			50	-2
+			 2	-	---	        	45	-6
+			 2	-	---				40	-10
+			 2	-	---				35	-14
+			 2	-	---				30	-18
+			 2	-	---				20	-22
+			 +	-	XXX				5	 -22
+			 2	-	---				10	 -22
+			2	E	---				 0	 --
+		}
+		trksound DSBUMP1 {
+			 1	S	V_explosion			50	-10	
+			 6	S	V_doors_a2			64	-10			 
+			 +	-	XXX				--	 --
+			 1	-	---				60	 -10
+			 1	-	---				55	 -20
+			 1	-	--- 			50	-2
+			 1	-	---	        	45	-6
+			 1	-	---				40	-10
+			 1	-	---				35	-14
+			 1	-	---				30	-18
+			 1	-	---				20	-22
+			 +	-	XXX				5	 -22
+			 1	-	---				10	 -22
+			1	E	---				 0	 --
+		}
+		trksound DSBUMP2 {
+			 1	S	W_shotgun			50	-10	 
+			 6	S	V_doors_a2			64	-10			 
+			 +	-	XXX				--	 --
+			 1	-	---				60	 -10
+			 1	-	---				55	 -20
+			 1	-	--- 			50	-2
+			 1	-	---	        	45	-6
+			 1	-	---				40	-10
+			 1	-	---				35	-14
+			 1	-	---				30	-18
+			 1	-	---				20	-22
+			 +	-	XXX				5	 -22
+			 1	-	---				10	 -22
+			1	E	---				 0	 --
+		}
+		trksound DSBUMP3 {
+			 1	S	W_shotgun			50	-10	
+	 		 6	S	V_teleport		10	10
+	 		 1	-	---     		20	-5
+	 		 1	-	---     		30	0
+	 		 1	-	---     		20	5
+	 		 1	-	---     		10	15			 
+			 4	S	V_doors_a2			64	-10			 
+			 +	-	XXX				--	 --
+			 1	-	---				60	 -10
+			 1	-	---				55	 -20
+			 1	-	--- 			50	-2
+			 1	-	---	        	45	-6
+			 1	-	---				40	-10
+			 1	-	---				35	-14
+			 1	-	---				30	-18
+			 1	-	---				20	-22
+			 +	-	XXX				5	 -22
+			 1	-	---				10	 -22
+			1	E	---				 0	 --
+		}
+		trksound DSBUMP4 {
+			 1	S	V_explosion			50	-10	
+	 		 6	S	V_teleport		10	10
+	 		 1	-	---     		20	-5
+	 		 1	-	---     		30	0
+	 		 1	-	---     		20	5
+	 		 1	-	---     		10	15			 
+			 4	S	V_doors_a2			64	-10			 
+			 +	-	XXX				--	 --
+			 1	-	---				60	 -10
+			 1	-	---				55	 -20
+			 1	-	--- 			50	-2
+			 1	-	---	        	45	-6
+			 1	-	---				40	-10
+			 1	-	---				35	-14
+			 1	-	---				30	-18
+			 1	-	---				20	-22
+			 +	-	XXX				5	 -22
+			 1	-	---				10	 -22
+			1	E	---				 0	 --
+		}
+	}
+	    group "Enemies Bank" {		
+		trksound DSPOPAIN4 {
+			1	S	E_pain			64	-3
+			+	-	XXX				--	--
+			1	-	---				50	-7
+			3	-	---				50	--
+			3	-	---				40	--
+			3	-	---				30	--
+			3	-	---				20	--
+			3	-	---				10	--
+			1	E	---				 0	--
+		}
+		trksound DSGROWL1 {
+			 1	S	E_growl			64	0
+			 2	S	E_growl			64	10			 
+			 +	-	XXX				--	 --
+			 5	-	---				50	-10
+			 5	-	---				40	-15
+			 5	-	---				30	 --
+			 5	-	---				20	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --
+		}
+		trksound DSGROWL2 {
+			 1	S	E_growl			56	-15		
+			 4	S	V_teleport		40	-10
+			 4	S	E_growl			64	0			 
+			 4	S	E_growl			64	10			 
+			 +	-	XXX				--	 --
+			 5	-	---				50	-10
+			 5	-	---				36	-15
+			 5	-	---				22	 --
+			 5	-	---				8	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --
+		}
+		trksound DSGROWL3 {
+			 4	S	E_growl			56	-15		
+			 4	S	E_growl			56	-10
+			 3	S	V_teleport		40	-10
+			 4	S	E_growl			64	10			 
+			 +	-	XXX				--	 --
+			 5	-	---				30	-10
+			 5	-	---				20	-15
+			 5	-	---				15	-20
+			 5	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --
+		}		
+		trksound DSGROWL4 {
+			 1	S	E_growl			56	-15		
+			 4	S	E_growl			56	-10		
+			 3	S	V_teleport		40	-10
+			 4	S	E_growl			64	0			 
+			 4	S	E_growl			40	10			 
+			 +	-	XXX				--	 --
+			 5	-	---				30	-10
+			 5	-	---				20	-15
+			 5	-	---				15	-20
+			 5	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --
+		}		
+		trksound DSGROWL5 {
+			 1	S	E_growl			30	-10
+			 4	-	---     		44	-6
+			 4	S	E_growl			40	-0
+			 4	S	E_growl			56	5			
+			 +	-	XXX				--	 --
+			 5	-	---				30	-5
+			 5	-	---				20	-10
+			 5	-	---				15	-15
+			 5	-	---				10	 --	 
+			1	E	---				 0	 --
+		}
+		trksound DSGROWL6 {	 
+			 1	S	E_growl			10	-5		 
+			 2	S	V_doors_a2		15	-7
+			 3	S	E_growl			20	-4
+			 2	S	E_growl			25	-6
+			 1	S	V_doors_a2		30	-15
+			 2	S	E_growl			35	-5
+			 3	S	E_growl			40	-4
+			 2	S	E_growl			45	-6
+			 1	S	E_growl			56	-3
+			 2	S	E_growl			56	5
+			 2	S	E_growl			64	0				 
+			 +	-	XXX				--	 --
+			 5	-	---				30	-5
+			 5	-	---				20	-10
+			 5	-	---				15	-15
+			 5	-	V_doors_a2		10	 --	 
+			1	E	---				 0	 --
+		}
+		trksound DSGROWL7 {
+			 1	S	E_growl			10	-8			
+			 4	S	E_growl			15	-14.20			
+			 4	S	E_growl			25	-15					 
+			 4	S	E_growl			64	-15.48	
+			 +	-	XXX				--	 --
+			 5	-	---				64	0
+			 5	-	---				20	5
+			 5	-	---				15	10
+			 5	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --	
+		}
+		trksound DSGROWL8 {
+			 1	S	V_teleport			30	-15
+			 4	-	V_doors_b     		44	-10
+			 4	S	E_pain			40	-15
+			 1	-	--- 			40	-16
+			 1	-	--- 			40	-17	
+			 1	-	--- 			40	-18
+			 1	-	--- 			40	-19
+			 1	-	--- 			40	-20				 
+			 1	S	E_growl			56	-5
+			 1	S	E_growl			56	5			 
+			 +	-	XXX				--	 --
+			 5	-	---				30	-5
+			 5	-	---				20	-10
+			 5	-	---				15	-15
+			 5	-	---				10	 --	 
+			1	E	---				 0	 --
+		}
+		trksound DSGROWL8D {
+			 4	S	V_doors_b     		44	-10
+			 5	S	E_pain			40	-24
+			 1	-	--- 			40	-25
+			 1	-	--- 			40	-26	
+			 1	-	--- 			40	-27
+			 1	-	--- 			40	-28
+			 1	-	--- 			40	-29				 
+			 1	S	E_growl			30	-5
+			 1	S	E_growl			56	-15			 
+			 +	-	XXX				--	 --
+			 5	-	---				30	-5
+			 5	-	---				20	0
+			 5	-	---				15	-15
+			 5	-	---				10	 --	 
+			1	E	---				 0	 --
+		}
+		trksound DSBUBBLE1 {
+			 1	S	E_growl			56	-20			
+			 3	S	V_doors_b		40	-8		
+			 4	S	E_growl			56	-15		
+			 4	S	E_growl			56	-10		
+			 3	S	V_teleport		40	-10
+			 4	S	E_growl			64	-8			 
+			 4	S	E_growl			40	0			 
+			 +	-	XXX				--	 --
+			 5	-	---				30	-10
+			 5	-	---				20	-15
+			 5	-	---				15	-20
+			 5	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --
+		}
+		trksound DSBUBBLE1D {
+			 1	S	E_growl			56	-15		
+			 4	S	E_growl			56	-10				 
+			 3	S	E_growl			40	0			 
+			 +	-	XXX				--	 --
+			 4	-	---				30	-10
+			 4	-	---				20	-15
+			 4	-	---				15	-20
+			 4	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --
+		}		
+ 	}
+	    group "SFX Bank" {
+		trksound DSNOCARD {
+			1	S	V_pow			32	+10
+			+	-	---				--	 --
+			+	-	---				--	+15
+			+	-	---				--	 +5
+			+	-	---				--	+12
+			+	-	---				--	 --
+			+	-	---				 5	 --
+			+	-	---				 2	 --
+			+	-	---				 1	 --
+			+	-	---				--	 --
+			+	-	---				15	 +0
+			+	-	---				--	 --
+			+	-	---				--	 --
+			+	-	XXX				--	 --
+			+	E	---				 0	 --
+		}
+		trksound DSITEMUP3 {
+			5	S	V_teleport		32	+5
+			5	S	V_select		--	-5
+			+	-	---				--	+5
+			+	E	---				 0	--
+			1	S	W_shtgn_Ra		64	-0
+			5	S	W_empty			32	-5
+			1	E	---				 0	--
+		}
+		trksound DSAMMO2 {
+			1	S	W_shtgn_Rb		64	+3
+			+	-	XXX				--	--
+			7	S	V_teleport		10	+3
+			7	S	W_shtgn_Rb		64	+3
+			3	S	W_empty  		20	+3
+			+	-	XXX				--	--
+			+	E	---				 0	--
+		}
+
+		trksound DSWEAP2 {
+			 1	S	W_empty  		64	-1
+			 1	S	W_empty  		40	 0
+			 1	S	W_shtgn_Rb		64	 0
+			 +	-	XXX				--	--
+			10	S	V_teleport		32	+5
+			 5	S	V_select		20	-5
+			 1	S	W_shtgn_Ra		38	 0
+			 5	S	W_empty			18	-5
+			 1	E	---				 0	--
+		}
+		trksound DSWEAP3 {
+			1	S	W_empty  		64	-1
+			1	S	W_empty  		40	 0
+			1	S	W_shtgn_Rb		64	 0
+			+	-	XXX				--	--
+			7	S	W_shtgn_Rb		64	 0
+			2	S	W_empty			32	-3
+			+	-	XXX				--	--
+			+	E	---				 0	--
+		}
+		trksound DSWEAP4 {
+			 1	S	W_empty			64	-1
+			 1	S	W_empty			40	 0
+			 1	S	W_shtgn_Rb		64	 0
+			 +	-	XXX				--	--
+			 7	S	W_shtgn_Rb		64	 0
+			 2	S	W_empty			32	-3
+			 +	-	XXX				--	--
+			10	S	W_shtgn_Rb		64	+3
+			 +	-	XXX				--	--
+			10	S	W_shtgn_Rb		64	+3
+			 +	-	XXX				--	--
+			10	S	W_shtgn_Rb		64	+3
+			 +	-	XXX				--	--
+			10	E	---				 0	--
+		}
+		trksound DSHASH1 {
+			 1	S	V_teleport			30	-15
+			 4	-	V_doors_b     		44	-10
+			 4	S	V_doors_a3			40	-15
+			 1	-	--- 			40	-16
+			 1	-	--- 			40	-17	
+			 1	-	--- 			40	-18
+			 1	-	--- 			40	-19
+			 1	-	--- 			40	-20				 
+			1	E	---				 0	 --
+		}
+		trksound DSHASH1B {
+			 1	S	W_shotgun		15	10
+			 4	S	W_shtgn_Rb		64	 0
+			 4	-	V_doors_a1     		44	0
+			 4	S	W_shtgn_Rb		64	 0
+			 4	S	V_doors_a3			40	-10
+			 +	-	XXX				--	 --	
+			 1	-	--- 			40	-11
+			 1	-	--- 			40	-12	
+			 1	-	--- 			40	-13
+			 1	-	--- 			40	-14
+			 1	-	--- 			40	-15				 
+			1	E	---				 0	 --
+		}
+		trksound DSHASH2 {
+			 1	S	V_teleport		30	-5
+			 4	-	V_doors_b     	44	-10
+			 4	S	W_shtgn_Rb		64	 0
+			 4	S	W_shtgn_Ra		20	 -5
+			 2	S	V_doors_a3		40	-15
+			 1	-	--- 			40	-16
+			 1	-	--- 			40	-17	
+			 1	-	--- 			40	-18
+			 1	-	--- 			40	-19
+			 1	-	--- 			40	-20				 
+			1	E	---				 0	 --
+		}				
+		trksound DSHASH3 {
+			 1	S	V_teleport			30	-10
+			 4	S	W_shtgn_Rb		64	 0
+			 4	-	V_doors_a1     		44	0
+			 4	S	W_shtgn_Rb		64	 0
+			 4	S	V_doors_a3			40	-10
+			 +	-	XXX				--	 --	
+			 1	-	--- 			40	-11
+			 1	-	--- 			40	-12	
+			 1	-	--- 			40	-13
+			 1	-	--- 			40	-14
+			 1	-	--- 			40	-15				 
+			1	E	---				 0	 --
+		}
+		trksound DSHASH1C {
+			 1	S	W_shotgun		15	10
+			 4	S	W_shtgn_Rb		64	 0
+			 4	-	V_doors_a1     		44	0
+			 4	S	W_shtgn_Rb		64	 0
+			 4	S	V_doors_a3			40	-10
+			 +	-	XXX				--	 --	
+			 2	-	--- 			40	-11
+			 2	-	--- 			35	-12	
+			 2	-	--- 			30	-13
+			 2	-	--- 			25	-14
+			 2	-	--- 			20	-15				 
+			1	E	---				 0	 --
+		}
+		trksound DSSWTCH1 {
+			 4	S	V_doors_a1		64	10	
+			 5	S	V_doors_a2		64	-10			 
+			 +	-	XXX				--	 --
+			 2	-	---				60	 -10
+			 2	-	---				55	 -20
+			 2	-	--- 			50	-2
+			 2	-	---	        	45	-6
+			 2	-	---				40	-10
+			 2	-	---				35	-14
+			 2	-	---				30	-18
+			 2	-	---				20	-22
+			 +	-	XXX				5	 -22
+			 2	-	---				10	 -22
+			2	E	---				 0	 --
+		}
+		trksound DSGPWRUP1 {
+			 1	S	W_shtgn_Rb		64	10	
+			 4	S	V_pow			15 -20
+			 1	-	---				20 -19.5			 
+			 1	-	---				20 -19
+			 1	-	---				20 -18.5
+			 1	-	---				25 -18
+			 1	-	---				20 -17.5
+			 1	-	--- 			30 -17
+			 1	-	---				20 -16.5
+			 1	-	---	        	35 -16
+			 1	-	---				20 -15.5
+			 1	-	---				30 -15
+			 1	-	---				20 -14.5
+			 1	-	---				35 -14
+			 1	-	---				20 -13.5
+			 1	-	---				30 -13
+			 1	-	---				20 -12.5
+			 1	-	---				10 -12
+			1	E	---				 0	 --
+		}			
+		trksound DSWARP1 {
+	 		 1	S	V_doors_a2		20	10
+	 		 1	S	V_doors_a2		30	10
+	 		 1	S	V_doors_a2		40	10
+	 		 1	S	V_doors_a2		50	10			 
+	 		 1	S	V_teleport		64	10
+			 
+			 5	-	XXX				--	 --
+			 5	-	---				50	-10
+			 5	-	---				60	-15
+			1	E	---				 0	 --
+		}
+		trksound DSWARP2 {
+	 		 1	S	V_doors_a3		20	10
+	 		 1	S	V_doors_a3		30	10
+	 		 1	S	V_doors_a3		40	10
+	 		 1	S	V_doors_a2		50	10
+	 		 1	S	V_teleport		10	-10
+	 		 1	-	---     		20	-5
+	 		 1	-	---     		30	0
+	 		 1	-	---     		20	5
+	 		 1	-	---     		10	15			 
+	 		 1	-	---     		64	10			 
+			+	E	---				 0	 --	
+		}		
+		trksound DSWARP4B {
+	 		 1	S	V_teleport		30	10		
+	 		 5	S	V_doors_a3		50	10
+	 		 1	S	V_doors_a2		50	10
+	 		 1	S	V_doors_a3		50	10
+	 		 1	S	V_doors_a2		64	10
+	 		 1	S	V_teleport		10	-10
+	 		 1	-	---     		20	-5
+	 		 1	-	---     		30	0
+	 		 1	-	---     		20	5
+	 		 1	-	---     		10	8			 
+	 		 1	-	---     		64	10			 
+	 		 5	S	V_doors_a3		30	10
+	 		 1	S	V_doors_a3		40	10
+	 		 1	S	V_doors_a3		50	10
+	 		 1	S	V_doors_a2		60	10			
+			 +	-	XXX				--	 --
+			 5	-	---				30	-5
+			 5	-	---				20	-10
+			 5	-	---				15	-15
+			 5	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --	
+		}				
+		trksound DSWARP4C {
+	 		 4	S	V_teleport		10	-10
+	 		 1	-	---     		20	-15
+	 		 1	-	---     		50	-7
+	 		 1	-	---     		60	5
+	 		 1	-	---     		60	-20			 
+	 		 1	-	---     		64	10				
+	 		 8	S	V_doors_a3		30	10
+	 		 1	S	V_doors_a3		40	10
+	 		 1	S	V_doors_a3		50	10
+	 		 1	S	V_doors_a2		60	10			
+			 +	-	XXX				--	 --
+			 5	-	---				30	-5
+			 5	-	---				20	-10
+			 5	-	---				15	-15
+			 5	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --	
+		}
+		trksound DSWARP5 {
+			 1	S	V_teleport			20	-15
+			 4	-	E_die     		44	-10
+			 4	S	E_pain			40	-15
+			 1	-	--- 			40	-16
+			 1	-	--- 			40	-17	
+			 1	-	--- 			40	-18
+			 1	-	--- 			40	-19
+			 1	-	--- 			40	-20				 			 
+			 +	-	XXX				--	 --
+			 5	-	---				30	-5
+			 5	-	---				20	-10
+			 5	-	---				15	-15
+			 5	-	---				10	 --	 
+			1	E	---				 0	 --
+		}
+		trksound DSWARP6 {
+			 4	-	V_doors_b     	40	-10
+			 8	S	E_pain			60	-15
+			 1	-	--- 			60	-16
+			 1	-	--- 			60	-17	
+			 1	-	--- 			60	-18
+			 1	-	--- 			60	-19
+			 1	-	--- 			60	-20				 
+			 1	-	---				30	-10
+			 1	-	---				20	-15
+			 1	-	---				15	-20
+			 1	-	---				10	 --
+			 1	-	XXX				--	 --
+			1	E	---				 0	 --
+		}
+	}				
+}

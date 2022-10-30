@@ -1,0 +1,57 @@
+
+
+gfxgroup "DM Tsak FX" {
+	-path objects/fx
+	-masked
+	-object
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_narrow
+
+	gfxgroup Sparkle {
+	-pixelpack xd
+		gfx F_SPARK_1	6	12
+		gfx F_SPARK_2	8	14
+		gfx F_SPARK_3	9	18
+		gfx F_SPARK_4	10	20
+		gfx F_SPARK_5	10	20
+
+		anim SparkleAnim {
+			frame  24 F_PUFF_1
+			frame  24 F_SPARK_1	
+			frame  24 F_SPARK_2	
+			frame  24 F_SPARK_3
+			frame  24 F_SPARK_4	
+			frame  24 F_SPARK_5	
+		}
+	}
+
+	gfxgroup RedBall {
+		gfx	F_RBALL_S1  10	12
+		gfx	F_RBALL_S2  8	10
+		gfx	F_RBALL_S3  11	10
+		gfx	F_RBEXP_1 	14	12
+		gfx	F_RBEXP_2 	20	14
+		gfx	F_RBEXP_3 	14	10
+		gfx	F_RBEXP_4 	8	6
+
+		anim RBallAnim {
+			frame  32 F_RBALL_S1
+			frame  32 F_RBALL_S2
+			frame  32 F_RBALL_S3
+		}
+		anim RBallExploAnim {
+			frame  32 F_RBALL_S1
+			frame  32 F_RBALL_S2
+			frame  32 F_RBALL_S3
+			frame  32 F_RBALL_S1
+			frame  32 F_RBALL_S2
+			frame  32 F_RBALL_S3
+
+			frame  32 F_RBEXP_1 $DSBUMP1
+			frame  32 F_RBEXP_2
+			frame  32 F_RBEXP_3
+			frame  32 F_RBEXP_4
+		}
+	}	
+}

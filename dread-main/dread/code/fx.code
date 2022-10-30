@@ -1,0 +1,94 @@
+
+
+
+// System objects
+
+
+actor SmokePuff * {
+	callback OnCreate {
+		frame #F_PUFF_1;
+		gravity = -20;
+		-> Puff;
+	}
+	state Puff {
+		frame #F_PUFF_1;	delay 18;
+		frame #F_PUFF_2;	delay 18;
+		frame #F_PUFF_3;	delay 18;
+		frame #F_PUFF_4;	delay 18;
+		frame #F_PUFF_5;	delay 18;
+		destroyed;
+	}
+}
+
+actor BloodSplat * {
+	callback OnCreate {
+		frame #F_BLOOD_1;
+		gravity = 40;
+		-> Splat;
+	}
+	state Splat {
+		frame #F_BLOOD_1;	delay 24;
+		frame #F_BLOOD_2;	delay 24;
+		frame #F_BLOOD_3;	delay 24;
+		frame #F_BLOOD_4;	delay 24;
+		destroyed;
+	}
+}
+
+
+actor TeleportFx 0 {
+	callback OnCreate	{ 
+		zp = -28<<6;
+		move_walk 8, 100;
+		->Flash;
+	}
+	state Flash {
+		frame #F_BBEXP_1;		delay 36;	move_stop;
+		frame #F_BBEXP_2;		delay 36;
+		frame #F_BBEXP_3;		delay 36;
+		frame #F_BBEXP_4;		delay 36;
+		destroyed;
+	}
+}
+
+actor ItemTeleportFx 0 {
+	callback OnCreate	{ 
+		zp = -10<<6;
+		move_walk 8, 100;
+		->Flash;
+	}
+	state Flash {
+		frame #F_BBEXP_1;		delay 36;	move_stop;
+		frame #F_BBEXP_2;		delay 36;
+		frame #F_BBEXP_3;		delay 36;
+		frame #F_BBEXP_4;		delay 36;
+		destroyed;
+	}
+}
+
+
+actor ExplosionFx 0
+{
+	callback OnCreate {
+		collision_off;
+		hitbox_off;
+		move_stop;
+		zp = -28<<6;
+		->Explode;
+	}
+
+	state Explode {
+		frame #F_EXPL_S1;
+		explosion_damage 128;
+		sound $DSBAREXP 512;
+							delay 30;
+		frame #F_EXPL_S2;	delay 30;
+		frame #F_EXPL_S3;	delay 30;
+		frame #F_EXPL_S4;	delay 30;
+		frame #F_EXPL_S5;	delay 30;
+		zp += 24<<7;
+		frame #F_EXPL_B6;	delay 30;
+		frame #F_EXPL_B7;	delay 30;
+		destroyed;
+	}
+}

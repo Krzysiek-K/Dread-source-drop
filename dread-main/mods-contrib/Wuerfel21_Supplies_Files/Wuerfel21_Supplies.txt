@@ -1,0 +1,16 @@
+Wuerfel_21 - TechBase Supplies Co.
+
+    Welcome to TechBase Supplies Co., the leading supplier of
+     - grimey metal panels
+     - ugly lamps
+     - flashy blinky computers (bleep bloop sound cards and tape drives sold seperately)
+     - ColorCode™️ access control systems
+     - and much more!
+
+    Anyways, this is the first day of your internship. So, uh, Dave has lost his keycards in the warehouse. Sheesh Dave, it's always you. Anyways, you gotta go into the warehouse and find some. Yes, the keycards we sell are the same ones that open our own doors, just don't tell anyone.
+    ...
+    Oh, uh, and you won't be able to leave 'till you found them.
+    Don't worry, it'll be easy!
+
+Uses custom texture (just the one), so uhh, yeah.
+Also, total gimmick map I admittedly barely playtested.

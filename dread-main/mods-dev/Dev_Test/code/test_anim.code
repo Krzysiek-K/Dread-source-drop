@@ -1,0 +1,20 @@
+
+
+actor DelayTest 14 { callback OnCreate { ->DelayTest; }
+	state DelayTest {
+		frame   300 M_MSHOT_M1
+		frame    64 M_MSHOT_F1
+	}
+}
+actor SoundTest 15 { callback OnCreate { ->SoundTest; }
+	state SoundTest {
+		frame   300 M_MSHOT_M1
+		frame   300 M_MSHOT_F1 $DSSHOTGN
+	}
+}
+actor ZPosTest 16 { callback OnCreate { ->ZPosTest; }
+	state ZPosTest {
+		frame   300 M_MSHOT_M3	0 0
+		frame   300 M_MSHOT_F1	0 1
+	}
+}

@@ -1,0 +1,16 @@
+
+group DS_Porland {
+
+	-path textures
+	-texture
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_wrap
+
+	-lightlevel	255 1.0
+//	-lightlevel	128 1.0 _128
+
+	gfx WALL02LB
+	gfx WALL01LF
+
+}

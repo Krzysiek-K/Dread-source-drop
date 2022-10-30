@@ -1,0 +1,214 @@
+
+
+
+gfxgroup Items {
+	-path objects/pickups
+	-masked
+	-object
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_narrow
+
+	gfxgroup Weapons {
+		gfx SHOTA0	22	12
+		gfx	MGUNA0	28	20
+		gfx	LAUNA0	28	16
+	}
+
+	gfxgroup Ammo {
+		gfx SHELA0	6	8
+		gfx SBOXA0	14	16
+		gfx	CLIPA0	5	12
+		gfx	AMMOA0	14	16
+		gfx	ROCKA0	5	20
+		gfx	BROKA0	25	18
+
+	}
+
+	gfxgroup Pickups {
+		gfx	MEDIA0	16	16
+		gfx	MEDIB0	10	16
+		gfx	TUBEB0	5	20
+		gfx	TUBER0	5	20
+		gfx	ARM1A0	15	18
+		gfx	ARM2A0	15	20
+		gfx	ARM2H0	15	20
+		gfx	BOOT1A0	11	20
+
+	}
+
+	gfxgroup Keys {
+		gfx	BKEYA0	12	10
+		//	BKEYB0	8	10
+		gfx	YKEYA0	12	10
+		//	YKEYB0	8	10
+		gfx	RKEYA0	12	10
+		//	RKEYB0	8	10
+	}
+}
+
+
+
+gfxgroup Fx {
+	-path objects/fx
+	-masked
+	-object
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_narrow
+
+	gfxgroup Puff {
+		gfx F_PUFF_1	2	2
+		gfx F_PUFF_2	6	16
+		gfx F_PUFF_3	6	20
+		gfx F_PUFF_4	6	20
+		gfx F_PUFF_5	6	20
+
+		anim PuffAnim {
+			frame  36 F_PUFF_1	
+			frame  36 F_PUFF_2	
+			frame  36 F_PUFF_3
+			frame  36 F_PUFF_4	
+			frame  36 F_PUFF_5	
+		}
+	}
+
+	gfxgroup Blood {
+		gfx F_BLOOD_1	5	10
+		gfx F_BLOOD_2	4	8
+		gfx F_BLOOD_3	2	6
+		gfx F_BLOOD_4	3	0
+
+		anim BloodAnim {
+			frame  36 F_BLOOD_1
+			frame  36 F_BLOOD_2
+			frame  36 F_BLOOD_3
+			frame  36 F_BLOOD_4	
+		}
+		anim BloodDropAnim {
+			frame  24  F_BLOOD_1 0 -26
+			frame  24  F_BLOOD_1 0 -28
+			frame  24  F_BLOOD_1 0 -30
+			frame  24  F_BLOOD_2 0 -26
+			frame  24  F_BLOOD_2 0 -18
+			frame  24  F_BLOOD_3 0 -12
+			frame  24  F_BLOOD_3 0 -4
+			frame  192 F_BLOOD_4	
+		}
+	}
+
+	gfxgroup BlueBall {
+		gfx	F_BBALL_1  	14	16
+		gfx	F_BBALL_2  	10	10
+		gfx	F_BBALL_3  	12	12
+		gfx	F_BBEXP_1 	20	20
+		gfx	F_BBEXP_2 	14	16
+		gfx	F_BBEXP_3 	10	12
+		gfx	F_BBEXP_4 	8	6
+
+		anim BBallAnim {
+			frame  36 F_BBALL_1
+			frame  36 F_BBALL_2
+			frame  36 F_BBALL_3
+		}
+		anim BBallExploAnim {
+			frame  36 F_BBEXP_1
+			frame  36 F_BBEXP_2
+			frame  36 F_BBEXP_3
+			frame  36 F_BBEXP_4
+		}
+	}	
+	gfxgroup Explosions {
+		gfxgroup Frames {
+			gfx	F_EXPL_B1		20	64
+			gfx	F_EXPL_B2		22	84
+			gfx	F_EXPL_B3		20	86
+			gfx	F_EXPL_B4		20	88
+			gfx	F_EXPL_B5		20	88
+			gfx	F_EXPL_B6		20	90
+			gfx	F_EXPL_B7		14	92
+			gfx	F_EXPL_S1		25	26
+			gfx	F_EXPL_S2		30	26
+			gfx	F_EXPL_S3		31	38
+			gfx	F_EXPL_S4		33	40
+			gfx	F_EXPL_S5		20	40
+		}
+
+		anim ExpBigAnim {
+			frame  30 F_EXPL_B1
+			frame  30 F_EXPL_B2
+			frame  30 F_EXPL_B3
+			frame  30 F_EXPL_B4
+			frame  30 F_EXPL_B5
+			frame  30 F_EXPL_B6
+			frame  30 F_EXPL_B7
+		}
+		anim ExpSmallAnim {
+			frame  30 F_EXPL_S1
+			frame  30 F_EXPL_S2
+			frame  30 F_EXPL_S3
+			frame  30 F_EXPL_S4
+			frame  30 F_EXPL_S5
+			frame  30 F_EXPL_B6  0 24
+			frame  30 F_EXPL_B7  0 24
+		}
+	}
+	gfxgroup Missile {
+		gfx	F_MISL_1		4	4
+		gfx	F_MISL_2		6	6
+
+		anim MissileAnim {
+			frame  36 F_MISL_1
+			frame  36 F_MISL_2
+		}
+
+		anim MissileExpAnim {
+			frame  36 F_MISL_1
+			frame  36 F_MISL_2
+			frame  36 F_MISL_1
+			frame  36 F_MISL_2
+			frame  36 F_MISL_1
+			frame  36 F_MISL_2
+			frame  30 F_EXPL_S1
+			frame  30 F_EXPL_S2
+			frame  30 F_EXPL_S3
+			frame  30 F_EXPL_S4
+			frame  30 F_EXPL_S5
+			frame  30 F_EXPL_B6  0 24 
+			frame  30 F_EXPL_B7  0 24 
+		}
+	}
+}
+
+gfxgroup Decor {
+	-path objects/decor
+	-masked
+	-object
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_narrow
+
+	gfxgroup Barrel {
+		gfx BAR1B0		11	32
+		gfx BEXPC0		17	38
+
+		anim BarrelExpAnim {
+			frame 200 BAR1B0
+			frame  30 BEXPC0
+			frame  30 F_EXPL_B1
+			frame  30 F_EXPL_B2
+			frame  30 F_EXPL_B3
+			frame  30 F_EXPL_B4
+			frame  30 F_EXPL_B5
+			frame  30 F_EXPL_B6
+			frame  30 F_EXPL_B7
+		}
+	}
+	gfxgroup Trees {
+		gfx	TRE2A0	  60	112
+	}
+	gfxgroup LightsGround {
+		gfx LMP1BL0	    7   50
+		gfx LMP1RE0     7   50
+	}
+}

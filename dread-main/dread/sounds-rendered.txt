@@ -1,0 +1,92 @@
+
+group "Sounds" {
+
+	-path sounds-rendered
+	-audio_resample 6258
+	//-audio_resample 12517
+	-audio_gain 5.0
+
+
+	group Empty {
+		-path sounds-rendered
+	}
+
+	group Weapons {
+		sound DSPISTOL
+		sound DSSHOTGN
+		sound DSSHTGN2
+		sound DSLOAD
+		sound DSCHGN
+		sound DSCHGN2
+		sound DSCHGN3
+		sound DSCHGN3S
+		sound DSCHGN3E
+		sound DSRLAUNC
+	}
+
+	group Monsters {
+		sound DSPOPAIN
+		sound DSPOPAIN2
+		sound DSPOPAIN3
+		sound DSPOPAIN4
+		sound DSPODTH1
+		sound DSPODTH2
+		sound DSRESP1
+		sound DSRESP2
+		sound DSHEADATK
+		sound DSHEADPAIN1
+		sound DSHEADPAIN2
+		sound DSHEADDTH
+		sound DSHEADRESP
+	}
+
+	group Items {
+		sound DSITEMUP
+		sound DSITEMUP2
+		sound DSITEMUP3
+		sound DSARMOR1
+		sound DSMEDI1
+		sound DSKEYPICK
+		sound DSWPNUP
+		sound DSDBLOAD
+		sound DSAMMO
+		sound DSAMMO2
+		sound DSWEAP1
+		sound DSWEAP2
+		sound DSWEAP3
+		sound DSWEAP4
+	}
+	group Combat {
+		sound DSPLPAIN
+		sound DSPLDTH
+		sound DSBAREXP
+	}
+
+	group Machines {
+		sound DSPDOORS {
+			-audio_gain 3.0
+		}
+		sound DSPSTART {
+			-audio_gain 3.0
+		}
+		sound DSPSTART2 {
+			-audio_gain 3.0
+		}
+		sound DSPLIFT {
+			-audio_gain 3.0
+		}
+		sound DSPSTOP {
+			-audio_gain 3.0
+		}
+		sound DSNOCARD
+		sound DSNOCARD2
+		sound DSTELEPORT
+		sound DSSELECT {
+			-audio_gain 3.0
+		}
+		sound DSLEVEND {
+			-audio_gain 3.0
+		}
+	}
+
+}

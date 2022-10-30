@@ -1,0 +1,40 @@
+
+group "Sounds" {
+
+	-path sounds-freedoom
+	version !ST {
+		-audio_resample 4000
+	}
+	version ST {
+		-audio_resample 6258
+		//-audio_resample 12517
+	}
+
+	group Weapons {
+		sound	DSPISTOL
+		sound	DSSHOTGN
+		sound	DSRLAUNC
+	}
+
+	group "Shotgun Guy" {
+		sound DSPODTH1
+		sound DSPODTH2
+		sound DSPODTH3
+		sound DSPOPAIN
+		sound DSPOSACT
+		sound DSPOSIT1
+		sound DSPOSIT2
+		sound DSPOSIT3
+	}
+
+	group "Misc" {
+		sound	DSITEMUP
+		sound	DSWPNUP
+		sound	DSBAREXP
+		sound	DSDBLOAD
+		sound	DSPLPAIN
+		sound	DSPSTART
+		sound	DSPSTOP
+	}
+
+}

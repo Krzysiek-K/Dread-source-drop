@@ -1,0 +1,239 @@
+
+
+actor EYECOMMON 0
+{
+	// Internal state:
+	//	value	0:normal	1:dodging
+	//	value2	0:explode on death		1: spawn on death
+
+
+	callback OnCreate {
+		levstat_monsters_max = levstat_monsters_max + 1;
+		->Spawn;
+	}
+
+	callback OnDamage {
+
+		if( damage > 0 )
+		{
+			if( value )
+				damage = 0;
+
+			health -= damage;
+			damage = 0;
+
+			if( health <= 0 )
+			{
+				hitbox_off;
+				->Die;
+			}
+
+			->Dodge;
+		}
+	}
+
+	state Spawn {
+		collision_set 10;
+		hitbox_on;
+		health = 60;
+		timer_attack = 100;
+		value = 0;
+
+		->Idle;
+	}
+
+	state Idle {
+		value = 0;
+		frame   32 T_AEYE_MOVE_1 
+
+		if( timer_attack<=0 )
+		{
+			vector_aim;
+			if( vector_hitscan() )
+				->Attack_A;
+		}
+
+		frame   32 T_AEYE_MOVE_2
+		frame   32 T_AEYE_MOVE_3
+		frame   32 T_AEYE_MOVE_4		
+		frame   32 T_AEYE_MOVE_5
+		frame   32 T_AEYE_MOVE_6		
+		frame   32 T_AEYE_MOVE_7
+		frame   32 T_AEYE_MOVE_8
+	}
+
+	func Fire {
+		vector_aim;
+		spawn_missile EyeMissile;
+		sound $DSWARP4 256;
+		timer_attack = 300 + rand();
+	}
+
+	state Attack_A {
+		value = 0;
+		frame   16 T_AEYE_MOVE_8
+		frame   16 T_AEYE_MOVE_8 $DSBUBBLE2B //Warn attack sound		
+		frame   32 T_AEYE_MOVE_5 
+		frame   32 T_AEYE_MOVE_4
+		frame   80 T_AEYE_MOVE_3
+		frame   16 T_AEYE_MOVE_2 Fire;
+			
+		frame	32 T_AEYE_ATTACK_A1
+		frame	32 T_AEYE_ATTACK_A2 
+		frame	32 T_AEYE_ATTACK_A3
+		frame	32 T_AEYE_ATTACK_A4
+		frame	32 T_AEYE_ATTACK_A5
+		->Idle;
+	}
+
+	state Dodge {
+		value = 1;
+		if( rand() & 1 )
+		{
+			frame	32 T_AEYE_PAIN1	$DSGROWL8B
+		}
+		else
+		{
+			frame	32 T_AEYE_PAIN2	$DSGROWL8C			
+		}
+		->Idle;
+	}
+
+	state Die {
+		value = 0;
+		move_stop;
+		if( value2 )
+		{
+			spawn_missile EYEFLY_CORE;
+			frame	32 T_AEYE_SPLIT_R1 $DSBUBBLE1B
+			frame	32 T_AEYE_SPLIT_2
+			frame	32 T_AEYE_SPLIT_3
+			frame	32 T_AEYE_SPLIT_4
+			frame	32 T_AEYE_SPLIT_5
+			frame	32 T_AEYE_SPLIT_6
+			frame	32 T_AEYE_SPLIT_7
+		}
+		else
+		{
+			frame   30 T_AEYE_EXPL1 $DSBUBBLE1C
+			frame   30 T_AEYE_EXPL2
+	
+			explosion_damage 128;
+			sound $DSBAREXP 512;
+			frame	30 T_AEYE_EXPL3
+			frame	30 T_AEYE_EXPL4
+			frame	30 T_AEYE_EXPL5
+			frame	30 T_AEYE_EXPL6
+			frame	30 T_AEYE_EXPL7
+			frame	30 T_AEYE_EXPL8
+			frame	30 T_AEYE_EXPL9
+			levstat_monsters = levstat_monsters + 1;
+		}
+		->Dead;
+	}
+
+	state Dead {
+		move_stop;
+		collision_off;
+		hitbox_off;
+		frame #T_AEYE_CORPSE;
+		delay 5000;
+	}
+}
+
+
+actor EyeMissile 0
+{
+	callback OnCreate {
+		collision_off;
+		hitbox_off;
+		move_collide = 2;
+		frame #F_BBALL_1;
+		zp = -40<<6;
+		->Fly;
+	}
+
+	callback OnPulse {
+		move_collide = 0;
+		if( pulse==2 )
+		{
+			player_damaged 10 + (rand()&7)*2;
+		}
+		->Splash;
+	}
+
+	func Flight {
+		move_missile 90, 10000;
+		if( timer_walk <= 8 )
+		{
+			move_collide = 0;
+			->Splash;
+		}
+		temp1 = timer_walk;
+		if( temp1 > 32 ) temp1 = 32;
+	}
+
+	state Fly {
+		frame #F_RBALL_S1;	Flight;		delay temp1;
+		frame #F_RBALL_S2;	Flight;		delay temp1;
+		frame #F_RBALL_S3;	Flight;		delay temp1;
+	}
+
+	state Splash {
+		frame  32 F_RBEXP_1
+		frame  32 F_RBEXP_2
+		frame  32 F_RBEXP_3
+		frame  32 F_RBEXP_4
+		destroyed;
+	}
+}
+
+actor EYE 13 #T_AEYE_MOVE_1 {
+
+	callback OnCreate {
+		value2 = 0;
+		become EYECOMMON;
+	}
+}
+
+
+actor EYESPAWN 73 #T_AEYE_MOVE_1 {
+
+	callback OnCreate {
+		value2 = 1;
+		become EYECOMMON;
+	}
+}
+
+
+
+actor EndLevelBomb 74 #F_EXPL_S4 {
+	callback OnCreate	{
+		//value2 = value2 >> 8;
+		->InitialDelay;
+	}
+
+	state InitialDelay {
+		delay 150 + rand();
+		->WaitForTag;
+	}
+
+	state WaitForTag {
+		delay 256;
+		if( tag_check(605) )		// TBD: make it not hardcoded
+			->Destruction;
+	}
+
+	state Destruction {
+		spawn_missile ExplosionFx;		delay 150 + rand();
+		spawn_missile ExplosionFx;		delay 250;
+		spawn_missile ExplosionFx;		delay 250;
+		spawn_missile ExplosionFx;		delay 250;
+		spawn_missile ExplosionFx;		delay 250;
+		spawn_missile ExplosionFx;		delay 250;
+		spawn_missile ExplosionFx;		delay 250;
+		delay 100;
+		game_state = 2;		// end level
+	}
+
+}

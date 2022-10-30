@@ -1,0 +1,145 @@
+
+gfxgroup "HUD ST" {
+	-path statbar-st
+	-graphics
+	-palette HUD_ST
+
+	gfxgroup ST_STTNUM {
+		-masked
+		-fontgroup
+		-export_st bitplane_st 4bpp header index
+		gfx ST_STTNUM_ -file STTNUM_
+		gfx ST_STTNUM0 -file STTNUM0
+		gfx ST_STTNUM1 -file STTNUM1
+		gfx ST_STTNUM2 -file STTNUM2
+		gfx ST_STTNUM3 -file STTNUM3
+		gfx ST_STTNUM4 -file STTNUM4
+		gfx ST_STTNUM5 -file STTNUM5
+		gfx ST_STTNUM6 -file STTNUM6
+		gfx ST_STTNUM7 -file STTNUM7
+		gfx ST_STTNUM8 -file STTNUM8
+		gfx ST_STTNUM9 -file STTNUM9
+	}
+	gfxgroup ST_STYSNUM {
+		-masked
+		-fontgroup
+		-export_st bitplane_st 4bpp header index
+		gfx ST_STYSNUM_ -file STYSNUM_
+		gfx ST_STYSNUM0 -file STYSNUM0
+		gfx ST_STYSNUM1 -file STYSNUM1
+		gfx ST_STYSNUM2 -file STYSNUM2
+		gfx ST_STYSNUM3 -file STYSNUM3
+		gfx ST_STYSNUM4 -file STYSNUM4
+		gfx ST_STYSNUM5 -file STYSNUM5
+		gfx ST_STYSNUM6 -file STYSNUM6
+		gfx ST_STYSNUM7 -file STYSNUM7
+		gfx ST_STYSNUM8 -file STYSNUM8
+		gfx ST_STYSNUM9 -file STYSNUM9
+		gfx ST_STGNUM0 -file STYSNUM0 {
+			-remap --------2345----
+		}
+		gfx ST_STGNUM1 -file STYSNUM1 {
+			-remap --------2345----
+		}
+		gfx ST_STGNUM2 -file STYSNUM2 {
+			-remap --------2345----
+		}
+		gfx ST_STGNUM3 -file STYSNUM3 {
+			-remap --------2345----
+		}
+		gfx ST_STGNUM4 -file STYSNUM4 {
+			-remap --------2345----
+		}
+		gfx ST_STGNUM5 -file STYSNUM5 {
+			-remap --------2345----
+		}
+		gfx ST_STGNUM6 -file STYSNUM6 {
+			-remap --------2345----
+		}
+		gfx ST_STGNUM7 -file STYSNUM7 {
+			-remap --------2345----
+		}
+		gfx ST_STGNUM8 -file STYSNUM8 {
+			-remap --------2345----
+		}
+		gfx ST_STGNUM9 -file STYSNUM9 {
+			-remap --------2345----
+		}
+	}
+	gfxgroup ST_STKEYS {
+		-masked
+		-fontgroup
+		-export_st bitplane_st 4bpp header index
+		gfx ST_STKEYS_ -file STKEYS_
+		gfx ST_STKEYS0 -file STKEYS0
+		gfx ST_STKEYS1 -file STKEYS1
+		gfx ST_STKEYS2 -file STKEYS2
+	}
+
+	gfxgroup ST_STFACE {
+		-path statbar-st/faces
+		-fontgroup
+		-export_st bitplane_st 4bpp header index
+		
+		gfx ST_STNOFACE		-file STNOFACE		//  0
+
+		gfx ST_STFST00		-file STFST00		//  1
+		gfx ST_STFST01		-file STFST01		//  2
+		gfx ST_STFST02		-file STFST02		//  3
+		gfx ST_STFEVL0		-file STFEVL0		//  4
+		gfx ST_STFKILL0		-file STFKILL0		//  5
+		gfx ST_STFOUCH0		-file STFOUCH0		//  6
+
+		gfx ST_STFST10		-file STFST10		//  7
+		gfx ST_STFST11		-file STFST11		//  8
+		gfx ST_STFST12		-file STFST12		//  9
+		gfx ST_STFEVL1		-file STFEVL1		// 10
+		gfx ST_STFKILL1		-file STFKILL1		// 11
+		gfx ST_STFOUCH1		-file STFOUCH1		// 12
+
+		gfx ST_STFST20		-file STFST20		// 13
+		gfx ST_STFST21		-file STFST21		// 14
+		gfx ST_STFST22		-file STFST22		// 15
+		gfx ST_STFEVL2		-file STFEVL2		// 16
+		gfx ST_STFKILL2		-file STFKILL2		// 17
+		gfx ST_STFOUCH2		-file STFOUCH2		// 18
+
+		gfx ST_STFST30		-file STFST30		// 19
+		gfx ST_STFST31		-file STFST31		// 20
+		gfx ST_STFST32		-file STFST32		// 21
+		gfx ST_STFEVL3		-file STFEVL3		// 22
+		gfx ST_STFKILL3		-file STFKILL3		// 23
+		gfx ST_STFOUCH3		-file STFOUCH3		// 24
+
+		gfx ST_STFST40		-file STFST40		// 25
+		gfx ST_STFST41		-file STFST41		// 26
+		gfx ST_STFST42		-file STFST42		// 27
+		gfx ST_STFEVL4		-file STFEVL4		// 28
+		gfx ST_STFKILL4		-file STFKILL4		// 29
+		gfx ST_STFOUCH4		-file STFOUCH4		// 30
+
+		gfx ST_STFDEAD0		-file STFDEAD0		// 31
+		gfx ST_STFGOD0		-file STFGOD0		// 32
+	}
+	gfx ST_STBAR0 -file STBAR0 {
+		-export_st bitplane_st 4bpp header info
+
+		number ST_STTNUM    6  4 12 player_ammo         200
+		number ST_STTNUM   52  4 12 player_health       200
+		number ST_STTNUM  183  4 12 player_armor        200
+		number ST_STYSNUM 279  6  4 player_bullets      200
+		number ST_STYSNUM 299  6  4 player_bullets_cap  200
+		number ST_STYSNUM 279 14  4 player_shells       200
+		number ST_STYSNUM 299 14  4 player_shells_cap   200
+		number ST_STYSNUM 279 22  4 player_rockets      200
+		number ST_STYSNUM 299 22  4 player_rockets_cap  200
+		frame  ST_STKEYS  239  4    statbar_key_0
+		frame  ST_STKEYS  239 14    statbar_key_1
+		frame  ST_STKEYS  239 24    statbar_key_2
+		frame  ST_STYSNUM 111  3    statbar_weapon_0
+		frame  ST_STYSNUM 123  3    statbar_weapon_1
+		frame  ST_STYSNUM 135  3    statbar_weapon_2
+		frame  ST_STYSNUM 111 13    statbar_weapon_3
+		frame  ST_STFACE  144  1    player_face
+	}
+}

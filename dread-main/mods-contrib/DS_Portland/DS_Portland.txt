@@ -1,0 +1,11 @@
+==========================================
+DS_Portland (RC03) - by LaBodilsen aka SCA
+
+Storyline: 
+They killed Kenny, so what are you gonna do about it!
+
++ Added geometry
++ Buffer size needed = 189KB
++ Easy, Normal and Hard difficulties
++ Fixed secret picups on hard
+- Removed angled doors

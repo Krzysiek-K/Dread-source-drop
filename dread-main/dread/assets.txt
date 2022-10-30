@@ -1,0 +1,47 @@
+
+
+include "palette.txt"
+include "palette-st.txt"
+
+
+
+
+include "textures-new.txt"
+
+include "objects.txt"
+include "monsters.txt"
+
+include "weapons-st.txt"
+include "weapons-sprites-hd.txt"
+include "statbar.txt"
+include "statbar-st.txt"
+include "menu.txt"
+include "menu-st.txt"
+
+
+version A2 {
+	version !ST {
+		include "sounds.txt"
+	}
+	version ST {
+		include "sounds-rendered.txt"
+	}
+}
+version !A2 {
+	include "sounds-freedoom.txt"
+}
+
+
+
+script "dread/code/_defs.code"
+script "dread/code/_enums.code"
+script "dread/code/fx.code"
+script "dread/code/player.code"
+script "dread/code/weapons.code"
+script "dread/code/machines.code"
+script "dread/code/pickups_mp.code"
+script "dread/code/pickups.code"
+script "dread/code/decoration.code"
+script "dread/code/mon_SPOS.code"
+script "dread/code/mon_CPOS.code"
+script "dread/code/mon_HEAD.code"

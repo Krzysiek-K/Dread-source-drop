@@ -1,0 +1,321 @@
+
+gfxgroup Monsters {
+	-masked
+	-object
+	-palette Main
+
+	gfxgroup "Shotgun Guy" {
+			-path objects/monster-shotgun
+			-downscale 1 2		// version Y/2
+			-pixelpack xd_narrow
+			-palette Dread
+			-remap 023A9876321BFFED
+        gfxgroup Frames {
+			gfx M_MSHOT_M1	16	54
+			gfx M_MSHOT_M2	16	56
+			gfx M_MSHOT_M3	15	54
+			gfx M_MSHOT_M4	16	56
+			gfx M_MSHOT_I1	16	54
+			gfx M_MSHOT_F1	19	54
+			gfx M_MSHOT_F2	16	54 
+			gfx M_MSHOT_H1	14	54
+			gfx M_MSHOT_H2	16	54
+			gfx M_MSHOT_D1	27	50
+			gfx M_MSHOT_D2	27	46
+			gfx M_MSHOT_D3	29	44
+			gfx M_MSHOT_D4	28	34
+			gfx M_MSHOT_D5	27	22
+			gfx M_MSHOT_DD	27	12
+		}
+		anim Idle {
+			frame   96 M_MSHOT_H2
+		}
+		anim Walk {
+			frame   48 M_MSHOT_M1
+			frame   48 M_MSHOT_M2
+			frame   48 M_MSHOT_M3
+			frame   48 M_MSHOT_M4
+		}
+		anim Fire {
+			frame   200 M_MSHOT_I1
+			frame   30 M_MSHOT_F1  $DSSHOTGN
+			frame   24 M_MSHOT_F2
+			frame   48 M_MSHOT_M1
+			frame   48 M_MSHOT_M2
+			frame   48 M_MSHOT_M3
+			frame   48 M_MSHOT_M4
+		}
+		anim Pain {
+			frame   66 M_MSHOT_H1  $DSPOPAIN
+			frame   24 M_MSHOT_H2
+			frame   72 M_MSHOT_I1
+			frame   200 M_MSHOT_I1
+		}
+		anim ShortPain {
+			frame   36 M_MSHOT_H1  $DSPOPAIN3
+			frame   24 M_MSHOT_H2
+			frame   72 M_MSHOT_I1
+			frame   200 M_MSHOT_I1
+		}
+		anim Die {
+			frame  150 M_MSHOT_I1
+			frame   30 M_MSHOT_D1  $DSPODTH1
+			frame   30 M_MSHOT_D2
+			frame   30 M_MSHOT_D3
+			frame   30 M_MSHOT_D4
+			frame   30 M_MSHOT_D5
+			frame  400 M_MSHOT_DD
+		}
+		anim Respawn {
+			frame  150 M_MSHOT_DD
+			frame	48 M_MSHOT_D5	$DSRESP1
+			frame	48 M_MSHOT_D4
+			frame	48 M_MSHOT_D3
+			frame	48 M_MSHOT_D2
+			frame	48 M_MSHOT_D1
+			frame  150 M_MSHOT_I1
+		}
+	}
+
+	gfxgroup "Chaingunner" {
+		-path objects/monster-chaingun
+		-downscale 1 2		// version Y/2
+		-pixelpack xd_narrow
+		-palette Dread
+			-remap 0112345789ADEFED
+		gfxgroup Frames {
+			gfx	M_CHAIN_M1		20	64
+			gfx	M_CHAIN_M2		20	66
+			gfx	M_CHAIN_M3		20	64
+			gfx	M_CHAIN_M4		20	66
+			gfx	M_CHAIN_F1		18	64
+			gfx	M_CHAIN_F2		18	64
+			gfx	M_CHAIN_H1		22	62
+			gfx	M_CHAIN_H2		18	62
+			gfx	M_CHAIN_D1		22	62
+			gfx	M_CHAIN_D2		22	60
+			gfx	M_CHAIN_D3		23	56
+			gfx	M_CHAIN_D4		23	56
+			gfx	M_CHAIN_D5		20	48
+			gfx	M_CHAIN_D6		20	48
+			gfx	M_CHAIN_D7		17	48
+			gfx	M_CHAIN_D8		15	46
+			gfx	M_CHAIN_D9		11	38
+			gfx	M_CHAIN_DD		13	8
+			gfx	M_CHAIN_I1		18	64
+			gfx	M_CHAIN_R1		18	64
+			gfx	M_CHAIN_R2		18	64
+		}
+		gfxgroup "Test Anims" {
+			anim Fire {
+				frame   24 M_CHAIN_F1	$DSCHGN3
+				frame   24 M_CHAIN_F2	$DSCHGN3
+			}
+			anim Fire2 {
+				frame   24 M_CHAIN_F1	$DSCHGN3
+				frame   24 M_CHAIN_R1
+				frame   24 M_CHAIN_F2	$DSCHGN3
+				frame   24 M_CHAIN_R2
+			}
+			anim Rotate {
+				frame   24 M_CHAIN_I1
+				frame   24 M_CHAIN_R1
+				frame   24 M_CHAIN_R2
+			}
+			anim RotateStart {
+				frame   192 M_CHAIN_I1
+				frame   28 M_CHAIN_R1
+				frame   26 M_CHAIN_R2
+				frame   24 M_CHAIN_I1
+				frame   22 M_CHAIN_R1
+				frame   20 M_CHAIN_R2
+				frame   19 M_CHAIN_I1
+				frame   18 M_CHAIN_R1
+				frame   17 M_CHAIN_R2
+				frame   16 M_CHAIN_I1
+				frame   15 M_CHAIN_R1
+				frame   14 M_CHAIN_R2
+				frame   13 M_CHAIN_I1
+				frame   12 M_CHAIN_R1
+				frame   12 M_CHAIN_R2
+			}
+			anim RotateEnd {
+				frame   12 M_CHAIN_R1
+				frame   13 M_CHAIN_R2
+				frame   14 M_CHAIN_I1
+				frame   15 M_CHAIN_R1
+				frame   17 M_CHAIN_R2
+				frame   19 M_CHAIN_I1
+				frame   21 M_CHAIN_R1
+				frame   24 M_CHAIN_R2
+				frame   27 M_CHAIN_I1
+				frame   30 M_CHAIN_R1
+				frame   34 M_CHAIN_R2
+				frame   192 M_CHAIN_I1
+			}
+		}
+		anim Idle {
+			frame   96 M_CHAIN_I1
+		}
+		anim Walk {
+			frame   48 M_CHAIN_M1
+			frame   48 M_CHAIN_M2
+			frame   48 M_CHAIN_M3
+			frame   48 M_CHAIN_M4
+		}
+		anim FiringSequence {
+			frame  200 M_CHAIN_I1
+			frame   48 M_CHAIN_R1	$DSCHGN3S
+			frame   48 M_CHAIN_R2
+			frame   36 M_CHAIN_I1
+			frame   36 M_CHAIN_R1
+			frame   36 M_CHAIN_R2
+			frame   24 M_CHAIN_I1
+			frame   24 M_CHAIN_R1
+			frame   24 M_CHAIN_R2
+			frame   24 M_CHAIN_I1
+			frame   24 M_CHAIN_R1
+			frame   24 M_CHAIN_R2
+			frame   24 M_CHAIN_F1	$DSCHGN3
+			frame   24 M_CHAIN_F2	$DSCHGN3
+			frame   24 M_CHAIN_F1	$DSCHGN3
+			frame   24 M_CHAIN_F2	$DSCHGN3
+			frame   24 M_CHAIN_F1	$DSCHGN3
+			frame   24 M_CHAIN_F2	$DSCHGN3
+			frame   24 M_CHAIN_F1	$DSCHGN3
+			frame   24 M_CHAIN_F2	$DSCHGN3
+
+			frame   24 M_CHAIN_R1	$DSCHGN3E
+			frame   24 M_CHAIN_R2
+			frame   24 M_CHAIN_I1
+			frame   24 M_CHAIN_R1
+			frame   36 M_CHAIN_R2
+			frame   36 M_CHAIN_I1
+			frame   36 M_CHAIN_R1
+			frame   36 M_CHAIN_R2
+			frame   48 M_CHAIN_I1
+			frame   48 M_CHAIN_R1
+			frame   48 M_CHAIN_R2
+		}
+		anim Pain {
+			frame   10 M_CHAIN_H2	$DSPOPAIN2
+			frame   48 M_CHAIN_H1
+			frame   30 M_CHAIN_H2
+			frame   192 M_CHAIN_I1
+		}
+		anim Die {
+			frame   150 M_CHAIN_I1
+			frame	 30 M_CHAIN_D1	$DSPODTH2
+			frame	 30 M_CHAIN_D2
+			frame	 30 M_CHAIN_D3
+			frame	 30 M_CHAIN_D4
+			frame	 30 M_CHAIN_D5
+			frame	 30 M_CHAIN_D6
+			frame	 30 M_CHAIN_D7
+			frame	 30 M_CHAIN_D8
+			frame	 30 M_CHAIN_D9
+			frame	400 M_CHAIN_DD
+		}
+		anim Respawn {
+			frame	150 M_CHAIN_DD
+			frame	 48 M_CHAIN_D9	$DSRESP2
+			frame	 48 M_CHAIN_D8
+			frame	 48 M_CHAIN_D7
+			frame	 48 M_CHAIN_D6
+			frame	 48 M_CHAIN_D5
+			frame	 48 M_CHAIN_D4
+			frame	 48 M_CHAIN_D3
+			frame	 48 M_CHAIN_D2
+			frame	 48 M_CHAIN_D1
+			frame   150 M_CHAIN_I1
+		}
+	} 
+	
+	gfxgroup "Head" {
+		-path objects/monster-head
+		-downscale 1 2		// version Y/2
+		-pixelpack xd_narrow
+		-palette Dread
+		-remap 0234566789CDEFDC
+		gfxgroup Frames {
+			gfx M_HEAD_I1		31	62
+			gfx M_HEAD_M1		30	60
+			gfx M_HEAD_M2		32	64
+			gfx M_HEAD_F1		30	62
+			gfx M_HEAD_F2		30	62
+			gfx M_HEAD_F3		30	62
+			gfx M_HEAD_H1		31	62
+			gfx M_HEAD_H2		30	62
+			gfx M_HEAD_D1		31	64
+			gfx M_HEAD_D2		30	62
+			gfx M_HEAD_D3		29	58
+			gfx M_HEAD_D4		30	58
+			gfx M_HEAD_D5		31	40
+			gfx M_HEAD_DD		32	40
+		}
+		anim Idle {
+			frame   36 M_HEAD_I1
+			frame   36 M_HEAD_M1
+			frame   36 M_HEAD_M1 0 2
+			frame   36 M_HEAD_M1
+			frame   36 M_HEAD_I1
+			frame   36 M_HEAD_M2
+			frame   36 M_HEAD_M2 0 -2
+			frame   36 M_HEAD_M2
+		}
+		anim Walk {
+			frame   36 M_HEAD_I1
+			frame   36 M_HEAD_M1
+			frame   36 M_HEAD_M1 0 2
+			frame   36 M_HEAD_M1
+			frame   36 M_HEAD_I1
+			frame   36 M_HEAD_M2
+			frame   36 M_HEAD_M2 0 -2
+			frame   36 M_HEAD_M2
+		}
+		anim WalkShort {
+			frame   48 M_HEAD_I1
+			frame   48 M_HEAD_M1
+			frame   48 M_HEAD_I1
+			frame   48 M_HEAD_M2
+		}
+		anim Fire {
+			frame	30 M_HEAD_F1  $DSHEADATK
+			frame	30 M_HEAD_F2
+			frame	48 M_HEAD_F3
+			frame	30 M_HEAD_F2
+			frame   30 M_HEAD_F1
+			frame   192 M_HEAD_I1
+		}
+		anim Pain {
+			frame	24 M_HEAD_H1  $DSHEADPAIN1
+			frame	96 M_HEAD_H2
+			frame	30 M_HEAD_H1
+			frame   192 M_HEAD_I1
+		}
+		anim ShortPain {
+			frame	24 M_HEAD_H1  $DSHEADPAIN2
+			frame	48 M_HEAD_H2
+			frame	24 M_HEAD_H1
+			frame   192 M_HEAD_I1
+		}
+		anim Die {
+			frame  150 M_HEAD_I1
+			frame	30 M_HEAD_D1  $DSHEADDTH
+			frame	28 M_HEAD_D2
+			frame	26 M_HEAD_D3
+			frame	24 M_HEAD_D4
+			frame	26 M_HEAD_D5
+			frame  400 M_HEAD_DD
+		}
+		anim Respawn {
+			frame  150 M_HEAD_DD
+			frame	48 M_HEAD_D5  $DSHEADRESP
+			frame	48 M_HEAD_D4
+			frame	48 M_HEAD_D3
+			frame	48 M_HEAD_D2
+			frame	48 M_HEAD_D1
+			frame  150 M_HEAD_I1
+		}
+	}
+}

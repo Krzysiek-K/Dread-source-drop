@@ -1,0 +1,168 @@
+
+
+
+palette Menu {
+	$000
+	$111
+	$333
+	$444
+	$555
+	$666
+	$777
+	$211
+	$322
+	$433
+	$332
+	$221
+	$222
+	$400
+	$700
+	$900
+
+	$100
+	$200
+	$422
+	$533
+	$544
+	$644
+	$655
+	$300
+	$411
+	$522
+	$421
+	$311
+	$311
+	$766
+	$888
+	$999
+
+	-palexport_amiga PALETTE_MENU 32
+}
+
+palette MenuTiles {
+	$000
+	$111
+	$333
+	$444
+	$555
+	$666
+	$777
+	$211
+	$322
+	$433
+	$332
+	$221
+	$222
+	$400
+	$700
+	$900
+}
+
+
+
+
+gfxgroup Menu {
+	-path menu
+	-palette Menu
+	-graphics
+
+	gfxgroup Title {
+		-masked
+		-export_amiga bitplane 5bpp header
+		gfx TITLE1
+		gfx TITLE2
+		gfx TITLE3
+		gfx TITLE4
+		gfx TITLE5
+	}
+
+	gfxgroup Cursors {
+		-masked
+		-export_amiga bitplane 5bpp header
+		gfx CURSOR1
+		gfx CURSOR2
+	}
+
+	gfxgroup MenuFont {
+		-path menu/font
+		-masked
+		-autopal 2
+		-export_amiga font_mask
+		-export_st font_mask
+		gfx STCFN033
+		gfx STCFN034
+		gfx STCFN035
+		gfx STCFN036
+		gfx STCFN037
+		gfx STCFN038
+		gfx STCFN039
+		gfx STCFN040
+		gfx STCFN041
+		gfx STCFN042
+		gfx STCFN043
+		gfx STCFN044
+		gfx STCFN045
+		gfx STCFN046
+		gfx STCFN047
+		gfx STCFN048
+		gfx STCFN049
+		gfx STCFN050
+		gfx STCFN051
+		gfx STCFN052
+		gfx STCFN053
+		gfx STCFN054
+		gfx STCFN055
+		gfx STCFN056
+		gfx STCFN057
+		gfx STCFN058
+		gfx STCFN059
+		gfx STCFN060
+		gfx STCFN061
+		gfx STCFN062
+		gfx STCFN063
+		gfx STCFN064
+		gfx STCFN065
+		gfx STCFN066
+		gfx STCFN067
+		gfx STCFN068
+		gfx STCFN069
+		gfx STCFN070
+		gfx STCFN071
+		gfx STCFN072
+		gfx STCFN073
+		gfx STCFN074
+		gfx STCFN075
+		gfx STCFN076
+		gfx STCFN077
+		gfx STCFN078
+		gfx STCFN079
+		gfx STCFN080
+		gfx STCFN081
+		gfx STCFN082
+		gfx STCFN083
+		gfx STCFN084
+		gfx STCFN085
+		gfx STCFN086
+		gfx STCFN087
+		gfx STCFN088
+		gfx STCFN089
+		gfx STCFN090
+		gfx STCFN091
+		gfx STCFN092
+		gfx STCFN093
+		gfx STCFN094
+		gfx STCFN095
+	}
+
+	gfx MENU_TEXTURE {
+		-palette MenuTiles
+		-scroll -16 -34
+		-export_amiga bitplane 4bpp header
+	}
+
+	gfx BLOOD_MAP {
+		-autopal 2
+		-export_amiga bitplane 1bpp header
+	}
+
+}

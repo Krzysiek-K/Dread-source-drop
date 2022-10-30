@@ -1,0 +1,1124 @@
+
+
+group "DM Tsak Eye" {
+	-masked
+	-object
+	-palette Main
+	-path objects/monster-eye
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_narrow
+
+	gfxgroup "Eye" {
+		gfxgroup Frames {
+			gfx	M_EYE_M1		10	56
+			gfx	M_EYE_L1		10	56
+			gfx	M_EYE_R1		10	56
+			gfx	M_EYE_A1		10	50
+			gfx	M_EYE_E1		12	58		
+			gfx	M_EYE_W1		22	54
+			multipart EYE_BLANK {
+				part M_EYE_M1		  100 100   //Fake blank frame
+			}		
+		}
+		anim Idle-Walk {
+			frame   32 M_EYE_M1 
+			frame   64 M_EYE_M1 0 -1
+			frame   32 M_EYE_M1
+			frame   32 M_EYE_M1	0 1		
+			frame   64 M_EYE_M1 0 2
+			frame   32 M_EYE_M1	0 1		
+		}
+		anim Look-Left {
+			frame   32 M_EYE_L1 
+			frame   64 M_EYE_L1 0 -1
+			frame   32 M_EYE_L1
+			frame   32 M_EYE_L1	0 1		
+			frame   64 M_EYE_L1 0 2
+			frame   32 M_EYE_L1	0 1		
+		}
+		anim Look-Right {
+			frame   32 M_EYE_R1 
+			frame   64 M_EYE_R1 0 -1
+			frame   32 M_EYE_R1
+			frame   32 M_EYE_R1	0 1		
+			frame   64 M_EYE_R1 0 2
+			frame   32 M_EYE_R1	0 1		
+		}
+		anim Attack {
+			frame   32 M_EYE_M1
+			frame   64 M_EYE_M1 0 -1
+			frame   32 M_EYE_M1
+			frame   32 M_EYE_M1	0 1		
+			frame   64 M_EYE_M1 0 2
+			frame   32 M_EYE_M1	0 1	 $DSBUBBLE2 //Warn attack sound
+			frame   32 M_EYE_M1 
+			frame   64 M_EYE_M1 0 -1
+			frame   32 M_EYE_M1     $DSWARP3  //Preplay attack sound
+			
+			frame	24 M_EYE_A1         //Start attack      
+			frame	24 M_EYE_A1 -1 0
+			frame	24 M_EYE_A1         //Loop attack (as long as needed for the thrust)
+			frame	24 M_EYE_A1 -1 0
+			frame	24 M_EYE_A1
+			frame	24 M_EYE_A1 -1 0
+			frame	24 M_EYE_A1
+			frame	24 M_EYE_A1 -1 0			
+			
+			frame	32 M_EYE_A1 0 -1    //End attack			
+		}
+		anim Warp-Left {
+			frame   32 M_EYE_M1
+			frame   64 M_EYE_M1 0 -1
+			frame   32 M_EYE_M1
+			frame   32 M_EYE_M1	0 1		
+			frame   64 M_EYE_M1 0 2
+			frame   32 M_EYE_M1	0 1		
+			frame   32 M_EYE_M1 
+			frame   64 M_EYE_M1 0 -1
+			frame   32 M_EYE_M1
+			
+			frame	24 M_EYE_W1     $DSWARP6B    //Start warp
+
+			frame	24 M_EYE_M1	1 0     //End warp			
+		}
+		anim Warp-Right {
+			frame   32 M_EYE_M1
+			frame   64 M_EYE_M1 0 -1
+			frame   32 M_EYE_M1
+			frame   32 M_EYE_M1	0 1		
+			frame   64 M_EYE_M1 0 2
+			frame   32 M_EYE_M1	0 1		
+			frame   32 M_EYE_M1 
+			frame   64 M_EYE_M1 0 -1
+			frame   32 M_EYE_M1
+			
+			frame	24 M_EYE_W1    	$DSGROWL8C      //Start warp, note the sound here is for getting hit
+		
+			frame	24 M_EYE_M1 -1 0    //End warp			
+		}
+		anim EyeExplode-Shot {          //Use this if he is killed while not attacking.
+			frame   32 M_EYE_M1 
+			frame   64 M_EYE_M1 0 -1
+			frame   32 M_EYE_M1
+			frame   32 M_EYE_M1	0 1		
+			frame   64 M_EYE_M1 0 2 
+			frame   32 M_EYE_M1	0 1
+
+			frame  24 M_EYE_A1	0 -3  $DSBUBBLE1C
+			frame  30 M_EYE_E1				
+			frame  30 F_EXPL_S1 0 -20 $DSBAREXP
+			frame  30 F_EXPL_S2 0 -20
+			frame  30 F_EXPL_S3 0 -20
+			frame  30 F_EXPL_S4 0 -20
+			frame  30 F_EXPL_S5 0 -20
+			frame  30 F_EXPL_B6  0 4 
+			frame  30 F_EXPL_B7  0 4
+		}
+		anim EyeExplode-thrust {        //Use this if he is killed during his attack.
+			frame	24 M_EYE_A1      $DSWARP3 
+			frame	24 M_EYE_A1 -1 0
+			frame	24 M_EYE_A1
+			frame	24 M_EYE_A1 -1 0
+			frame	24 M_EYE_A1
+			frame	24 M_EYE_A1 -1 0			
+			frame	24 M_EYE_A1
+
+			frame  24 M_EYE_E1	0 3			
+			frame  30 F_EXPL_S1 0 -20 $DSBAREXP
+			frame  30 F_EXPL_S2 0 -20
+			frame  30 F_EXPL_S3 0 -20
+			frame  30 F_EXPL_S4 0 -20
+			frame  30 F_EXPL_S5 0 -20
+			frame  30 F_EXPL_B6  0 4 
+			frame  30 F_EXPL_B7  0 4
+		}		
+		anim EyeRespawn {
+			frame  60 EYE_BLANK  $DSGROWL9   //Preplay respawn sound
+			
+			frame  24 F_BBEXP_4  0 -22 //Start respawn
+			frame  24 F_BBEXP_3  0 -22
+			frame  24 F_BBEXP_2  0 -22
+			frame  24 F_BBEXP_1  0 -22 //End respawn
+
+			frame   32 M_EYE_M1
+			frame   64 M_EYE_M1 0 -1
+			frame   32 M_EYE_M1
+			frame   32 M_EYE_M1	0 1		
+			frame   64 M_EYE_M1 0 2
+			frame   32 M_EYE_M1	0 1		
+			frame   32 M_EYE_M1 
+			frame   64 M_EYE_M1 0 -1
+			frame   32 M_EYE_M1
+		}		
+
+	}
+	gfxgroup "Tentacle Eye - Multi" {
+		gfxgroup Frames {
+			gfx	M_EYE_W2		22	54		
+			gfx M_TENT_S1		9	32
+			gfx M_TENT_S2		4	32
+			gfx M_TENT_S3		4	32		
+			gfx M_TENT_S4		3	32
+			gfx M_TENT_S5		2	32
+			gfx M_TENT_S6		2	32
+			gfx M_TENT_S7		0	32	
+		
+			multipart T_EYE_MOVE_1 {
+				part M_TENT_S3		  0  0
+				part M_EYE_M1         0  0
+			}
+			multipart T_EYE_MOVE_2 {
+				part M_TENT_S4		  0 -1
+				part M_EYE_M1         0 -1
+			}
+			multipart T_EYE_MOVE_3 {
+				part M_TENT_S5		  0 -1
+				part M_EYE_M1         0 -1
+			}
+			multipart T_EYE_MOVE_4 {
+				part M_TENT_S6  	  0  0
+				part M_EYE_M1         0  0
+			}
+			multipart T_EYE_MOVE_5 {
+				part M_TENT_S5		  0  1
+				part M_EYE_M1         0  1
+			}
+			multipart T_EYE_MOVE_6 {
+				part M_TENT_S4		  0  2
+				part M_EYE_M1         0  2
+			}
+			multipart T_EYE_MOVE_7 {
+				part M_TENT_S3		  0  2
+				part M_EYE_M1         0  2
+			}
+			multipart T_EYE_MOVE_8 {
+				part M_TENT_S2		  0  1
+				part M_EYE_M1         0  1
+			}
+		
+			multipart T_EYE_LOOK_L1 {
+				part M_TENT_S3		  0  0
+				part M_EYE_L1         0  0
+			}
+			multipart T_EYE_LOOK_L2 {
+				part M_TENT_S4		  0 -1
+				part M_EYE_L1         0 -1
+			}
+			multipart T_EYE_LOOK_L3 {
+				part M_TENT_S5		  0 -1
+				part M_EYE_L1         0 -1
+			}
+			multipart T_EYE_LOOK_L4 {
+				part M_TENT_S6  	  0  0
+				part M_EYE_L1         0  0
+			}
+			multipart T_EYE_LOOK_L5 {
+				part M_TENT_S5		  0  1
+				part M_EYE_L1         0  1
+			}
+			multipart T_EYE_LOOK_L6 {
+				part M_TENT_S4		  0  2
+				part M_EYE_L1         0  2
+			}
+			multipart T_EYE_LOOK_L7 {
+				part M_TENT_S3		  0  2
+				part M_EYE_L1         0  2
+			}
+			multipart T_EYE_LOOK_L8 {
+				part M_TENT_S2		  0  1
+				part M_EYE_L1         0  1
+			}
+		
+			multipart T_EYE_LOOK_R1 {
+				part M_TENT_S3		  0  0
+				part M_EYE_R1         0  0
+			}
+			multipart T_EYE_LOOK_R2 {
+				part M_TENT_S4		  0 -1
+				part M_EYE_R1         0 -1
+			}
+			multipart T_EYE_LOOK_R3 {
+				part M_TENT_S5		  0 -1
+				part M_EYE_R1         0 -1
+			}
+			multipart T_EYE_LOOK_R4 {
+				part M_TENT_S6  	  0  0
+				part M_EYE_R1         0  0
+			}
+			multipart T_EYE_LOOK_R5 {
+				part M_TENT_S5		  0  1
+				part M_EYE_R1         0  1
+			}
+			multipart T_EYE_LOOK_R6 {
+				part M_TENT_S4		  0  2
+				part M_EYE_R1         0  2
+			}
+			multipart T_EYE_LOOK_R7 {
+				part M_TENT_S3		  0  2
+				part M_EYE_R1         0  2
+			}
+			multipart T_EYE_LOOK_R8 {
+				part M_TENT_S2		  0  1
+				part M_EYE_R1         0  1
+			}
+		
+			multipart T_EYE_ATT_STOP {
+				part M_TENT_S4		  -1 -2
+				part M_EYE_A1         0 -1
+			}
+			multipart T_EYE_EXPL1 {
+				part M_TENT_S4		  0 -1
+				part M_EYE_A1         0 -3
+			}
+			multipart T_EYE_EXPL2 {
+				part M_TENT_S4		  0 -2
+				part M_EYE_E1         0 0
+			}
+			multipart T_EYE_WARP_STOP_R {
+				part M_TENT_S1		  -1 0
+				part M_EYE_M1	      -1 0
+			}		
+			multipart T_EYE_WARP_STOP_L {
+				part M_TENT_S7		  1 1
+				part M_EYE_M1	      1 1
+			}		
+		}		
+		anim Idle-Walk {
+			frame   32 T_EYE_MOVE_1 
+			frame   32 T_EYE_MOVE_2
+			frame   32 T_EYE_MOVE_3
+			frame   32 T_EYE_MOVE_4		
+			frame   32 T_EYE_MOVE_5
+			frame   32 T_EYE_MOVE_6
+			frame   32 T_EYE_MOVE_7
+			frame   32 T_EYE_MOVE_8			
+		}
+		anim Look-Left {
+			frame   32 T_EYE_LOOK_L1
+			frame   32 T_EYE_LOOK_L2
+			frame   32 T_EYE_LOOK_L3
+			frame   32 T_EYE_LOOK_L4		
+			frame   32 T_EYE_LOOK_L5
+			frame   32 T_EYE_LOOK_L6
+			frame   32 T_EYE_LOOK_L7
+			frame   32 T_EYE_LOOK_L8			
+		}
+		anim Look-Right {
+			frame   32 T_EYE_LOOK_R1 
+			frame   32 T_EYE_LOOK_R2
+			frame   32 T_EYE_LOOK_R3
+			frame   32 T_EYE_LOOK_R4		
+			frame   32 T_EYE_LOOK_R5
+			frame   32 T_EYE_LOOK_R6
+			frame   32 T_EYE_LOOK_R7
+			frame   32 T_EYE_LOOK_R8		
+		}
+		anim Attack {
+			frame   32 T_EYE_MOVE_1 
+			frame   32 T_EYE_MOVE_2 
+			frame   32 T_EYE_MOVE_3
+			frame   16 T_EYE_MOVE_4
+			frame   16 T_EYE_MOVE_5		 $DSBUBBLE2 //Warn attack sound		
+			frame   16 T_EYE_MOVE_6		
+			frame   16 T_EYE_MOVE_7
+			frame   16 T_EYE_MOVE_8
+			frame   16 T_EYE_MOVE_1
+			frame   16 T_EYE_MOVE_2
+			frame   16 T_EYE_MOVE_3
+			frame   16 T_EYE_MOVE_4
+			frame   16 T_EYE_MOVE_5     $DSWARP3  //Preplay attack sound
+		
+			frame	24 M_EYE_A1         //Start attack
+			frame	24 M_EYE_A1 -1 0
+			frame	24 M_EYE_A1         //Loop attack (as long as needed)
+			frame	24 M_EYE_A1 -1 0
+			frame	24 M_EYE_A1
+			frame	24 M_EYE_A1 -1 0
+
+			frame	24 T_EYE_ATT_STOP   //End attack			
+		}		
+		anim Warp-Left {
+			frame   32 T_EYE_MOVE_5  //After warping to the left, start his normal idle/moving loop from frame 5 instead of 1
+			frame   32 T_EYE_MOVE_6
+			frame   32 T_EYE_MOVE_7
+			frame   32 T_EYE_MOVE_8
+			frame   32 T_EYE_MOVE_1 
+			frame   32 T_EYE_MOVE_2
+			frame   32 T_EYE_MOVE_3
+			frame   32 T_EYE_MOVE_4				
+				
+			frame	32 M_EYE_W2    $DSWARP6B              //Start warp
+
+			frame	32 T_EYE_WARP_STOP_L         //End warp			
+		}
+		anim Warp-Right {
+			frame   32 T_EYE_MOVE_1  //If you warp to the right start normally from frame 1. 
+			frame   32 T_EYE_MOVE_2
+			frame   32 T_EYE_MOVE_3
+			frame   32 T_EYE_MOVE_4		
+			frame   32 T_EYE_MOVE_5
+			frame   32 T_EYE_MOVE_6
+			frame   32 T_EYE_MOVE_7
+			frame   32 T_EYE_MOVE_8
+				
+			frame	32 M_EYE_W2    	$DSGROWL8C      //Start warp, note the sound here is for getting hit
+		
+			frame	32 T_EYE_WARP_STOP_R         //End warp			
+		}
+		anim EyeExplode-Shot {          //Use this if he is killed while not attacking.
+			frame   32 T_EYE_MOVE_1 
+			frame   32 T_EYE_MOVE_2
+			frame   32 T_EYE_MOVE_3
+			frame   32 T_EYE_MOVE_4		
+			frame   32 T_EYE_MOVE_5
+			frame   32 T_EYE_MOVE_6
+			frame   32 T_EYE_MOVE_7
+			frame   32 T_EYE_MOVE_8
+			
+			frame  30 T_EYE_EXPL1      $DSBUBBLE1C
+			frame  30 T_EYE_EXPL2			
+			frame  30 F_EXPL_S1 0 -20  	 $DSBAREXP
+			frame  30 F_EXPL_S2 0 -20
+			frame  30 F_EXPL_S3 0 -20
+			frame  30 F_EXPL_S4 0 -20
+			frame  30 F_EXPL_S5 0 -20
+			frame  30 F_EXPL_B6  0 4 
+			frame  30 F_EXPL_B7  0 4
+		}
+		anim EyeExplode-Thrust {        //Use this if he is killed during his attack.
+			frame	24 M_EYE_A1      $DSWARP3 
+			frame	24 M_EYE_A1 -1 0
+			frame	24 M_EYE_A1
+			frame	24 M_EYE_A1 -1 0
+			frame	24 M_EYE_A1
+			frame	24 M_EYE_A1 -1 0			
+			frame	24 M_EYE_A1
+			
+			frame  24 M_EYE_E1	0 3	
+			frame  30 F_EXPL_S1 0 -20 	 $DSBAREXP
+			frame  30 F_EXPL_S2 0 -20
+			frame  30 F_EXPL_S3 0 -20
+			frame  30 F_EXPL_S4 0 -20
+			frame  30 F_EXPL_S5 0 -20
+			frame  30 F_EXPL_B6  0 4 
+			frame  30 F_EXPL_B7  0 4
+		}		
+		anim EyeRespawn {
+			frame  60 EYE_BLANK  $DSGROWL9   //Preplay respawn sound
+			
+			frame  24 F_BBEXP_4  0 -22  //Start respawn
+			frame  24 F_BBEXP_3  0 -22
+			frame  24 F_BBEXP_2  0 -22
+			frame  24 F_BBEXP_1  0 -22  //End respawn
+
+			frame   32 T_EYE_MOVE_1 
+			frame   32 T_EYE_MOVE_2
+			frame   32 T_EYE_MOVE_3
+			frame   32 T_EYE_MOVE_4		
+			frame   32 T_EYE_MOVE_5
+			frame   32 T_EYE_MOVE_6
+			frame   32 T_EYE_MOVE_7  
+			frame   32 T_EYE_MOVE_8	
+		}
+    }		
+
+	gfxgroup "Ancored Eye - Multi" {
+		gfxgroup Frames {
+			gfx	M_CLAW_1		5	12		
+			gfx M_CLAW_2		5	24
+			gfx M_CLAW_3		8	22
+			gfx M_CLAW_4		12	12		
+			gfx M_CROT_1		3	26
+			gfx M_CROT_2		5	24
+			gfx M_CROT_3		5	26
+			gfx M_CROT_4		3	26
+			gfx M_TENT_L1		3	34
+			gfx M_TENT_L2		3	34
+			gfx M_TENT_L3		3	32
+			gfx M_TENT_L4		3	32
+		
+			multipart T_AEYE_MOVE_1 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  0  0			
+				part M_EYE_M1         0  -1
+			}
+			multipart T_AEYE_MOVE_2 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  0  -1			
+				part M_EYE_M1         1  -2
+			}
+			multipart T_AEYE_MOVE_3 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L2		  0  -1			
+				part M_EYE_M1         2  -2
+			}
+			multipart T_AEYE_MOVE_4 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L2		  0  0			
+				part M_EYE_M1         1  -1
+			}
+			multipart T_AEYE_MOVE_5 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  0  1			
+				part M_EYE_M1         0  0
+			}
+			multipart T_AEYE_MOVE_6 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L2		  -1  2			
+				part M_EYE_M1         -1  1
+			}
+			multipart T_AEYE_MOVE_7 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  -1  2			
+				part M_EYE_M1         -2  1
+			}
+			multipart T_AEYE_MOVE_8 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  -1  1			
+				part M_EYE_M1         -1  0
+			}
+		
+			multipart T_AEYE_LOOK_L1 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  0  0			
+				part M_EYE_L1         0  -1
+			}
+			multipart T_AEYE_LOOK_L2 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  0  -1			
+				part M_EYE_L1         1  -2
+			}
+			multipart T_AEYE_LOOK_L3 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L2		  0  -1			
+				part M_EYE_L1         2  -2
+			}
+			multipart T_AEYE_LOOK_L4 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L2		  0  0			
+				part M_EYE_L1         1  -1
+			}
+			multipart T_AEYE_LOOK_L5 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  0  1			
+				part M_EYE_L1         0  0
+			}
+			multipart T_AEYE_LOOK_L6 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L2		  -1  2			
+				part M_EYE_L1         -1  1
+			}
+			multipart T_AEYE_LOOK_L7 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  -1  2			
+				part M_EYE_L1         -2  1
+			}
+			multipart T_AEYE_LOOK_L8 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  -1  1			
+				part M_EYE_L1         -1  0
+			}
+		
+			multipart T_AEYE_LOOK_R1 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  0  0			
+				part M_EYE_R1         0  -1
+			}
+			multipart T_AEYE_LOOK_R2 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  0  -1			
+				part M_EYE_R1         1  -2
+			}
+			multipart T_AEYE_LOOK_R3 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L2		  0  -1			
+				part M_EYE_R1         2  -2
+			}
+			multipart T_AEYE_LOOK_R4 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L2		  0  0			
+				part M_EYE_R1         1  -1
+			}
+			multipart T_AEYE_LOOK_R5 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  0  1			
+				part M_EYE_R1         0  0
+			}
+			multipart T_AEYE_LOOK_R6 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L2		  -1  2			
+				part M_EYE_R1         -1  1
+			}
+			multipart T_AEYE_LOOK_R7 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  -1  2			
+				part M_EYE_R1         -2  1
+			}
+			multipart T_AEYE_LOOK_R8 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  -1  1			
+				part M_EYE_R1         -1  0
+			}
+		
+			multipart T_AEYE_ATTACK_A1 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L4		  0  1			
+				part M_EYE_A1         -1  -1
+			}
+			multipart T_AEYE_ATTACK_A2 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L3		  1  1			
+				part M_EYE_A1         0  -1
+			}		
+			multipart T_AEYE_ATTACK_A3 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L4		  1  1			
+				part M_EYE_A1         -1  -1
+			}		
+			multipart T_AEYE_ATTACK_A4 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  0  1			
+				part M_EYE_A1         -2 -2
+			}
+			multipart T_AEYE_ATTACK_A5 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L2		  -1  1			
+				part M_EYE_A1         -1 -2
+			}			
+		
+			multipart T_AEYE_ATTACK_B1 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L3		  0  1			
+				part M_EYE_A1         3  0
+			}
+			multipart T_AEYE_ATTACK_B2 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L4		  1  2			
+				part M_EYE_A1         3  1
+			}		
+			multipart T_AEYE_ATTACK_B3 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L4		  0  2			
+				part M_EYE_A1         1  1
+			}		
+			multipart T_AEYE_ATTACK_B4 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L3		  -1  2			
+				part M_EYE_A1         -1  1
+			}
+			multipart T_AEYE_ATTACK_B5 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L4		  -1  1			
+				part M_EYE_A1         0  0
+			}			
+			multipart T_AEYE_ATTACK_B6 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L1		  -1  0			
+				part M_EYE_A1         -1  -2
+			}				
+		
+			multipart T_AEYE_PAIN1 {
+				part M_CLAW_2		  0 0
+				part M_EYE_W2         7 -3
+			}
+			multipart T_AEYE_PAIN2 {
+				part M_CLAW_3		  0 0
+				part M_EYE_W2        -7 -2
+			}
+		
+			multipart T_AEYE_SPLIT_R1 {
+				part M_CLAW_3		  0 0
+			}
+			multipart T_AEYE_SPLIT_L1 {
+				part M_CLAW_2		  0 0
+			}
+		
+			multipart T_AEYE_SPLIT_2 {
+				part M_CROT_1		  -3 1
+				part M_CLAW_1		  0 0
+			}
+			multipart T_AEYE_SPLIT_3 {
+				part M_CROT_2		  -3 0
+				part M_CLAW_1		  0 0
+			}
+			multipart T_AEYE_SPLIT_4 {
+				part M_CROT_3		  -3 1
+				part M_CLAW_1		  0 0
+			}
+			multipart T_AEYE_SPLIT_5 {
+				part M_CROT_4		 -3 2
+				part M_CLAW_1		  0 0
+			}		
+			multipart T_AEYE_SPLIT_6 {
+				part M_CROT_1		  -6 6
+				part M_CLAW_1		  0 0
+			}
+			multipart T_AEYE_SPLIT_7 {
+				part M_CLAW_1		  0 0
+				part M_CROT_3		 -5 9			
+			}
+		
+			multipart T_AEYE_CORPSE {
+				part M_CLAW_4		  0 0			
+			}
+		
+			multipart T_AEYE_RESP_1 {
+				part M_CLAW_1		  0 0
+				part M_CROT_3		 -5 9			
+			}
+			multipart T_AEYE_RESP_2 {
+				part M_CROT_1		  -6 6
+				part M_CLAW_1		  0 0
+			}
+			multipart T_AEYE_RESP_3 {
+				part M_CROT_4		 -3 2
+				part M_CLAW_1		  0 0
+				part F_BBEXP_4        0 -22			
+			}
+			multipart T_AEYE_RESP_4 {
+				part M_CROT_3		  -3 1
+				part M_CLAW_1		  0 0
+				part F_BBEXP_3        0 -22			
+			}
+			multipart T_AEYE_RESP_5 {
+				part M_CROT_2		  -3 0
+				part M_CLAW_1		  0 0
+				part F_BBEXP_2        0 -22			
+			}		
+			multipart T_AEYE_RESP_6 {
+				part M_CROT_1		  -3 1
+				part M_CLAW_1		  0 0
+				part F_BBEXP_1        0 -22			
+			}
+			multipart T_AEYE_EXPL1 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L4		  0  1			
+				part M_EYE_A1         0  -1
+			}
+			multipart T_AEYE_EXPL2 {
+				part M_CLAW_1		  0  0
+				part M_TENT_L4		  0  0	
+				part M_EYE_E1         0 2
+			}
+			multipart T_AEYE_EXPL3 {
+				part F_EXPL_S1 		0 -20
+				part M_CLAW_2		  0 0
+			}
+			multipart T_AEYE_EXPL4 {
+				part F_EXPL_S2 		0 -20
+				part M_CROT_1		  -3 1
+				part M_CLAW_1		  0 0
+			}
+			multipart T_AEYE_EXPL5 {
+				part F_EXPL_S3 		0 -20
+				part M_CROT_2		  -3 0
+				part M_CLAW_1		  0 0
+			}
+			multipart T_AEYE_EXPL6 {
+				part F_EXPL_S4 		0 -20
+				part M_CROT_3		  -3 1
+				part M_CLAW_1		  0 0
+			}
+			multipart T_AEYE_EXPL7 {
+				part F_EXPL_S5 		0 -20
+				part M_CROT_4		 -3 2
+				part M_CLAW_1		  0 0
+			}		
+			multipart T_AEYE_EXPL8 {
+				part F_EXPL_B6 		 0 4
+				part M_CROT_1		  -6 6
+				part M_CLAW_1		  0 0
+			}
+			multipart T_AEYE_EXPL9 {
+				part F_EXPL_B7 		 0 4
+				part M_CLAW_1		  0 0
+				part M_CROT_3		 -5 9			
+			}
+
+		}		
+		anim Idle-Walk {
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4		
+			frame   32 T_AEYE_MOVE_5
+			frame   32 T_AEYE_MOVE_6
+			frame   32 T_AEYE_MOVE_7
+			frame   32 T_AEYE_MOVE_8			
+		}
+		anim Look-Left {
+			frame   32 T_AEYE_LOOK_L1
+			frame   32 T_AEYE_LOOK_L2
+			frame   32 T_AEYE_LOOK_L3
+			frame   32 T_AEYE_LOOK_L4		
+			frame   32 T_AEYE_LOOK_L5
+			frame   32 T_AEYE_LOOK_L6
+			frame   32 T_AEYE_LOOK_L7
+			frame   32 T_AEYE_LOOK_L8			
+		}
+		anim Look-Right {
+			frame   32 T_AEYE_LOOK_R1 
+			frame   32 T_AEYE_LOOK_R2
+			frame   32 T_AEYE_LOOK_R3
+			frame   32 T_AEYE_LOOK_R4		
+			frame   32 T_AEYE_LOOK_R5
+			frame   32 T_AEYE_LOOK_R6
+			frame   32 T_AEYE_LOOK_R7
+			frame   32 T_AEYE_LOOK_R8		
+		}
+		anim Attack_A {
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4		
+			frame   32 T_AEYE_MOVE_5
+			frame   32 T_AEYE_MOVE_6		
+			frame   32 T_AEYE_MOVE_7		
+
+			frame   16 T_AEYE_MOVE_8
+			frame   16 T_AEYE_MOVE_8 $DSBUBBLE2B //Warn attack sound		
+			frame   32 T_AEYE_MOVE_5 
+			frame   32 T_AEYE_MOVE_4
+			frame   80 T_AEYE_MOVE_3
+			frame   16 T_AEYE_MOVE_2 $DSWARP4  //Preplay attack sound			
+			
+			frame	32 T_AEYE_ATTACK_A1
+			frame	32 T_AEYE_ATTACK_A2 
+			frame	32 T_AEYE_ATTACK_A3
+			frame	32 T_AEYE_ATTACK_A4
+			frame	32 T_AEYE_ATTACK_A5		
+		}
+		anim Attack_B {               //Alternative stronger attack
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4		
+			frame   32 T_AEYE_MOVE_5
+			frame   32 T_AEYE_MOVE_6
+			frame   32 T_AEYE_MOVE_7 $DSBUBBLE2	//Warn attack sound
+			frame   32 T_AEYE_MOVE_8 
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4 $DSWARP3			
+			
+			frame	32 T_AEYE_ATTACK_B1
+			frame	32 T_AEYE_ATTACK_B2
+			frame	32 T_AEYE_ATTACK_B3
+			frame	32 T_AEYE_ATTACK_B4
+			frame	32 T_AEYE_ATTACK_B5
+			frame	32 T_AEYE_ATTACK_B6			
+		}		
+		anim Pain_1 {
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4		
+			frame   32 T_AEYE_MOVE_5
+			frame   32 T_AEYE_MOVE_6
+			frame   32 T_AEYE_MOVE_7
+			frame   32 T_AEYE_MOVE_8
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4			
+				
+			frame	32 T_AEYE_PAIN1	$DSGROWL8B		
+		}
+		anim Pain_2 {               //Alternative pain (use this and 'Pain 1' interchangeably)
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3 
+			frame   32 T_AEYE_MOVE_4		
+			frame   32 T_AEYE_MOVE_5
+			frame   32 T_AEYE_MOVE_6
+			frame   32 T_AEYE_MOVE_7
+			frame   32 T_AEYE_MOVE_8
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4			
+				
+			frame	32 T_AEYE_PAIN2	$DSGROWL8C			
+		}
+		anim SplitRight {              //Use this if he splits to his Right
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4		
+			frame   32 T_AEYE_MOVE_5
+			frame   32 T_AEYE_MOVE_6
+			frame   32 T_AEYE_MOVE_7
+			frame   32 T_AEYE_MOVE_8
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4
+			
+			frame	32 T_AEYE_SPLIT_R1 $DSBUBBLE1B
+			frame	32 T_AEYE_SPLIT_2
+			frame	32 T_AEYE_SPLIT_3
+			frame	32 T_AEYE_SPLIT_4
+			frame	32 T_AEYE_SPLIT_5
+			frame	32 T_AEYE_SPLIT_6
+			frame	32 T_AEYE_SPLIT_7
+
+			frame	200 T_AEYE_CORPSE			
+		}
+		anim SplitLeft {              //Use this if he splits to his Left
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4		
+			frame   32 T_AEYE_MOVE_5
+			frame   32 T_AEYE_MOVE_6
+			frame   32 T_AEYE_MOVE_7
+			frame   32 T_AEYE_MOVE_8
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4
+			
+			frame	32 T_AEYE_SPLIT_L1 $DSGROWL8C 
+			frame	32 T_AEYE_SPLIT_2
+			frame	32 T_AEYE_SPLIT_3
+			frame	32 T_AEYE_SPLIT_4
+			frame	32 T_AEYE_SPLIT_5
+			frame	32 T_AEYE_SPLIT_6
+			frame	32 T_AEYE_SPLIT_7
+
+			frame	200 T_AEYE_CORPSE		
+		}
+		anim Explode {              //For non splitting Ancored-Eye versions
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4		
+			frame   32 T_AEYE_MOVE_5
+			frame   32 T_AEYE_MOVE_6
+			frame   32 T_AEYE_MOVE_7
+			frame   32 T_AEYE_MOVE_8
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4
+
+			frame   30 T_AEYE_EXPL1 $DSBUBBLE1C
+			frame   30 T_AEYE_EXPL2
+	
+			frame	30 T_AEYE_EXPL3 $DSBAREXP 
+			frame	30 T_AEYE_EXPL4
+			frame	30 T_AEYE_EXPL5
+			frame	30 T_AEYE_EXPL6
+			frame	30 T_AEYE_EXPL7
+			frame	30 T_AEYE_EXPL8
+			frame	30 T_AEYE_EXPL9
+
+			frame	200 T_AEYE_CORPSE
+		}
+		anim Respawn {
+			frame  200 T_AEYE_CORPSE		
+		
+			frame  24 T_AEYE_RESP_1  $DSGROWL9
+			frame  24 T_AEYE_RESP_2
+			frame  24 T_AEYE_RESP_3 
+			frame  24 T_AEYE_RESP_4
+			frame  24 T_AEYE_RESP_5
+			frame  24 T_AEYE_RESP_6		
+
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4		
+			frame   32 T_AEYE_MOVE_5
+			frame   32 T_AEYE_MOVE_6
+			frame   32 T_AEYE_MOVE_7
+			frame   32 T_AEYE_MOVE_8
+			frame   32 T_AEYE_MOVE_1 
+			frame   32 T_AEYE_MOVE_2
+			frame   32 T_AEYE_MOVE_3
+			frame   32 T_AEYE_MOVE_4	
+		}		
+	}
+
+	gfxgroup "Eye - Sounds" { 
+		trksound DSBUBBLE2 {					 //Eye Warn Attack, Ancored Eye Warn Attack B 
+			 1	S	E_growl			56	-20			
+			 3	S	V_doors_b		40	-8		
+			 5	S	E_growl			56	-15		
+			 5	S	E_growl			40	-5				 
+			 3	-	XXX				30	 -10
+			 3	-	---				20	 -15
+			 3	E	---				 0	 --
+		}
+		trksound DSWARP3 {					 //Eye Attack, Ancored Eye Attack B
+	 		 1	S	V_doors_a3		20	10
+	 		 1	S	V_doors_a3		30	10
+	 		 1	S	V_doors_a3		40	10
+	 		 1	S	V_doors_a2		50	10
+	 		 1	S	V_teleport		64	10			 
+	 		 20	S	V_doors_a3		20	10
+	 		 1	S	V_doors_a2		30	10
+	 		 1	S	V_doors_a3		40	10
+	 		 1	S	V_doors_a3		50	10			
+	 		 2	-	---     		40	10
+	 		 2	-	---     		30	10
+	 		 2	-	---     		20	10
+	 		 2	-	---     		10	10			 
+			1	E	---				 0	 --
+		}
+		trksound DSBUBBLE2B {					 //Ancored Eye Warn Attack A
+			
+			 1	S	E_growl			30	-20
+			 3	S	V_doors_b		40	-8
+			 5	S	E_growl			30	-15			 
+			 5	S	E_growl			60	3				 
+			 3	-	XXX				40	 -5
+			 3	-	---				20	 -10
+			 3	E	---				 0	 --
+		}
+
+		trksound DSWARP4 {					 //Ancored Eye Attack A
+	 		 1	S	V_teleport		10	-10
+	 		 1	-	---     		20	-7
+	 		 1	-	---     		60	-3
+	 		 1	-	---     		20	5
+	 		 1	-	---     		10	8			 
+	 		 1	-	---     		64	10			 
+	 		 5	S	V_doors_a3		30	10
+	 		 1	S	V_doors_a3		40	10
+	 		 1	S	V_doors_a3		50	10
+	 		 1	S	V_doors_a2		60	10			
+			 +	-	XXX				--	 --
+			 5	-	---				30	-5
+			 5	-	---				20	-10
+			 5	-	---				15	-15
+			 5	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --
+		}
+		trksound DSWARP6B {					 //Eye Warp
+			 4	-	V_doors_b     	40	-10
+			 8	S	E_pain			60	-15
+			 1	-	--- 			60	-16
+			 1	-	--- 			60	-17	
+			 1	-	--- 			60	-18
+			 1	-	--- 			60	-19
+			 1	-	--- 			60	-20				 
+			 1	-	---				30	-10
+			 1	-	---				20	-15
+			 1	-	---				15	-20
+	 		 1	S	V_doors_a3		20	10
+	 		 1	S	V_doors_a2		30	10
+	 		 1	S	V_doors_a3		40	10
+	 		 1	S	V_doors_a3		50	10			
+	 		 2	-	---     		40	10
+	 		 2	-	---     		30	10
+	 		 2	-	---     		20	10
+	 		 2	-	---     		10	10			 
+			1	E	---				 0	 --
+		}
+		trksound DSGROWL8C {					 //Eye Hit & Warp, Ancored Eye Pain 2, Ancored Eye split 2
+			 4	-	V_doors_b     	40	-10
+			 8	S	E_pain			60	-15
+			 1	-	--- 			60	-16
+			 1	-	--- 			60	-17	
+			 1	-	--- 			60	-18
+			 1	-	--- 			60	-19
+			 1	-	--- 			60	-20				 
+			 1	S	E_growl			56	-15		
+			 4	S	E_growl			56	-10				 
+			 3	S	E_growl			40	0			 
+			 +	-	XXX				--	 --
+			 4	-	---				30	-10
+			 4	-	---				20	-15
+			 4	-	---				15	-20
+			 4	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --
+		}
+		trksound DSGROWL8B {					 //Ancored Eye Pain 1
+			 1	S	V_teleport			40	15
+			 4	-	V_doors_b     		44	-10
+			 4	S	E_pain			60	-15
+			 1	-	--- 			60	-16
+			 1	-	--- 			60	-17	
+			 1	-	--- 			60	-18
+			 1	-	--- 			60	-19
+			 1	-	--- 			60	-20				 
+			 1	S	E_growl			30	-5
+			 1	S	E_growl			56	-15			 
+			 +	-	XXX				--	 --
+			 5	-	---				30	-5
+			 5	-	---				20	0
+			 5	-	---				15	-15
+			 5	-	---				10	 --	 
+			1	E	---				 0	 --
+		}
+		trksound DSBUBBLE1C {					 //Eye Hit pre-explode
+			 1	S	E_growl			56	-15		
+			 4	S	E_growl			56	-10		
+			 3	S	V_teleport		40	-10			 
+			 4	S	E_growl			40	0			 
+			 +	-	XXX				--	 --
+			 4	-	---				30	-10
+			 4	-	---				20	-15
+			 4	-	---				15	-20
+			 4	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --
+		}
+		trksound DSBUBBLE1B {					 //Ancored Eye split 1
+			 1	S	E_growl			56	-20			
+			 3	S	V_doors_b		40	-8		
+			 4	S	E_growl			56	-15		
+			 4	S	E_growl			56	-10		
+			 3	S	V_teleport		40	-10			 
+			 4	S	E_growl			40	0			 
+			 +	-	XXX				--	 --
+			 4	-	---				30	-10
+			 4	-	---				20	-15
+			 4	-	---				15	-20
+			 4	-	---				10	 --
+			 1	S	V_teleport		20	-15
+			 4	-	V_doors_b     	34	-10
+			 4	S	V_doors_a3		30	-15
+			 1	-	--- 			30	-16
+			 1	-	--- 			30	-17	
+			 1	-	--- 			30	-18
+			 1	-	--- 			30	-19
+			 1	-	--- 			30	-20				 
+			1	E	---				 0	 --
+		}
+		trksound DSGROWL9 {					 //Eye Respawn, Ancored Eye respawn
+			 1	S	E_growl			56	-20			
+			 3	S	E_growl			56	-15
+			 4	S	E_growl			56	-5				 
+	 		 4	S	V_teleport		10	-10
+	 		 1	-	---     		20	-15
+	 		 1	-	---     		50	-7
+	 		 1	-	---     		60	5
+	 		 1	-	---     		60	-20			 
+	 		 1	-	---     		64	10			 
+	 		 8	S	V_doors_a3		30	10
+	 		 1	S	V_doors_a3		40	10
+	 		 1	S	V_doors_a3		50	10
+	 		 1	S	V_doors_a2		60	10			
+			 +	-	XXX				--	 --
+			 5	-	---				30	-5
+			 5	-	---				20	-10
+			 5	-	---				15	-15
+			 5	-	---				10	 --
+			 +	-	XXX				--	 --
+			 2	-	---				--	 +0
+			15	E	---				 0	 --
+		}		  	
+	}
+}
+
+
+script "dread/code/mon_EYE.code"
+script "dread/code/mon_EYEFLY.code"

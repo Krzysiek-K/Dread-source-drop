@@ -1,0 +1,7 @@
+Wuerfel_21
+ — 
+17.09.2022
+Wuerfel_21 - Facility (v1/beta)
+---
+This is that long-lost "open-world" kinda map from last year. Now kinda playable thanks to new SDK (turn off OptBSP. Monster noclip still sometimes cheeses you). Use A1200 config.
+Is not terrifically pretty and balancing is kinda bung (normal too hard, hard too easy?), but idk its 3AM as I post this, I may revise it at some point. Tell me what you think.

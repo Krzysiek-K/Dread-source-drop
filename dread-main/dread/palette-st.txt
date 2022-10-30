@@ -1,0 +1,154 @@
+
+
+// ================================================================================ Main palette ================================================================================================
+
+
+palette Main_ST {
+	-dither half_closest
+	-pairorder sort
+	-errordiffuse 0.328 0.141 0.234 0.047
+	-mixpenalty 0.1
+	-colorspace badlab
+	
+
+	// 5 6794212231213
+	// 0-23456789ABCDEF
+	// 0-24688AAACCCEE-
+
+	// 023334444568AADE
+	// 0022334445689ACE
+	// 0022233445579BCE
+	//
+	// 0022446688AACCEE
+	$000	$000	//	black
+	$222	$222	//	gray ramp
+	$333	$444	//	|
+	$444	$666	//	|
+	$454	$686	//	green
+	$665	$888	//	beige ramp
+	$887	$AAA	//	|
+	$AA9	$CCA	//	brown ramp
+	$543	$864	//	|
+	$432	$642	//	|
+	$322	$422	//	|
+	$A00	$C00	//	red
+	$D95	$EA8	//	orange
+	$EEB	$EEC	//	white/yellow
+	$4CE	$6CE	//	cyan
+	$34C	$46C	//	blue 
+
+	-palexport_st PALETTE_MAIN 16
+	-colormap  1 0x11FF0000		//  15, 0x100		// 1 - red tint
+	-colormap  2 0x22FF0000		//	14, 0x200		// 2 |
+	-colormap  3 0x33FF0000		//	13, 0x300		// 3 |
+	-colormap  4 0x44FF0000		//	12, 0x400		// 4 |
+	-colormap  5 0x55FF0000		//	11, 0x500		// 5 |
+	-colormap  6 0x66FF0000		//	10, 0x600		// 6 |
+	-colormap  7 0x77FF0000		//	 9, 0x700		// 7 |
+	-colormap  8 0x88FF0000		//	 8, 0x800		// 8 |
+	-colormap  9 0x44FFFF88		//	12, 0x442		// 9 - yellow flash
+
+
+
+	version ST {
+		-namealias Main
+		-mainpal
+	}
+
+	palette MainWeapon {
+		-colorspace yuv
+
+		-diffuseweights 1.0 0.0 0.0
+		-mixpenalty 0.8
+		-dither solid
+		-pairorder solid_checker
+
+		-clear
+		$000	//	black
+		$222	//	gray ramp
+		$444	//	|
+		$666	//	|
+		$686	//	green
+		$888	//	beige ramp
+		$AAA	//	|
+		$CCA	//	brown ramp
+		$864	//	|
+		$642	//	|
+		$422	//	|
+		$C00	//	red
+		$EA8	//	orange
+		$EEC	//	white/yellow
+		$6CE	//	cyan
+		$46C	//	blue 
+		
+		palette MainWeapon_NoDither {
+			-diffuseweights 0.0 0.0 0.0
+			-dither solid
+			-pairorder keep
+		}
+	}
+
+	palette MainSTe {
+		-clear
+		$000	//	black
+		$222	//	gray ramp
+		$333	//	|
+		$444	//	|
+		$454	//	green
+		$665	//	beige ramp
+		$887	//	|
+		$AA9	//	brown ramp
+		$543	//	|
+		$432	//	|
+		$322	//	|
+		$A00	//	red
+		$D95	//	orange
+		$EEB	//	white/yellow
+		$4CE	//	cyan
+		$34C	//	blue 
+		-palexport_ste PALETTE_MAIN_STe 16
+	}
+
+}
+
+
+
+
+// ================================================================================ HUD palettes ================================================================================================
+
+
+
+palette HUD_ST {
+	version ST {
+		-hudpal
+	}
+	-colorspace badlab
+	$000		//	black
+	$222		//	grey ramp
+	$444		//	|
+	$666		//	|
+	$888		//	|
+	$AAA		//	|
+	$420		//	brown ramp
+	$642		//	|
+	$A64		//	|
+	$C84		//	|
+	$EA6		//	skintones
+	$FCA		//	|
+	$400		//	red ramp
+	$800		//	|
+	$C00		//	|
+	$00C		//	blue
+
+
+	-palexport_st PALETTE_HUD 16
+	-colormap  1 0x11FF0000		//  15, 0x100		// 1 - red tint
+	-colormap  2 0x22FF0000		//	14, 0x200		// 2 |
+	-colormap  3 0x33FF0000		//	13, 0x300		// 3 |
+	-colormap  4 0x44FF0000		//	12, 0x400		// 4 |
+	-colormap  5 0x55FF0000		//	11, 0x500		// 5 |
+	-colormap  6 0x66FF0000		//	10, 0x600		// 6 |
+	-colormap  7 0x77FF0000		//	 9, 0x700		// 7 |
+	-colormap  8 0x88FF0000		//	 8, 0x800		// 8 |
+	-colormap  9 0x44FFFF88		//	12, 0x442		// 9 - yellow flash
+}

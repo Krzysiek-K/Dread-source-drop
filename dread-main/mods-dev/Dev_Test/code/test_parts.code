@@ -1,0 +1,43 @@
+
+actor STG_CROP_2SPRITES 14 #STG_CROP_2SPRITES
+{
+	callback OnCreate {
+		frame #STG_CROP_2SPRITES;
+	}
+}
+actor STG_CROP_3SPRITES 15 #STG_CROP_3SPRITES
+{
+	callback OnCreate {
+		frame #STG_CROP_3SPRITES;
+	}
+}
+actor STG_PARTS_2SPRITES 16 #STG_PARTS_2SPRITES
+{
+	callback OnCreate {
+		frame #STG_PARTS_2SPRITES;
+	}
+}
+actor STG_PARTS_3SPRITES 17 #STG_PARTS_3SPRITES
+{
+	callback OnCreate {
+		frame #STG_PARTS_3SPRITES;
+	}
+}
+actor STG_EXTRAS_2SPRITES 18 #STG_EXTRAS_2SPRITES
+{
+	callback OnCreate {
+		frame #STG_EXTRAS_2SPRITES;
+	}
+}
+actor STG_EXTRAS_3SPRITES 19 #STG_EXTRAS_3SPRITES
+{
+	callback OnCreate {
+		frame #STG_EXTRAS_3SPRITES;
+	}
+}
+actor M_MSHOT_M1 20 #M_MSHOT_M1
+{
+	callback OnCreate {
+		frame #M_MSHOT_M1;
+	}
+}

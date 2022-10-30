@@ -1,0 +1,88 @@
+
+
+actor SPOS_DMGTEST 91 #M_MSHOT_M1
+{
+	callback OnCreate {
+		->Spawn;
+	}
+
+	callback OnDamage {
+		if( damage > 0 )
+		{
+			health -= damage;
+			if( health <= 0 )
+			{
+				damage = 0;
+				hitbox_off;
+				->Die;
+			}
+			if( damage >= 15 )
+			{
+				damage = 0;
+				->Pain;
+			}
+
+			damage = 0;
+			if( rand() & 1 )
+				->ShortPain;
+		}
+	}
+
+	state Spawn {
+		collision_set 10;
+		hitbox_on;
+		health = 60;
+		timer_attack = 100;
+
+		->Idle;
+	}
+
+	state Idle {
+		frame #M_MSHOT_M1;	delay 96;
+	}
+	
+	func DyingFn {
+		move_stop;
+		collision_off;
+		hitbox_off;
+	}
+
+	state Pain {
+		move_stop;
+		sound $DSPOPAIN 256;
+		frame #M_MSHOT_H1;	delay 66;
+		->Idle;
+	}
+	state ShortPain {
+		sound $DSPOPAIN3 256;
+		frame #M_MSHOT_H1;	delay 36;
+		->Idle;
+	}
+	state Die {
+		move_stop;
+		sound $DSPODTH1 256;
+		frame #M_MSHOT_D1;	delay 30;	DyingFn;
+		frame #M_MSHOT_D2;	delay 30;
+		frame #M_MSHOT_D3;	delay 30;
+		frame #M_MSHOT_D4;	delay 30;
+		frame #M_MSHOT_D5;	delay 30;
+		->Dead;
+	}
+	state Dead {
+		frame #M_MSHOT_DD;
+		->WaitRespawn;
+	}
+
+	state WaitRespawn {
+		delay 300;
+
+		// Respawn
+		sound $DSRESP1 256;
+		frame #M_MSHOT_D5;	delay 48;
+		frame #M_MSHOT_D4;	delay 44;
+		frame #M_MSHOT_D3;	delay 40;
+		frame #M_MSHOT_D2;	delay 36;
+		frame #M_MSHOT_D1;	delay 36;
+		->Spawn;
+	}
+}

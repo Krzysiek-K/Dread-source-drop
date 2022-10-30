@@ -1,0 +1,4 @@
+All maps & assets in this directory are supplied by Dread contributors
+and licensed under Creative Commons CC-BY license.
+
+Attribution of each specific map acknowledged in accompanying TXT file.

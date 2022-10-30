@@ -1,0 +1,11 @@
+LaBodilsen
+ — 
+27.11.2021
+==========================================
+DDM_Arena (beta 04)
+Simple 2 player Deathmatch map
+Will hopefully work with the multiplayer release.
+
++ Reworked almost all geometry to be 100% symmetrical.
++ Add some lighting effects.
++ 9.5 - 13 fps on Amiga500

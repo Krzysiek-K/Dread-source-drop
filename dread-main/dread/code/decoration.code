@@ -1,0 +1,55 @@
+
+
+// ---------------------------- Decor Interactive-----------------------------
+actor Barrel 62 #BAR1B0
+{
+	callback OnCreate {
+		collision_set 10;
+		hitbox_on;
+		health = 30;
+		frame #BAR1B0;
+	}
+
+	callback OnDamage {
+		if( damage > 0 )
+		{
+			health -= damage;
+			damage = 0;
+			if( health <= 0 )
+			{
+				hitbox_off;
+				->Explode;
+			}
+		}
+	}
+
+	state Explode {
+		frame #BEXPC0;		delay 36;
+		collision_off;
+		hitbox_off;
+		move_stop;
+		explosion_damage 128;
+		sound $DSBAREXP 512;
+		frame #F_EXPL_B1;	delay 30;
+		frame #F_EXPL_B2;	delay 30;
+		frame #F_EXPL_B3;	delay 30;
+		frame #F_EXPL_B4;	delay 30;
+		frame #F_EXPL_B5;	delay 30;
+		frame #F_EXPL_B6;	delay 30;
+		frame #F_EXPL_B7;	delay 30;
+		destroyed;
+	}
+}
+
+// ---------------------------- Decor Obstacles-----------------------------
+actor TRE2 61 #TRE2A0 {
+	callback OnCreate	{ collision_set 16;		frame #TRE2A0;	}
+}
+
+// ---------------------------- Floor Lights-----------------------------
+actor LMP1BL0 63 #LMP1BL0 {
+	callback OnCreate	{ collision_set 8;		frame #LMP1BL0;	}
+}
+actor LMP1RE0 64 #LMP1RE0 {
+	callback OnCreate	{ collision_set 8;		frame #LMP1RE0;	}
+}

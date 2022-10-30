@@ -1,0 +1,316 @@
+
+
+actor CPOS 11 #M_CHAIN_I1
+{
+	callback OnCreate {
+		levstat_monsters_max = levstat_monsters_max + 1;
+
+		if( value & THING_FLAG_SPECIAL )
+		{
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_BLUE_KEY )
+				special_monsters_blue_key = special_monsters_blue_key + 1;
+
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_YELLOW_KEY )
+				special_monsters_yellow_key = special_monsters_yellow_key + 1;
+
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_RED_KEY )
+				special_monsters_red_key = special_monsters_red_key + 1;
+
+			if( (value2 & 0xFF) == SECTOR_TYPE_SPECMONSTER_TELEPORT_IN )
+				->TeleportOnTag;
+		}
+
+		->Spawn;
+	}
+
+	callback OnDamage {
+		if( damage > 0 )
+		{
+			health -= damage;
+			//timer_attack = 172 + rand();
+			if( health <= 0 )
+			{
+				damage = 0;
+				hitbox_off;
+				->Die;
+			}
+			if( damage >= 15 || (rand()&7)==0 )
+			{
+				damage = 0;
+				if( value3 != 1 )
+					->Pain;
+			}
+
+			damage = 0;
+		}
+	}
+
+	func IdleWatch {
+		if( timer_attack <= 0 )
+		{
+			vector_aim;
+			vector_distance;
+		
+			if( vector_hitscan() )
+			{
+				timer_attack = (172 + rand())>>2;
+				->Walk;
+			}
+			else
+				timer_attack = (172 + rand())>>2;
+		}
+	}
+
+	state Spawn {
+		collision_set 10;
+		hitbox_on;
+		health = 150;
+		timer_attack = 100;
+		
+		value3 = 0;						// 0: chaingun idle
+										// 1: chaingun spinning up/down - do not disturb with pain frames
+										// 2: chaingun ready to fire
+
+		if( value & THING_FLAG_DEAF )
+			->Idle;
+		else
+			->Walk;
+	}
+
+	state Idle {
+		frame #M_CHAIN_I1;	IdleWatch;	delay 96;
+	}
+		
+	func HuntWalk {
+		if( timer_attack<=0 )
+		{
+			vector_aim;
+			vector_distance;
+
+			if( distance < 400 && vector_hitscan() )
+			{
+				if( value3 == 2 )
+					->Shooting;
+				else
+					->PreShoot;
+			}
+			else
+				timer_attack = (172 + rand())>>2;
+		}
+
+		if( timer_walk <= 0 )
+		{
+			vector_aim;
+			vector_distance;
+
+			if( distance >= 128 )
+			{
+				if( rand() & 1 )
+				{
+					if( rand() & 1 )	vector_align 256,  256;
+					else				vector_align 256, -256;
+				}
+			}
+			else
+			{
+				if( rand() & 1 )	vector_align -256,  256;
+				else				vector_align -256, -256;
+			}
+			
+
+			move_walk 12, rand() + 300;
+		}
+	}
+
+	func Fire {
+		vector_aim;
+		vector_distance;
+		sound $DSCHGN3 256;
+		if( distance < 450 && vector_hitscan() )
+		{
+			if( rand() > (distance>>1) )
+				player_damaged 1 + (rand()&3);
+		}
+		else
+			timer_attack = 172;	// + (rand()<<1);
+	}
+
+	func DyingFn {
+		move_stop;
+		collision_off;
+		hitbox_off;
+		
+		if( value & THING_FLAG_SPECIAL )
+		{
+			value = value - THING_FLAG_SPECIAL;
+
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_BLUE_KEY && special_monsters_blue_key > 0 )
+			{
+				special_monsters_blue_key = special_monsters_blue_key - 1;
+				if( special_monsters_blue_key == 0 )
+					spawn_missile BKEY_Drop;
+			}
+
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_YELLOW_KEY && special_monsters_yellow_key > 0 )
+			{
+				special_monsters_yellow_key = special_monsters_yellow_key - 1;
+				if( special_monsters_yellow_key == 0 )
+					spawn_missile YKEY_Drop;
+			}
+
+			if( value2 == SECTOR_TYPE_SPECMONSTER_DROP_RED_KEY && special_monsters_red_key > 0 )
+			{
+				special_monsters_red_key = special_monsters_red_key - 1;
+				if( special_monsters_red_key == 0 )
+					spawn_missile RKEY_Drop;
+			}
+
+			if( (value2 & 0xFF) == SECTOR_TYPE_SPECMONSTER_ACTIVATE_TAG )
+			{
+				switch_flags |= 1 << ((value2>>8)-1);
+			}
+
+			if( (value2 & 0xFF) == SECTOR_TYPE_SPECMONSTER_DEACTIVATE_TAG )
+			{
+				switch_flags &= 0xFFFF - (1 << ((value2>>8)-1));
+			}
+		}
+	}
+	
+	state Walk {
+		frame #M_CHAIN_M1;	HuntWalk;	delay 48;
+		frame #M_CHAIN_M2;	HuntWalk;	delay 48;
+		frame #M_CHAIN_M3;	HuntWalk;	delay 48;
+		frame #M_CHAIN_M4;	HuntWalk;	delay 48;
+	}
+
+	state PreShoot {
+		move_stop;	timer_walk = 0;
+
+		sound $DSCHGN3S 256;
+		value3 = 1;
+		frame #M_CHAIN_R1;	delay 48;
+		frame #M_CHAIN_R2;	delay 48;
+		frame #M_CHAIN_I1;	delay 36;
+		frame #M_CHAIN_R1;	delay 36;
+		frame #M_CHAIN_R2;	delay 36;
+		frame #M_CHAIN_I1;	delay 24;
+		frame #M_CHAIN_R1;	delay 24;
+		frame #M_CHAIN_R2;	delay 24;
+		value3 = 2;
+		if( skill < 4 )
+		{
+			frame #M_CHAIN_I1;	delay 24;
+			frame #M_CHAIN_R1;	delay 24;
+			frame #M_CHAIN_R2;	delay 24;
+		}
+		->Shooting;
+	}
+
+	state PostShoot {
+		sound $DSCHGN3E 256;
+		if( skill >= 1 )
+		{
+			value3 = 0;
+			->Walk;
+		}
+		value3 = 1;
+		frame #M_CHAIN_R1;	delay 24;
+		frame #M_CHAIN_R2;	delay 24;
+		frame #M_CHAIN_I1;	delay 24;
+		frame #M_CHAIN_R1;	delay 24;
+		frame #M_CHAIN_R2;	delay 36;
+		frame #M_CHAIN_I1;	delay 36;
+		frame #M_CHAIN_R1;	delay 36;
+		frame #M_CHAIN_R2;	delay 36;
+		value3 = 0;
+		frame #M_CHAIN_I1;	delay 48;
+		frame #M_CHAIN_R1;	delay 48;
+		frame #M_CHAIN_R2;	delay 48;
+		->Walk;
+	}
+
+	state Shooting {
+		frame #M_CHAIN_F1;	Fire;	delay 24;
+		frame #M_CHAIN_F2;	Fire;	delay 24;
+		frame #M_CHAIN_F1;	Fire;	delay 24;
+		frame #M_CHAIN_F2;	Fire;	delay 24;
+		frame #M_CHAIN_F1;	Fire;	delay 24;
+		frame #M_CHAIN_F2;	Fire;	delay 24;
+		frame #M_CHAIN_F1;	Fire;	delay 24;
+		frame #M_CHAIN_F2;	Fire;	delay 24;
+		if( timer_attack > 0 )
+			->PostShoot;
+	}
+
+	state Pain {
+		move_stop;
+		sound $DSPOPAIN2 256;
+		frame #M_CHAIN_H2;	delay 10;
+		frame #M_CHAIN_H1;	delay 48;
+		frame #M_CHAIN_H2;	delay 30;
+		frame #M_CHAIN_I1;	delay 30;
+		->Walk;
+	}
+	state Die {
+		move_stop;
+		sound $DSPODTH2 256;
+		value3 = 0;
+
+		frame #M_CHAIN_D1;	delay 30;	DyingFn;
+		frame #M_CHAIN_D2;	delay 30;
+		frame #M_CHAIN_D3;	delay 30;
+		frame #M_CHAIN_D4;	delay 30;
+		frame #M_CHAIN_D5;	delay 30;
+		frame #M_CHAIN_D6;	delay 30;
+		frame #M_CHAIN_D7;	delay 30;
+		frame #M_CHAIN_D8;	delay 30;
+		frame #M_CHAIN_D9;	delay 30;
+		levstat_monsters = levstat_monsters + 1;
+		->Dead;
+	}
+	state Dead {
+		frame #M_CHAIN_DD;
+		if( skill >= 4 )
+		{
+			vector_set_timer 11400;	// 38 seconds
+			->WaitRespawn;
+		}
+		delay 5000;
+	}
+	state WaitRespawn {
+		if( vector_get_timer() <= 0 )
+		{
+			// Respawn
+			sound $DSRESP2 256;
+			frame #M_CHAIN_D9;	delay 48;
+			frame #M_CHAIN_D8;	delay 48;
+			frame #M_CHAIN_D7;	delay 48;
+			frame #M_CHAIN_D6;	delay 48;
+			frame #M_CHAIN_D5;	delay 48;
+			frame #M_CHAIN_D4;	delay 48;
+			frame #M_CHAIN_D3;	delay 48;
+			frame #M_CHAIN_D2;	delay 48;
+			frame #M_CHAIN_D1;	delay 48;
+				
+			->Spawn;
+		}
+		delay 300;
+	}
+
+	state TeleportOnTag {
+		delay rand()+100;
+		->TeleportOnTagWait;
+	}
+	state TeleportOnTagWait {
+		if( tag_check(value2>>8) )
+		{
+			vector_aim;
+			spawn_missile TeleportFx;
+			sound $DSTELEPORT 256;
+			delay 100;
+			->Spawn;
+		}
+		delay 300;
+	}
+}

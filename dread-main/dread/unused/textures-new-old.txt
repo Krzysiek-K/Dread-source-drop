@@ -1,0 +1,80 @@
+
+
+gfxgroup Textures {
+	-path textures-new
+	-texture
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_wrap
+
+	-lightlevel	255 1.0
+	-lightlevel	128 0.5
+
+	gfx BOOKS01
+	gfx BRK01GAR
+	gfx COMP01
+	gfx CONCR01 {
+		-lightlevel	255 1.0
+		-lightlevel	128 1.0 _128
+	}
+	gfx CRATE01
+	gfx CRATE02
+	gfx DOOR01
+	gfx DOORKEY
+	gfx FENCE01
+	gfx FENCE02
+	gfx FENCE03
+	gfx LIGHT01
+	gfx LIGHTMTS
+	gfx METAL01 {
+		-lightlevel	255 1.0
+		-lightlevel	128 1.0 _128
+	}
+	gfx METAL02P {
+		-lightlevel	255 1.0
+		-lightlevel	128 1.0 _128
+	}
+	gfx TECH01 {
+		-lightlevel	255 1.0
+		-lightlevel	128 1.0 _128
+	}
+	gfx WALL01M {
+		-lightlevel	255 1.0
+		-lightlevel	128 1.0 _128
+	}
+	gfx WALL02L
+	gfx WALL03
+	gfx WALL03B
+	gfx WOOD01
+
+	// remap names for older maps
+	texture_remap RW23_4	WALL01M
+	texture_remap WALL47_1	METAL01
+	texture_remap DOOR_A1	DOOR01
+	texture_remap DOOR_KEY	DOORKEY
+	texture_remap COMP045B	COMP01
+	texture_remap AQLITE06	LIGHT01
+	texture_remap CRBOX03	CRATE01
+	texture_remap RW11_3	CONCR01
+	texture_remap RW37_1	TECH01
+}
+
+gfxgroup Flats {
+	flat FLOOR5_1	2		1@128
+	version !ST {
+		flat CEIL4_3	0:15	0:1@128
+	}
+	version ST {
+		flat CEIL4_3	15
+	}
+	flat F_GRASS	0:4
+}
+
+gfxgroup Sky {
+	-path sky
+	-downscale hd
+	-palette Main
+	-sky
+
+	gfx SKY
+}

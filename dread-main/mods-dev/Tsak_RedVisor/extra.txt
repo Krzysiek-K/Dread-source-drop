@@ -1,0 +1,595 @@
+
+
+group "DM Tsak RedVisor" {
+	-masked
+	-object
+	-palette Main
+	-path objects/monster-blaster
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_narrow
+
+	gfxgroup "Blaster Guy - Multi" {
+        gfxgroup Frames {
+			gfx M_RVISOR_1	4	48
+			gfx M_RVISOR_2	4	50
+			gfx M_RVISOR_3	4	50
+			gfx M_RVISOR_D1	-1	48
+			gfx M_RVISOR_D2	-1	44
+			gfx M_RVISOR_D3	1	38
+			gfx M_RVISOR_D4	1	28
+			gfx M_RVISOR_DD	3	12
+
+			gfx M_BLSTR_W1 19 34
+			gfx M_BLSTR_W2 13 30
+
+			gfx M_BLSTR_R1 26 50
+			gfx M_BLSTR_R2 18 20
+			gfx M_BLSTR_R3 16 18
+			gfx M_BLSTR_R4 12 20
+			gfx M_BLSTR_R5 16 50
+			gfx M_BLSTR_R5B 16 50
+
+			gfx M_BLSTR_S1 3 -2
+			gfx M_BLSTR_S2 4 -2
+			gfx M_BLSTR_S3 5 -2
+			gfx M_BLSTR_S4 6 -2
+			gfx M_BLSTR_S5 7 -2
+
+			gfx  M_BLSTR_F1	19	54
+
+			multipart T_BLSTR_M1 {
+				part M_MSHOT_M1       0  0
+				part M_RVISOR_1		  0  0
+				part M_BLSTR_W1		  0  0			
+			}
+			multipart T_BLSTR_M2 {
+				part M_MSHOT_M2       0  0
+				part M_RVISOR_1		  0  -1
+				part M_BLSTR_W1		  -1  -1			
+			}
+			multipart T_BLSTR_M3 {
+				part M_MSHOT_M3       0  0
+				part M_RVISOR_1		  0  0
+				part M_BLSTR_W1		  -2  0				
+			}
+			multipart T_BLSTR_M4 {
+				part M_MSHOT_M4       0  0
+				part M_RVISOR_1		  0  -1
+				part M_BLSTR_W1		  -2  -1				
+			}
+
+			multipart T_BLSTR_I1 {
+				part M_MSHOT_I1       0  0
+				part M_RVISOR_1		  0  0
+				part M_BLSTR_W2		  0  0			
+			}
+			multipart T_BLSTR_H1 {
+				part M_MSHOT_H1       0  0
+				part M_RVISOR_3		  0  0
+				part M_BLSTR_W1		  -3  0				
+			}
+
+			multipart T_BLSTR_D1 {
+				part M_MSHOT_D1       0  0
+				part M_RVISOR_D1	  0  0			
+			}
+			multipart T_BLSTR_D2 {
+				part M_MSHOT_D2       0  0
+				part M_RVISOR_D2	  0  0			
+			}
+
+			multipart T_BLSTR_D3 {
+				part M_MSHOT_D3       0  0
+				part M_RVISOR_D3	  0  0			
+			}
+
+			multipart T_BLSTR_D4 {
+				part M_MSHOT_D4       0  0
+				part M_RVISOR_D4	  0  0			
+			}
+			multipart T_BLSTR_D5 {
+				part M_MSHOT_D5       0  0
+				part M_RVISOR_DD	  1  -2			
+			}
+
+			multipart T_BLSTR_DD {
+				part M_MSHOT_DD       0  0
+				part M_RVISOR_DD	  0  0			
+			}
+
+			multipart T_BLSTR_HS1 {
+				part M_MSHOT_M1       0  -1
+				part M_RVISOR_1		  0  -1
+				part M_BLSTR_W1		  0  -1
+				part M_BLSTR_S1		  0  0
+			}
+			multipart T_BLSTR_HS2 {
+				part M_MSHOT_M1       0  -2
+				part M_RVISOR_1		  0  -2
+				part M_BLSTR_W1		  0  -2
+				part M_BLSTR_S1		  0  0
+			}
+			multipart T_BLSTR_HS3 {
+				part M_MSHOT_M1       0  -3
+				part M_RVISOR_1		  0  -3
+				part M_BLSTR_W1		  0  -3
+				part M_BLSTR_S2		  0  0
+			}
+			multipart T_BLSTR_HS4 {
+				part M_MSHOT_M1       0  -4
+				part M_RVISOR_1		  0  -4
+				part M_BLSTR_W1		  0  -4
+				part M_BLSTR_S2		  0  0
+			}
+			multipart T_BLSTR_HS5 {
+				part M_MSHOT_M1       0  -5
+				part M_RVISOR_1		  0  -5
+				part M_BLSTR_W1		  0  -5
+				part M_BLSTR_S3		  0  0
+			}
+
+			multipart T_BLSTR_HL1 {
+				part M_MSHOT_M1       0  -6
+				part M_RVISOR_1		  0  -6
+				part M_BLSTR_W1		  0  -6
+				part M_BLSTR_S3		  0  0
+			}
+			multipart T_BLSTR_HL2 {
+				part M_MSHOT_M1       0  -7
+				part M_RVISOR_1		  0  -7
+				part M_BLSTR_W1		  0  -7
+				part M_BLSTR_S4		  0  0
+			}
+			multipart T_BLSTR_HL3 {
+				part M_MSHOT_M1       0  -8
+				part M_RVISOR_1		  0  -8
+				part M_BLSTR_W1		  0  -8
+				part M_BLSTR_S5		  0  0
+			}
+			multipart T_BLSTR_HR1 {
+				part M_MSHOT_M3       0  -6
+				part M_RVISOR_1		  0  -6
+				part M_BLSTR_W1		  -2  -6
+				part M_BLSTR_S3		  0  0
+			}
+			multipart T_BLSTR_HR2 {
+				part M_MSHOT_M3       0  -7
+				part M_RVISOR_1		  0  -7
+				part M_BLSTR_W1		  -2  -7
+				part M_BLSTR_S4		  0  0
+			}
+			multipart T_BLSTR_HR3 {
+				part M_MSHOT_M3       0  -8
+				part M_RVISOR_1		  0  -8
+				part M_BLSTR_W1		  -2  -8
+				part M_BLSTR_S5		  0  0
+			}
+
+			multipart T_BLSTR_HG1 {
+				part M_BLSTR_R1       0  -7
+				part M_BLSTR_S5		  0  0
+			}
+			multipart T_BLSTR_HG2 {
+				part M_BLSTR_R5B       0  -7
+				part M_BLSTR_S5		  0  0
+			}
+
+			multipart T_BLSTR_HA1 {
+				part M_MSHOT_I1       0  -6
+				part M_RVISOR_1		  0  -6
+				part M_BLSTR_W2		  0  -6	
+				part M_BLSTR_S3		  0  0
+			}
+			multipart T_BLSTR_HA2 {
+				part M_MSHOT_I1       0  -7
+				part M_RVISOR_1		  0  -7
+				part M_BLSTR_W2		  0  -7
+				part M_BLSTR_S4		  0  0
+			}
+			multipart T_BLSTR_HA3 {
+				part M_MSHOT_I1       0  -8
+				part M_RVISOR_1		  0  -8
+				part M_BLSTR_W2		  0  -8
+				part M_BLSTR_S5		  0  0
+			}
+
+			multipart T_BLSTR_HF1 {
+				part M_BLSTR_F1       0  -7
+				part M_BLSTR_S4		  0  0
+			}
+
+			multipart T_BLSTR_HH1 {
+				part M_MSHOT_H1       0  -6
+				part M_RVISOR_3		  0  -6
+				part M_BLSTR_W1		  -3  -6	
+				part M_BLSTR_S3		  0  0
+			}
+			multipart T_BLSTR_HH2 {
+				part M_MSHOT_H1       0  -7
+				part M_RVISOR_3		  0  -7
+				part M_BLSTR_W1		  -3  -7	
+				part M_BLSTR_S4		  0  0
+			}
+			multipart T_BLSTR_HH3 {
+				part M_MSHOT_H1       0  -8
+				part M_RVISOR_3		  0  -8
+				part M_BLSTR_W1		  -3  -8	
+				part M_BLSTR_S5		  0  0
+			}
+		}
+		anim Idle {
+			frame   96 T_BLSTR_M1
+		}
+		anim Walk {
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   48 T_BLSTR_M3
+			frame   48 T_BLSTR_M4
+		}
+		anim Fire {
+			frame   30 T_BLSTR_I1
+			frame   120 T_BLSTR_I1 $DSLOAD2
+			frame   24 M_BLSTR_F1  $DSBLSTR1B
+			frame   24 T_BLSTR_I1
+			frame   24 M_BLSTR_F1  $DSBLSTR1B
+			frame   24 T_BLSTR_I1
+			frame   24 M_BLSTR_F1  $DSBLSTR1B
+			frame   80 T_BLSTR_I1
+
+			frame   30 T_BLSTR_M3  // Resume move from this frame after attack
+			frame   48 T_BLSTR_M4
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   48 T_BLSTR_M3
+			frame   48 T_BLSTR_M4
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   48 T_BLSTR_M3
+			frame   48 T_BLSTR_M4
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+		}
+		anim Pain {
+			frame   66 T_BLSTR_H1  $DSPOPAIN
+			frame   200 T_BLSTR_I1
+		}
+		anim ShortPain {
+			frame   36 T_BLSTR_H1  $DSPOPAIN3
+			frame   200 T_BLSTR_I1
+		}
+		anim Roll&Fire {
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   48 T_BLSTR_M3
+			frame   48 T_BLSTR_M4
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   48 T_BLSTR_M3
+			frame   48 T_BLSTR_M4
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   160 T_BLSTR_M3 // Stop to this walk frame to start a leftward roll
+
+			frame   30 M_BLSTR_R1 $DSHASH2B // Roll left
+			frame   30 M_BLSTR_R2
+			frame   30 M_BLSTR_R3
+			frame   30 M_BLSTR_R4
+			frame   30 M_BLSTR_R5
+
+			frame   30 T_BLSTR_I1 // Attack
+			frame   100 T_BLSTR_I1 
+			frame   24 M_BLSTR_F1  $DSBLSTR1B
+			frame   24 T_BLSTR_I1
+			frame   24 M_BLSTR_F1  $DSBLSTR1B
+			frame   24 T_BLSTR_I1
+			frame   24 M_BLSTR_F1  $DSBLSTR1B
+			frame   80 T_BLSTR_I1
+
+			frame   30 T_BLSTR_M3 // Resume move from this frame after attack
+			frame   48 T_BLSTR_M4
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   48 T_BLSTR_M3
+			frame   48 T_BLSTR_M4
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   48 T_BLSTR_M3
+			frame   48 T_BLSTR_M4
+			frame   160 T_BLSTR_M1  // Stop to this walk frame to start a rightward roll
+
+			frame   30 M_BLSTR_R5B $DSHASH2B // Roll right
+			frame   30 M_BLSTR_R4
+			frame   30 M_BLSTR_R3
+			frame   30 M_BLSTR_R2
+			frame   30 M_BLSTR_R1
+
+			frame   30 T_BLSTR_I1 // Attack
+			frame   100 T_BLSTR_I1 
+			frame   24 M_BLSTR_F1  $DSBLSTR1B
+			frame   24 T_BLSTR_I1
+			frame   24 M_BLSTR_F1  $DSBLSTR1B
+			frame   24 T_BLSTR_I1
+			frame   24 M_BLSTR_F1  $DSBLSTR1B
+			frame   80 T_BLSTR_I1
+
+			frame   30 T_BLSTR_M3 // Resume move from this frame after attack
+			frame   48 T_BLSTR_M4
+		}
+
+		anim Hover-Liftoff&Land {
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   48 T_BLSTR_M3
+			frame   48 T_BLSTR_M4
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   160 T_BLSTR_M3 // Stop to this walk frame to start a hovering
+
+			frame   20 T_BLSTR_HS1 $DSLFTOFF1 // Lift off 
+			frame   20 T_BLSTR_HS2
+			frame   20 T_BLSTR_HS3
+			frame   20 T_BLSTR_HS4
+			frame   20 T_BLSTR_HS5
+			frame   20 T_BLSTR_HL1
+			frame   20 T_BLSTR_HL2
+
+			frame   40 T_BLSTR_HL3 // Left-foot hover loop
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2 //End loop
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3 $DSLAND1 // Land after this frame
+
+			frame   20 T_BLSTR_HL2 // Land
+			frame   20 T_BLSTR_HL1 
+			frame   20 T_BLSTR_HS5
+			frame   20 T_BLSTR_HS4
+			frame   20 T_BLSTR_HS3
+			frame   20 T_BLSTR_HS2
+			frame   20 T_BLSTR_HS1
+
+			frame   160 T_BLSTR_M3 // Stop to this walk frame after landing
+
+			frame   48 T_BLSTR_M4 // Continue move loop from this frame
+			frame   48 T_BLSTR_M1
+			frame   48 T_BLSTR_M2
+			frame   48 T_BLSTR_M3
+			frame   48 T_BLSTR_M4
+		}
+
+		anim Hover-Glide {
+			frame   40 T_BLSTR_HL1 // Left-foot hover loop
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2 // Glide after this frame
+
+			frame   100 T_BLSTR_HG1 $DSGLIDE1 // Glide left
+
+			frame   40 T_BLSTR_HR1 // Right-foot hover loop
+			frame   40 T_BLSTR_HR2
+			frame   40 T_BLSTR_HR3
+			frame   40 T_BLSTR_HR2
+			frame   40 T_BLSTR_HR1
+			frame   40 T_BLSTR_HR2
+			frame   40 T_BLSTR_HR3
+			frame   40 T_BLSTR_HR2
+			frame   40 T_BLSTR_HR1
+			frame   40 T_BLSTR_HR2
+			frame   40 T_BLSTR_HR3
+			frame   40 T_BLSTR_HR2 // Glide after this frame
+
+			frame   100 T_BLSTR_HG2 $DSGLIDE1 // Glide right
+		}
+
+		anim Hover-Aim&Fire {
+			frame   40 T_BLSTR_HR1 // Right-foot hover loop
+			frame   40 T_BLSTR_HR2
+			frame   40 T_BLSTR_HR3
+			frame   40 T_BLSTR_HR2
+			frame   40 T_BLSTR_HR1
+			frame   40 T_BLSTR_HR2
+			frame   40 T_BLSTR_HR3
+			frame   40 T_BLSTR_HR2
+			frame   40 T_BLSTR_HR1
+			frame   40 T_BLSTR_HR2
+			frame   40 T_BLSTR_HR3
+			frame   40 T_BLSTR_HR2 // Switch to Hover-Aim. If you switch from any other frame, start the aim loop from the corresponding frame.  
+
+			frame   40 T_BLSTR_HA1 $DSLOAD2 // Hover-Aim loop. Start frame for this loop depends on  
+			frame   40 T_BLSTR_HA2
+			frame   40 T_BLSTR_HA3
+			frame   40 T_BLSTR_HA2
+			frame   40 T_BLSTR_HA1 // Fire after this frame
+
+			frame   24 T_BLSTR_HF1 $DSBLSTR1B // Fire x3
+			frame   24 T_BLSTR_HA2
+			frame   24 T_BLSTR_HF1 0 -1 $DSBLSTR1B
+			frame   24 T_BLSTR_HA3
+			frame   24 T_BLSTR_HF1 $DSBLSTR1B
+			frame   20 T_BLSTR_HA2
+			frame   40 T_BLSTR_HA1
+			frame   40 T_BLSTR_HA2
+
+			frame   40 T_BLSTR_HA3 // After firing, continue Hover-Aim loop from this frame
+			frame   40 T_BLSTR_HA2
+			frame   40 T_BLSTR_HA1
+			frame   40 T_BLSTR_HA2
+			frame   40 T_BLSTR_HA3
+			frame   40 T_BLSTR_HA2
+			frame   40 T_BLSTR_HA1
+			frame   40 T_BLSTR_HA2
+			frame   40 T_BLSTR_HA3
+			frame   40 T_BLSTR_HA2
+		}
+
+		anim Hover-Hit {
+			frame   40 T_BLSTR_HL1 
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2 
+
+			frame   40 T_BLSTR_HH1 $DSPOPAIN //Hit frame, depending on when he is hit use the matching hit frame so hovering is not interrupted
+
+			frame   40 T_BLSTR_HL2 //Continue hover loop
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+		}
+
+		anim Hover-Die {
+			frame   40 T_BLSTR_HL1 
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL1
+			frame   40 T_BLSTR_HL2
+			frame   40 T_BLSTR_HL3
+			frame   40 T_BLSTR_HL2 
+
+			frame   30 T_BLSTR_D1  0 -5 $DSPODTH1
+			frame   30 T_BLSTR_D2  0 -4
+			frame   30 T_BLSTR_D3  0 -3
+			frame   30 T_BLSTR_D4  0 -2
+			frame   30 T_BLSTR_D5  0 -1
+			frame  400 T_BLSTR_DD  0 0
+		}
+		anim Die {
+			frame  150 T_BLSTR_I1
+			frame   30 T_BLSTR_D1  $DSPODTH1
+			frame   30 T_BLSTR_D2
+			frame   30 T_BLSTR_D3
+			frame   30 T_BLSTR_D4
+			frame   30 T_BLSTR_D5
+			frame  400 T_BLSTR_DD
+		}
+		anim Respawn {
+			frame  150 T_BLSTR_DD
+			frame	48 T_BLSTR_D5	$DSRESP1
+			frame	44 T_BLSTR_D4
+			frame	40 T_BLSTR_D3
+			frame	36 T_BLSTR_D2
+			frame	36 T_BLSTR_D1
+			frame  150 T_BLSTR_M1
+		}
+	}
+	gfxgroup "Blaster Guy - Sounds" {
+		trksound DSBLSTR1B {					 //*Blaster guy fire
+			 1	S	W_shotgun			64	0
+			 3	S	V_teleport			64	10			 
+			 +	-	XXX				--	 --
+			 2	-	---				60	 6
+			 2	-	---				55	 2
+			 2	-	---				50	-2
+			 2	-	---				45	-6
+			 2	-	---				40	-10
+			 2	-	---				35	-14
+			 2	-	---				30	-18
+			 2	-	---				20	-22
+			 +	-	XXX				15	 --
+			 2	-	---				10	 0
+			5	E	---				 0	 --
+		}
+		trksound DSLOAD2 {					 //*Blaster guy pre-load
+			1	S	V_doors_a1		64	0
+			2	S	W_shtgn_Rb		64	+4
+			4	S	W_shtgn_Ra		64	+4
+			1	S	W_shtgn_Ra		64	0
+			1	S	W_shtgn_Rb		64	-5
+			+	-	XXX				--	--
+			+	E	---				 0	--
+		}
+		trksound DSHASH2B {					 //*Blaster guy Roll
+			 1	S	W_shotgun		15	10
+			 4	S	W_shtgn_Rb		64	 0
+			 1	S	V_teleport		30	-5
+			 4	-	V_doors_b     	44	-10
+			 4	S	W_shtgn_Rb		64	 0
+			 4	S	W_shtgn_Ra		20	 -5
+			 2	S	V_doors_a3		40	-15
+			 1	-	--- 			40	-16
+			 1	-	--- 			40	-17	
+			 1	-	--- 			40	-18
+			 1	-	--- 			40	-19
+			 1	-	--- 			40	-20				 
+			1	E	---				 0	 --
+		}
+		trksound DSGLIDE1 {					 //*Blaster guy Glide
+			 1	S	V_doors_a3		64	15
+			4	S	V_doors_a2		64	-6
+			 +	-	XXX				--	 --		
+			 20	-	--- 			50	--
+			 2	S	V_doors_a2		20	-6
+			 +	-	XXX				--	 --	
+			2	-	---				15	 --
+			2	-	---				10	 --
+			2	-	---				5	 --
+			2	E	---				 0	 --
+		}
+		trksound DSLFTOFF1 {					 //*Blaster guy Lift-off
+			 1	S	W_shotgun		10	10	
+			 4	S	V_doors_a2		64	-20			 
+			 +	-	XXX				--	 --
+			 4	-	---				60	 -18
+			 4	-	---				55	 -16
+			 4	-	--- 			50	-14
+			 4	-	---	        	45	-12
+			 4	-	---				40	-10
+			 4	-	---				35	-8
+			 4	-	---				30	-6
+			 4	-	---				20	-22
+			 +	-	XXX				5	 -22
+			 2	-	---				10	 -22
+			2	E	---				 0	 --
+		}
+		trksound DSLAND1 {					 //*Blaster guy Land
+			 1	S	W_shotgun		10	10	
+			 4	S	V_doors_a2		64	-6			 
+			 +	-	XXX				--	 --
+			 4	-	---				64	 -8
+			 4	-	---				64	 -10
+			 4	-	--- 			64	-12
+			 4	-	---	        	45	-14
+			 4	-	---				40	-16
+			 4	-	---				35	-18
+			 4	-	---				30	-20
+			 4	-	---				20	-22
+			 +	-	XXX				5	 -22
+			 2	-	---				10	 -22
+			2	E	---				 0	 --
+		}
+	}
+}

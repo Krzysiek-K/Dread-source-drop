@@ -1,0 +1,30 @@
+
+group FazD01 {
+
+	-path textures-new
+	-texture
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_wrap
+
+	-lightlevel	255 1.0
+	-lightlevel	128 1.0 _128
+	
+	gfx WALFEN
+	gfx FLAT
+	gfx BOOKHALF
+
+	group Flats {
+		flat BIBLIO_C 0:1
+		flat CHURCH_F 9:10
+		flat ENTER_C  8:9 9@128
+		flat ENTER_F  8:1 9:1@128
+		flat PREBIB_F 10 10:1@128
+		flat PREBIB_C 10:3 10:2@128
+		flat PREBIB_D 10:2
+		flat GANG_C   10:5
+		flat GARAGE_C 5:3
+		flat SEA_F    0:15
+		flat FIX_DARK 2:1
+	}
+}

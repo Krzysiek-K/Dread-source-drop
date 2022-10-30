@@ -1,0 +1,256 @@
+
+
+gfxgroup Textures {
+	-path textures-new
+	-texture
+	-palette Main
+	-downscale 1 2		// version Y/2
+	-pixelpack xd_wrap
+
+	-lightlevel	255 1.0
+	-lightlevel	128 1.0 _128
+
+	gfx DOOR01
+	gfx DOORKEY
+	gfx LIGHTMTS
+
+	group Brick {
+		gfx WALL01A
+		gfx WALL01AM
+		gfx WALL01AG
+		gfx WALL01AS
+		gfx WALL01B
+		gfx WALL01BM
+		gfx WALL01C
+		gfx WALL01CM
+		gfx WALL01D
+		gfx WALL01DM
+		gfx WALL01E
+		gfx WALL01EM
+		gfx WALL01F
+		gfx WALL01FM
+		gfx WALL1L1
+		gfx WALL1ML1
+	}
+	group Metal {
+        	gfx TECH01
+		gfx WALL02
+		gfx WALL02L
+		gfx WALL02TL
+		gfx WALL03
+		gfx WALL03L
+		gfx WALL03S
+		gfx WALL03T
+		gfx WALL04
+		gfx WALL04L
+		gfx METAL01
+		gfx METAL02
+		gfx METAL02B
+		gfx METAL02C
+		gfx METAL02D
+		gfx METAL02E
+	}
+
+	group Computer-Bookshelf {
+        	gfx BOOKS01
+        	gfx BOOKS02
+        	gfx COMP01
+        	gfx COMP01A
+        	gfx COMP01A2
+        	gfx COMP01E
+        	gfx COMP02
+                gfx STRP01CB
+	}
+
+	group Tank {
+		gfx TANK01
+		gfx TANK02
+		gfx TANK02B
+		gfx TANK03
+		gfx TANK03B
+		gfx TANK04
+		gfx TANK05
+		gfx TANK05B
+		gfx TANK06
+		gfx TANK06B
+		gfx TANK07
+		gfx TANK07B
+		gfx TANK08
+		gfx TANK08B
+		gfx TANK09
+		gfx TANK09B
+	}
+	group Pipes {
+		gfx PIPES01
+		gfx PIPES02
+	}
+	group Wood {
+		gfx WOOD01
+		gfx WOOD01B
+		gfx WOOD01C
+		gfx WOOD01D
+	}
+	group Concrete {
+		gfx CONCR01
+		gfx CONCR01B
+		gfx CONCR01C
+		gfx CONCR01D
+		gfx CONCR01E
+		gfx CONCR01F
+		gfx CONCR01G
+		gfx CONCR01H
+		gfx CONCR02
+		gfx CONCR02B
+		gfx CONCR02C
+		gfx CONCR02D
+		gfx CONCR02E
+		gfx CONCR02F
+		gfx CONCR02G
+		gfx CONCR02H
+	}
+	group Boxes {
+		gfx CRATE01
+		gfx CRATE02
+		gfx CRATE02S
+		gfx CRATE03
+	}
+	group Fence {
+		gfx FENCE01
+		gfx FENCE01B
+		gfx FENCE02
+		gfx FENCE02B
+		gfx FENCE02M
+		gfx FENCE03
+		gfx FENCE03B
+		gfx FENCE03M
+		gfx FENCE04
+		gfx FENCE04B
+	}
+	group Switch {
+		gfx SWTCH01A
+		gfx SWTCH01B
+		gfx SWTCH01C
+		gfx SWTCH01D
+		gfx SWTCH01E
+		gfx SWTCH02A
+		gfx SWTCH02B
+		gfx SWTCH02C
+		gfx SWTCH02D
+		gfx SWTCH03A
+		gfx SWTCH03B
+		gfx SWTCH03C
+		gfx SWTCH03D
+		gfx SWTCH04G
+	}
+
+	// remap names for older maps
+	texture_remap WALL01M	WALL01AM
+	texture_remap WALL47_1	METAL01
+	texture_remap DOOR_A1	DOOR01
+	texture_remap DOOR_KEY	DOORKEY
+	texture_remap COMP045B	COMP01
+	texture_remap AQLITE06	LIGHTMTS
+	texture_remap CRBOX03	CRATE01
+	texture_remap RW11_3	CONCR01
+	texture_remap RW23_4	WALL01AM
+	texture_remap RW37_1	TECH01
+	texture_remap BRK01GAR	WALL01G
+	texture_remap WALL03B	WALL03L
+	texture_remap METAL02P METAL02
+}
+
+gfxgroup Flats {
+	group Colors {
+		flat F_COL00 0 0@128
+		flat F_COL01 1 0@128
+		flat F_COL02 2 1@128
+		flat F_COL03 3 2@128
+		flat F_COL04 4 2@128
+		flat F_COL05 5 3@128
+		flat F_COL06 6 5@128
+		flat F_COL07 7 5@128
+		flat F_COL08 8 10@128
+		flat F_COL09 9 10@128
+		flat F_COL10 10 1@128
+		flat F_COL11 11 9@128
+		flat F_COL12 12 8@128
+		flat F_COL13 13 7@128
+		flat F_COL14 14 15@128
+		flat F_COL15 15 2@128
+	}
+	group "Fixed Colors" {
+		flat F_FIX00 0
+		flat F_FIX01 1
+		flat F_FIX02 2
+		flat F_FIX03 3
+		flat F_FIX04 4
+		flat F_FIX05 5
+		flat F_FIX06 6
+		flat F_FIX07 7
+		flat F_FIX08 8
+		flat F_FIX09 9
+		flat F_FIX10 10
+		flat F_FIX11 11
+		flat F_FIX12 12
+		flat F_FIX13 13
+		flat F_FIX14 14
+		flat F_FIX15 15
+		flat F_FIXD1 0:1
+		flat F_FIXD2 1:2
+		flat F_FIXD3 2:3
+		flat F_FIXD4 0:4
+		flat F_FIXD5 3:5
+		flat F_FIXD6 5:6
+		flat F_FIXD7 6:7
+		flat F_FIXD8 9:8
+		flat F_FIXD9 10:9
+	}
+	group Legacy {
+		flat FLOOR5_1 2	1@128
+		version !ST {
+			flat CEIL4_3 0:15 0:1@128
+		}
+		version ST {
+			flat CEIL4_3 15
+		}
+	}
+	version !ST {
+		flat F_DARK 2:1 1:0@128
+		flat F_SWAMP 4:9 2:0@128
+		flat F_DIRT 9:10 10:0@128
+		flat F_DIRT2 8:9 9:10@128
+		flat F_WATER 15:1 2:1@128
+		flat F_ICE 14:15 15:5@128
+		flat F_SNOW 13:7 7:5@128
+		flat F_SNOW2 7:6 5:3@128
+		flat F_LAVA 12:11 11:10@128
+		flat F_BLOOD 11:0 9:10@128
+		flat F_SAND 12:6 8:9@128
+		flat F_GRASS 4:1 2:0@128
+		flat F_NUKAGE 4:2 2:0@128
+	}
+	version ST {
+		flat F_DARK 2
+		flat F_SWAMP 4
+		flat F_DIRT 9
+		flat F_DIRT2 8
+		flat F_WATER 15
+		flat F_ICE 14
+		flat F_SNOW 13
+		flat F_SNOW2 7
+		flat F_LAVA 12
+		flat F_BLOOD 11
+		flat F_SAND 12
+		flat F_GRASS 4
+		flat F_NUKAGE 4 2@128
+	}
+}
+
+gfxgroup Sky {
+	-path sky
+	-downscale hd
+	-palette Main
+	-sky
+
+	gfx SKY
+}

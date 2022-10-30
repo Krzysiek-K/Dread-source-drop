@@ -1,0 +1,212 @@
+
+
+actor EYEFLY_CORE 0
+{
+	// Internal state:
+	//	value	0:normal	1:dodging	2:attacking
+	
+
+	callback OnCreate {
+		->Spawn;
+	}
+
+	callback OnDamage {
+
+		if( damage > 0 )
+		{
+			if( value == 1 )
+				damage = 0;
+
+			health -= damage;
+			damage = 0;
+
+			if( health <= 0 )
+			{
+				hitbox_off;
+				->Die;
+			}
+
+			if( rand() & 1 )	->DodgeLeft;
+			else				->DodgeRight;
+		}
+	}
+
+	callback OnPulse {
+		if( pulse==2 )
+			if( value == 2 )
+			{
+				value = 0;
+				player_damaged 10 + (rand()&7)*2;
+				->AttackFlyEndHit;
+			}
+	}
+
+	state Spawn {
+		collision_set 10;
+		hitbox_on;
+		health = 60;
+		timer_attack = 100;
+		value = 0;
+		move_collide = 3;
+
+		->Idle;
+	}
+
+	state Idle {
+		value = 0;
+		frame   32 T_EYE_MOVE_1 
+
+		if( timer_attack<=0 )
+		{
+			vector_aim;
+			if( vector_hitscan() )
+				->Attack;
+		}
+		if( timer_walk <= 0 )
+		{
+			vector_aim;
+
+			vector_aim;
+			vector_distance;
+
+			if( distance >= 128 )
+			{
+				if( rand() & 1 )
+				{
+					if( rand() & 1 )	vector_align 256,  256;
+					else				vector_align 256, -256;
+				}
+			}
+			else
+			{
+				if( rand() & 1 )	vector_align -256,  256;
+				else				vector_align -256, -256;
+			}
+
+			move_walk 9, 32;
+		}
+
+		frame   32 T_EYE_MOVE_2
+		frame   32 T_EYE_MOVE_3
+		frame   32 T_EYE_MOVE_4		
+		frame   32 T_EYE_MOVE_5
+		frame   32 T_EYE_MOVE_6
+		frame   32 T_EYE_MOVE_7
+		frame   32 T_EYE_MOVE_8			
+	}
+
+	state Attack {
+		value = 0;
+		move_stop;
+		frame   16 T_EYE_MOVE_5		 $DSBUBBLE2 //Warn attack sound		
+		frame   16 T_EYE_MOVE_6		
+		frame   16 T_EYE_MOVE_7
+		frame   16 T_EYE_MOVE_8
+		frame   16 T_EYE_MOVE_1
+		frame   16 T_EYE_MOVE_2
+		frame   16 T_EYE_MOVE_3
+		frame   16 T_EYE_MOVE_4
+		frame   16 T_EYE_MOVE_5     $DSWARP3  //Preplay attack sound
+
+		timer_attack = 500;
+		vector_aim;
+		->AttackFly;
+	}
+
+	func Flight {
+		move_missile 70, 10000;
+		if( timer_walk <= 8 ) ->AttackFlyEnd;
+		if( timer_attack <= 0 ) ->AttackFlyEnd;
+		temp1 = timer_walk;
+		if( temp1 > 32 ) temp1 = 32;
+	}
+
+	state AttackFly {
+		value = 2;
+		frame #M_EYE_A1;	Flight;		delay temp1;		// TBD: move slightly horizontally
+		frame #M_EYE_A1;	Flight;		delay temp1;
+	}
+
+	state AttackFlyEnd {
+		value = 0;
+		move_stop;
+		frame	24 T_EYE_ATT_STOP   //End attack	
+		timer_attack = 100 + rand();
+		->Idle;
+	}
+
+	state AttackFlyEndHit {
+		value = 0;
+		vector_aim;
+
+		vector_align -256,  (rand()-128)<<1;
+		move_walk 9, 32;
+
+		frame	24 T_EYE_ATT_STOP   //End attack	
+		timer_attack = 100 + rand();
+		->Idle;
+	}
+
+	state DodgeLeft {
+		value = 1;
+		vector_aim;
+		vector_align 0,  256;
+		sound $DSWARP6B;
+		frame #M_EYE_W2;
+		move_missile 120, 32;
+		delay timer_walk;
+		move_stop;
+		frame #T_EYE_WARP_STOP_L;
+		->Idle;
+	}
+
+	state DodgeRight {
+		value = 1;
+		vector_aim;
+		vector_align 0, -256;
+		sound $DSGROWL8C;
+		frame #M_EYE_W2;
+		move_missile 120, 32;
+		delay timer_walk;
+		move_stop;
+		frame #T_EYE_WARP_STOP_R;
+		->Idle;
+	}
+
+	state Die {
+		value = 0;
+		move_stop;
+			frame  30 T_EYE_EXPL1      $DSBUBBLE1C
+			frame  30 T_EYE_EXPL2			
+	
+			explosion_damage 128;
+			sound $DSBAREXP 512;
+			frame  30 F_EXPL_S1 0 -20
+			frame  30 F_EXPL_S2 0 -20
+			frame  30 F_EXPL_S3 0 -20
+			frame  30 F_EXPL_S4 0 -20
+			frame  30 F_EXPL_S5 0 -20
+			frame  30 F_EXPL_B6  0 4 
+			frame  30 F_EXPL_B7  0 4
+		levstat_monsters = levstat_monsters + 1;
+		->Dead;
+	}
+
+	state Dead {
+		frame_none;
+		move_stop;
+		collision_off;
+		hitbox_off;
+		delay 5000;
+	}
+}
+
+
+actor EYEFLY 72 #T_EYE_MOVE_1
+{
+
+	callback OnCreate {
+		levstat_monsters_max = levstat_monsters_max + 1;
+		become EYEFLY_CORE;
+	}
+}

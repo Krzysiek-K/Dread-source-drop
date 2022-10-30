@@ -1,0 +1,260 @@
+
+
+gfxgroup "Weapon Sprites" {
+	-weaponsprite
+	-colorkey *
+	-trim
+	-lightlevel	255	1.0625
+
+	gfxgroup Pistol {
+		-path weapons/pistol-sprites
+		gfx	SP_PISGA0 {
+			-autopal * 16
+		}
+		gfx	SP_PISFA0 {
+			-autopal * 16
+		}
+		gfx	SP_PISFB0 {
+			-autopal * 16
+		}
+		anim Idle {
+			-name SP_PISTOL_IDLE
+			-walkswing 1
+			frame  100	SP_PISGA0	  0   0
+		}
+		anim Swing {
+			frame  24	SP_PISGA0	  0   0
+			frame  24	*			 -3  -5
+			frame  24	*			 -5  -8
+			frame  24	*			 -7  -8
+			frame  24	*			 -8  -6
+			frame  24	*			 -8  -2
+			frame  24	*			 -8   3
+			frame  24	*			 -8   6
+			frame  24	*			 -6   8
+			frame  24	*			 -4   6
+			frame  24	*			 -2   2
+			frame  24	*			  0  -2
+			frame  24	*			  3  -6
+			frame  24	*			  5  -8
+			frame  24	*			  6  -8
+			frame  24	*			  7  -5
+			frame  24	*			  8   0
+			frame  24	*			  7   4
+			frame  24	*			  6   7
+			frame  24	*			  5   7
+			frame  24	*			  2   5
+			frame   8	*			  0   1
+		}
+		anim Firing {
+			// attack time = 120
+			-name SP_PISTOL_FIRE
+			frame   40	SP_PISFA0	0	0
+			frame    -  SP_PISFB0	0	0
+			frame    -	SP_PISGA0	0	0
+			frame   60	SP_PISGA0	0   0
+			-loop
+			-walkswing 1
+			frame  100	SP_PISGA0	0   0
+		}		
+		anim "Firing SloMo" {
+			frame   80	SP_PISFA0	0	0
+			frame    -  SP_PISFB0	0	0
+			frame    -	SP_PISGA0	0	0
+			frame   120	SP_PISGA0	0   0
+		}		
+	}
+
+	gfxgroup Shotgun {
+		-path weapons/shotgun-sprites
+
+		gfx SP_SHTFA1	0 -6 {
+			-autopal * 16
+		}
+		gfx SP_SHTFB1	0 -6 {
+			-autopal * 16
+		}
+		gfx SP_SHTGA0	0 -6 {
+			-autopal * 16
+		}
+		gfx SP_SHTGB0	0 -6 {
+			-autopal * 16
+		}
+		gfx SP_SHTGC0	0 -6 {
+			-autopal * 16
+		}
+
+		anim Idle {
+			-name SP_SHOTGUN_IDLE
+			-walkswing 1
+			frame  100	SP_SHTGA0	  0   0
+		}
+		anim Swing {
+			frame  24	SP_SHTGA0	  0   0
+			frame  24	*			 -3  -5
+			frame  24	*			 -5  -8
+			frame  24	*			 -7  -8
+			frame  24	*			 -8  -6
+			frame  24	*			 -8  -2
+			frame  24	*			 -8   3
+			frame  24	*			 -8   6
+			frame  24	*			 -6   8
+			frame  24	*			 -4   6
+			frame  24	*			 -2   2
+			frame  24	*			  0  -2
+			frame  24	*			  3  -6
+			frame  24	*			  5  -8
+			frame  24	*			  6  -8
+			frame  24	*			  7  -5
+			frame  24	*			  8   0
+			frame  24	*			  7   4
+			frame  24	*			  6   7
+			frame  24	*			  5   7
+			frame  24	*			  2   5
+			frame   8	*			  0   1
+		}
+		anim Firing {
+			// timer_attack = 300;
+			-name SP_SHOTGUN_FIRE
+			frame   32      SP_SHTFA1          0    0
+			frame   -       SP_SHTFB1          0    0
+			frame   -       SP_SHTGB0          0    0
+			frame   -       SP_SHTGB0        -37  -22
+			frame   -       SP_SHTGC0          0    0
+			frame   -       SP_SHTGC0         -1    1
+			frame   -       SP_SHTGB0        -44  -29
+			frame   -       SP_SHTGB0        -45  -31
+			frame   -       SP_SHTGB0         -5   -7
+			frame   12	    SP_SHTGA0          0    0
+			frame   80		SP_SHTGA0		   0    0
+			-loop
+			-walkswing 1
+			frame   80		SP_SHTGA0		   0    0
+		}
+	}
+
+	gfxgroup Chaingun {
+		-path weapons/chaingun-sprites
+		gfx SP_CHGGA0	-128	-136 {
+			-autopal * 16
+		}
+		gfx SP_CHGFA0	-128	-140 {
+			-autopal * 16
+		}
+		gfx SP_CHGFB0	-128	-140 {
+			-autopal * 16
+		}
+		gfx SP_CHGFC0	-128	-140 {
+			-autopal * 16
+		}		
+		anim Idle {
+			-name SP_CHAINGUN_IDLE
+			-walkswing 1
+			frame  1000 SP_CHGGA0	  0   0
+		}
+		anim Swing {
+			frame  24	SP_CHGGA0	  0   0
+			frame  24	*			 -3  -5
+			frame  24	*			 -5  -8
+			frame  24	*			 -7  -8
+			frame  24	*			 -8  -6
+			frame  24	*			 -8  -2
+			frame  24	*			 -8   3
+			frame  24	*			 -8   6
+			frame  24	*			 -6   8
+			frame  24	*			 -4   6
+			frame  24	*			 -2   2
+			frame  24	*			  0  -2
+			frame  24	*			  3  -6
+			frame  24	*			  5  -8
+			frame  24	*			  6  -8
+			frame  24	*			  7  -5
+			frame  24	*			  8   0
+			frame  24	*			  7   4
+			frame  24	*			  6   7
+			frame  24	*			  5   7
+			frame  24	*			  2   5
+			frame   8	*			  0   1
+		}
+		anim Firing {
+			-name SP_CHAINGUN_FIRE
+			frame	24	SP_CHGFA0		  0  0
+			frame	-	SP_CHGFB0		  0  0
+		}
+		anim FiringStop {
+			-name SP_CHAINGUN_SPINDOWN
+			frame  20	SP_CHGFC0		  0  3
+			frame  30 	SP_CHGGA0   	  0  6
+			frame  40	SP_CHGFC0		  0  0
+			frame  20	SP_CHGGA0   	  0  2
+			frame  20	SP_CHGGA0   	  0  1
+			-loop
+			-walkswing 1
+			frame  300	SP_CHGGA0   	  0  0 
+		}
+	}
+	
+	gfxgroup Launcher {
+		-path weapons/launcher-sprites
+		gfx SP_MISGA0	-128	-134 {
+			-autopal * 16
+		}
+		gfx SP_MISFA0	-128	-137 {
+			-autopal * 16
+		}
+		gfx SP_MISFB0	-128	-134 {
+			-autopal * 16
+		}
+		gfx SP_MISFC0	-128	-135 {
+			-autopal * 16
+		}
+		gfx SP_MISFD0	-128	-134 {
+			-autopal * 16
+		}
+		gfx SP_MISFE0	-128	-134 {
+			-autopal * 16
+		}
+		anim Idle {
+			-name SP_LAUNCHER_IDLE
+			-walkswing 1
+			frame  100	SP_MISGA0	  0   0
+		}
+		anim Swing {
+			frame  24	SP_MISGA0	  0   0
+			frame  24	*			 -3  -5
+			frame  24	*			 -5  -8
+			frame  24	*			 -7  -8
+			frame  24	*			 -8  -6
+			frame  24	*			 -8  -2
+			frame  24	*			 -8   3
+			frame  24	*			 -8   6
+			frame  24	*			 -6   8
+			frame  24	*			 -4   6
+			frame  24	*			 -2   2
+			frame  24	*			  0  -2
+			frame  24	*			  3  -6
+			frame  24	*			  5  -8
+			frame  24	*			  6  -8
+			frame  24	*			  7  -5
+			frame  24	*			  8   0
+			frame  24	*			  7   4
+			frame  24	*			  6   7
+			frame  24	*			  5   7
+			frame  24	*			  2   5
+			frame   8	*			  0   1
+		}
+		anim Firing {
+			// timer_attack = 150;
+			-name SP_LAUNCHER_FIRE
+			frame	24	SP_MISFA0		  0  0
+			frame	-	SP_MISFB0		  0  0
+			frame	-	SP_MISFC0		  0  0
+			frame	-	SP_MISFD0		  0  0
+			frame	-	SP_MISFE0		  0  0
+			frame	60	SP_MISGA0		  0  0
+			-loop
+			-walkswing 1
+			frame	200	SP_MISGA0		  0  0
+		}
+	}
+}

@@ -1,0 +1,527 @@
+
+
+// -------------------------------- Shotgun --------------------------------
+
+actor SHOT 21 #SHOTA0 {
+	callback OnCreate	{
+		levstat_items_max = levstat_items_max + 1;
+		pickup_on;
+		frame #SHOTA0;
+	}
+	callback OnPulse	{
+		if( pulse == 0 )
+		{
+			// local pickup
+			if( statbar_weapon_1==0 || 
+				mp_mode==0 && player_shells<player_shells_cap )
+			{
+				if( mp_mode==0 ) pickup_off;
+				if( skill <= 0 || skill >= 4 )	player_shells += 20;
+				else							player_shells += 10;
+				if( player_shells > player_shells_cap )
+					player_shells = player_shells_cap;
+				statbar_weapon_1 = GFX_STYSNUM3;
+				weapon_send_pulse = 3;
+				player_pal_flash = 9;
+				levstat_items = levstat_items + 1;
+				sound $DSWEAP1;
+				player_pulse 1;
+				if( mp_mode )	mp_pulse_remote_copy 1;
+				else			destroyed;
+			}
+		}
+		else
+		{
+			// remote pickup
+			sound $DSWEAP1 256;
+		}
+	}
+}
+
+// -------------------------------- Minigun --------------------------------
+
+actor MGUN 22 #MGUNA0 {
+	callback OnCreate {
+		levstat_items_max = levstat_items_max + 1;
+		pickup_on;
+		frame #MGUNA0;
+	}
+	callback OnPulse {
+		if( pulse == 0 )
+		{
+			// local pickup
+			if( statbar_weapon_2==0 ||
+				mp_mode==0 && player_bullets<player_bullets_cap )
+			{
+				if( mp_mode==0 ) pickup_off;
+				if( skill <= 0 || skill >= 4 )	player_bullets += 100;
+				else							player_bullets +=  50;
+				if( player_bullets > player_bullets_cap )
+					player_bullets = player_bullets_cap;
+				statbar_weapon_2 = GFX_STYSNUM4;
+				weapon_send_pulse = 4;
+				player_pal_flash = 9;
+				levstat_items = levstat_items + 1;
+				sound $DSWEAP1;
+				player_pulse 1;
+				if( mp_mode )	mp_pulse_remote_copy 1;
+				else			destroyed;
+			}
+		}
+		else
+		{
+			// remote pickup
+			sound $DSWEAP1 256;
+		}
+	}
+}
+
+// -------------------------------- Rocket launcher --------------------------------
+
+actor LAUN 23 #LAUNA0 {
+	callback OnCreate {
+		levstat_items_max = levstat_items_max + 1;
+		pickup_on;
+		frame #LAUNA0;
+	}
+	callback OnPulse {
+		if( statbar_weapon_3==0 || player_rockets<player_rockets_cap )
+		{
+			pickup_off;
+			if( skill <= 0 || skill >= 4 )	player_rockets += 10;
+			else							player_rockets +=  5;
+			if( player_rockets > player_rockets_cap )
+				player_rockets = player_rockets_cap;
+			statbar_weapon_3 = GFX_STYSNUM5;
+			weapon_send_pulse = 5;
+			player_pal_flash = 9;
+			levstat_items = levstat_items + 1;
+			sound $DSWEAP1;
+			player_pulse 1;
+			destroyed;
+		}
+	}
+}
+
+
+
+// -------------------------------- Ammo: Bullets --------------------------------
+
+actor CLIP 31 #CLIPA0 {
+	callback OnCreate	{ pickup_on;	frame #CLIPA0;		}
+	callback OnPulse	{ 
+		if( player_bullets < player_bullets_cap )
+		{
+			pickup_off;
+			if( skill <= 0 || skill >= 4 )	player_bullets += 20;
+			else							player_bullets += 10;
+			if( player_bullets > player_bullets_cap )
+				player_bullets = player_bullets_cap;
+			player_pal_flash = 9;
+			sound $DSDBLOAD;
+			destroyed;
+		}
+	}
+}
+
+actor AMMO 32 #AMMOA0 {
+	callback OnCreate	{
+		pickup_on;
+		frame #AMMOA0;
+	}
+	callback OnPulse	{ 
+		if( pulse == 0 )
+		{
+			// local pickup
+			if( player_bullets < player_bullets_cap )
+			{
+				pickup_off;
+				if( skill <= 0 || skill >= 4 )	player_bullets += 100;
+				else							player_bullets +=  50;
+				if( player_bullets > player_bullets_cap )
+					player_bullets = player_bullets_cap;
+				player_pal_flash = 9;
+				sound $DSWPNUP;
+				if( mp_mode )
+				{
+					frame_none;
+					pickup_off;
+					vector_set_timer MP_ItemRespawnTime;
+					mp_pulse_remote_copy 1;
+					->WaitRespawn;
+				}
+				else
+					destroyed;
+			}
+		}
+		else if( pulse == 1 )
+		{
+			// remote pickup
+			pickup_off;
+			sound $DSWPNUP;
+			frame_none;
+			->WaitRespawn;
+		}
+		else if( pulse == 2 )
+		{
+			// remote respawn
+			->Respawn;
+		}
+	}
+
+	state WaitRespawn {
+		//delay MP_ItemRespawnTime;
+		if( vector_get_timer() <= 0 )
+		{
+			// Respawn
+			mp_pulse_remote_copy 2;
+			->Respawn;
+		}
+		delay 300;
+	}
+
+	state Respawn {
+		vector_aim;
+		spawn_missile ItemTeleportFx;
+		sound $DSTELEPORT 256;
+		delay 100;
+		pickup_on;
+		frame #AMMOA0;
+		done;
+	}
+}
+
+
+// -------------------------------- Ammo: Shells --------------------------------
+
+actor SHEL 33 #SHELA0 {
+	callback OnCreate	{ pickup_on;	frame #SHELA0;		}
+	callback OnPulse	{ 
+		if( player_shells < player_shells_cap )
+		{
+			pickup_off;
+			if( skill <= 0 || skill >= 4 )	player_shells += 10;
+			else							player_shells +=  5;
+			if( player_shells > player_shells_cap )
+				player_shells = player_shells_cap;
+			player_pal_flash = 9;
+			sound $DSDBLOAD;
+			destroyed;
+		}
+	}
+}
+
+actor SBOX 34 #SBOXA0 {
+	callback OnCreate	{
+		pickup_on;
+		frame #SBOXA0;
+	}
+	callback OnPulse	{ 
+		if( pulse == 0 )
+		{
+			// local pickup
+			if( player_shells < player_shells_cap )
+			{
+				pickup_off;
+				if( skill <= 0 || skill >= 4 )	player_shells += 40;
+				else							player_shells += 20;
+				if( player_shells > player_shells_cap )
+					player_shells = player_shells_cap;
+				player_pal_flash = 9;
+				sound $DSWPNUP;
+				if( mp_mode )
+				{
+					frame_none;
+					pickup_off;
+					vector_set_timer MP_ItemRespawnTime;
+					mp_pulse_remote_copy 1;
+					->WaitRespawn;
+				}
+				else
+					destroyed;
+			}
+		}
+		else if( pulse == 1 )
+		{
+			// remote pickup
+			pickup_off;
+			sound $DSWPNUP;
+			frame_none;
+			->WaitRespawn;
+		}
+		else if( pulse == 2 )
+		{
+			// remote respawn
+			->Respawn;
+		}
+	}
+
+	state WaitRespawn {
+		//delay MP_ItemRespawnTime;
+		if( vector_get_timer() <= 0 )
+		{
+			// Respawn
+			mp_pulse_remote_copy 2;
+			->Respawn;
+		}
+		delay 300;
+	}
+
+	state Respawn {
+		vector_aim;
+		spawn_missile ItemTeleportFx;
+		sound $DSTELEPORT 256;
+		delay 100;
+		pickup_on;
+		frame #SBOXA0;
+		done;
+	}
+}
+
+
+
+// -------------------------------- Ammo: Rockets --------------------------------
+
+actor ROCK 35 #ROCKA0 {
+	callback OnCreate	{ pickup_on;	frame #ROCKA0;		}
+	callback OnPulse	{ 
+		if( player_rockets < player_rockets_cap )
+		{
+			pickup_off;
+			if( skill <= 0 || skill >= 4 )	player_rockets +=  2;
+			else							player_rockets +=  1;
+			if( player_rockets > player_rockets_cap )
+				player_rockets = player_rockets_cap;
+			player_pal_flash = 9;
+			sound $DSDBLOAD;
+			destroyed;
+		}
+	}
+}
+
+actor BROK 36 #BROKA0 {
+	callback OnCreate	{ pickup_on;	frame #BROKA0;		}
+	callback OnPulse	{ 
+		if( player_rockets < player_rockets_cap )
+		{
+			pickup_off;
+			if( skill <= 0 || skill >= 4 )	player_rockets += 10;
+			else							player_rockets +=  5;
+			if( player_rockets > player_rockets_cap )
+				player_rockets = player_rockets_cap;
+			player_pal_flash = 9;
+			sound $DSWPNUP;
+			destroyed;
+		}
+	}
+}
+
+
+// -------------------------------- Medkits --------------------------------
+
+actor MEDI 41 #MEDIA0 {
+	callback OnCreate	{
+		pickup_on;
+		frame #MEDIA0;
+	}
+	callback OnPulse {
+		if( pulse == 0 )
+		{
+			// local pickup
+			if( player_health > 0 && player_health < 100 )
+			{
+				pickup_off;
+				player_health += 25;
+				if( player_health > 100 )
+					player_health = 100;
+				player_pal_flash = 9;
+				sound $DSMEDI1;
+				if( mp_mode )
+				{
+					frame_none;
+					pickup_off;
+					vector_set_timer MP_ItemRespawnTime;
+					mp_pulse_remote_copy 1;
+					->WaitRespawn;
+				}
+				else
+					destroyed;
+			}
+		}
+		else if( pulse == 1 )
+		{
+			// remote pickup
+			sound $DSMEDI1;
+			frame_none;
+			pickup_off;
+			vector_set_timer MP_ItemRespawnTime;
+			->WaitRespawn;
+		}
+		else if( pulse == 2 )
+		{
+			// remote respawn
+			->Respawn;
+		}
+	}
+
+	state WaitRespawn {
+		//delay MP_ItemRespawnTime;
+		if( vector_get_timer() <= 0 )
+		{
+			// Respawn
+			mp_pulse_remote_copy 2;
+			->Respawn;
+		}
+		delay 300;
+	}
+
+	state Respawn {
+		vector_aim;
+		spawn_missile ItemTeleportFx;
+		sound $DSTELEPORT 256;
+		delay 100;
+		pickup_on;
+		frame #MEDIA0;
+		done;
+	}
+}
+
+actor MEDI_SM 42 #MEDIB0 {
+	callback OnCreate	{ pickup_on;	frame #MEDIB0;						}
+	callback OnPulse {
+		if( player_health < 100 )
+		{
+			pickup_off;
+			player_health += 10;
+			if( player_health > 100 )
+				player_health = 100;
+			player_pal_flash = 9;
+			sound $DSMEDI1;
+			destroyed;
+		}
+	}
+}
+
+actor TUBEB 43 #TUBEB0 {
+	callback OnCreate	{ pickup_on;	frame #TUBEB0;						}
+	callback OnPulse {
+		if( player_health < 200 )
+		{
+			pickup_off;
+			player_health += 5;
+			if( player_health > 200 )
+				player_health = 200;
+			player_pal_flash = 9;
+			sound $DSITEMUP;
+			destroyed;
+		}
+	}
+}
+
+// -------------------------------- Armor --------------------------------
+
+actor ARM1 47 #ARM1A0 {
+	callback OnCreate {
+		levstat_items_max = levstat_items_max + 1;
+		pickup_on;
+		frame #ARM1A0;
+	}
+	callback OnPulse {
+		if( player_armor < 100 )
+		{
+			pickup_off;
+			player_armor = 100;
+			player_pal_flash = 9;
+			levstat_items = levstat_items + 1;
+			sound $DSARMOR1;
+			destroyed;
+		}
+	}
+}
+
+actor ARM2 48 #ARM2H0 {
+	callback OnCreate {
+		levstat_items_max = levstat_items_max + 1;
+		pickup_on;
+		frame #ARM2H0;
+	}
+	callback OnPulse {
+		if( player_armor < 200 )
+		{
+			pickup_off;
+			player_armor = 200;
+			player_pal_flash = 9;
+			levstat_items = levstat_items + 1;
+			sound $DSARMOR1;
+			destroyed;
+		}
+	}
+}
+
+actor TUBER 49 #TUBER0 {
+	callback OnCreate {
+		pickup_on;
+		frame #TUBER0;
+	}
+	callback OnPulse {
+		if( player_armor < 200 )
+		{
+			pickup_off;
+			player_armor += 5;
+			if( player_armor > 200 )
+				player_armor = 200;
+			player_pal_flash = 9;
+			sound $DSITEMUP2;
+			destroyed;
+		}
+	}
+}
+
+actor BOOTS 46 #BOOT1A0 {
+	callback OnCreate {
+		pickup_on;
+		frame #BOOT1A0;
+	}
+	callback OnPulse {
+		pickup_off;
+		player_pal_flash = 10;
+		player_boots_timer = 9000;		// 30s
+		sound $DSARMOR1;
+		destroyed;
+	}
+}
+
+// -------------------------------- Keys --------------------------------
+
+actor BKEY 50 #BKEYA0 {
+	callback OnCreate	{ pickup_on;	zp = 0;				frame #BKEYA0;											}
+	callback OnPulse	{ statbar_key_0 = 1;				player_pal_flash = 9;	sound $DSKEYPICK; destroyed;	}
+}
+
+actor YKEY 51 #YKEYA0 {
+	callback OnCreate	{ pickup_on;	zp = 0;				frame #YKEYA0;											}
+	callback OnPulse	{ statbar_key_1 = 2;				player_pal_flash = 9;	sound $DSKEYPICK; destroyed;	}
+}
+
+actor RKEY 52 #RKEYA0 {
+	callback OnCreate	{ pickup_on;	zp = 0;				frame #RKEYA0;											}
+	callback OnPulse	{ statbar_key_2 = 3;				player_pal_flash = 9;	sound $DSKEYPICK; destroyed;	}
+}
+
+actor BKEY_Drop 0 {
+	callback OnCreate	{ pickup_on; zp = -14<<6; vel_z = -17<<7; gravity = 20; frame #BKEYA0;	move_walk 8, 100;	->Idle;	}
+	callback OnPulse	{ statbar_key_0 = 1;				player_pal_flash = 9;	sound $DSKEYPICK; destroyed;			}
+	state Idle			{ delay 48; move_stop; delay 10000; }
+}
+
+actor YKEY_Drop 0 {
+	callback OnCreate	{ pickup_on; zp = -14<<6; vel_z = -17<<7; gravity = 20; frame #YKEYA0;	move_walk 8, 100;	->Idle;	}
+	callback OnPulse	{ statbar_key_1 = 2;				player_pal_flash = 9;	sound $DSKEYPICK; destroyed;			}
+	state Idle			{ delay 48; move_stop; delay 10000; }
+}
+
+actor RKEY_Drop 0 {
+	callback OnCreate	{ pickup_on; zp = -14<<6; vel_z = -17<<7; gravity = 20; frame #RKEYA0;	move_walk 8, 100;	->Idle;	}
+	callback OnPulse	{ statbar_key_2 = 3;				player_pal_flash = 9;	sound $DSKEYPICK; destroyed;			}
+	state Idle			{ delay 48; move_stop; delay 10000; }
+}

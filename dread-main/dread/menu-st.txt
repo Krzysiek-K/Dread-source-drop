@@ -1,0 +1,52 @@
+
+
+
+palette MenuST {
+	$000
+	$200
+	$222
+	$444
+	$888
+	$AAA
+	$242
+	$664
+	$644
+	$400
+	$420
+	$600
+	$800
+	$c00
+	// ---
+	// ---
+	-palexport_st PALETTE_MENU 16
+}
+
+
+gfxgroup "Menu ST" {
+	-path menu-st
+	-palette MenuST
+	-graphics
+
+	gfxgroup Title {
+		-masked
+		-export_st bitplane_st 4bpp header
+		gfx ST_TITLE1
+		gfx ST_TITLE2
+		gfx ST_TITLE3
+		gfx ST_TITLE4
+		gfx ST_TITLE5
+	}
+
+	gfxgroup Cursors {
+		-masked
+		-export_st bitplane_st 4bpp header
+		gfx ST_CURSOR1	-file CURSOR1
+		gfx ST_CURSOR2	-file CURSOR2
+	}
+
+	gfxgroup Back {
+		-export_st bitplane_st 4bpp
+		gfx ST_MENUBACK
+	}
+
+}

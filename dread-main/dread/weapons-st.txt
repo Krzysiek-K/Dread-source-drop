@@ -1,0 +1,81 @@
+
+gfxgroup "ST Weapons" {
+	-masked
+	-downscale hd
+	-weapon
+	-palette MainWeapon
+	-trim
+	-pixelpack hd_keephalf
+
+	gfxgroup Pistol {
+		-path weapons/pistol-st
+		-palette MainWeapon_NoDither
+		gfx	PISFA0	0 40	// 40
+		gfx	PISGA0	0 40	// 40
+		gfx	PISGC0	0 40    // 40
+
+		anim Firing {
+			frame	36	PISFA0		  0  20	$DSPISTOL	// pre-ST: 18
+			frame	36	PISGC0		  0  20
+			frame	36	PISGA0		  0  20
+		}
+	}
+
+	gfxgroup Shotgun {
+		-path weapons/shotgun-st
+		-palette MainWeapon_NoDither
+		gfx	SHTGA0	  0	 34
+		gfx	SHTGB0	  0	 34
+		gfx	SHTGC0	  0	 34
+		gfx	SHTGD0	  36	 64
+		gfx SHTFA1	  0	 34					// pre-ST: * -94
+		gfx SHTFB1	  0	 34					// pre-ST: * -87
+
+		anim Firing {
+			frame	24	SHTFB1		  0  20	$DSSHOTGN	// pre-ST: 24
+			frame	24	SHTFA1		  0  20				// pre-ST: 22
+			frame	24	SHTGA0		  0  20
+			frame	24	SHTGB0		  0  20
+			frame	60	SHTGD0		  0  20
+			frame	74	SHTGC0		  0  20
+			frame	48	SHTGD0		  0  20
+			frame	24	SHTGB0		  0  20
+			frame	200	SHTGA0		  0  20
+		}
+	}
+
+	gfxgroup Chaingun {
+		-path weapons/chaingun-st
+		-palette MainWeapon_NoDither
+		gfx CHGGA0	-128	 -96 
+		gfx CHGGB0	-128	 -96
+		gfx CHGFA0	-128	-100
+		gfx CHGFB0	-128	-100
+
+		anim Firing {
+			frame	24	CHGFA0		  0	 20 $DSCHGN	// pre-ST: 24
+			frame	24	CHGFB0		  0	 20 $DSCHGN	// pre-ST: 24
+		}
+	}
+
+	gfxgroup Launcher {
+		-path weapons/launcher-st
+		-palette MainWeapon_NoDither
+		gfx MISGA0	-128   -94
+		gfx MISFE0	-128   -94
+		gfx MISFA0	-128   -98
+		gfx MISFB0	-128   -96		// pre-ST: -99
+		gfx MISFC0	-128	-96
+		gfx MISFD0	-128	-96
+
+		anim Firing {
+
+			frame	24	MISFA0		  0  20	$DSRLAUNC	// pre-ST: 22
+			frame	24	MISFB0		  0  20
+			frame	24	MISFC0		  0  20
+			frame	24	MISFD0		  0  20
+			frame	24	MISFE0		  0  20
+			frame	200	MISGA0		  0  20		// pre-ST: 22
+		}
+	}
+}

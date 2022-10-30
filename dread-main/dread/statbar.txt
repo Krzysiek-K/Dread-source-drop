@@ -1,0 +1,198 @@
+
+gfxgroup HUD {
+	-path statbar
+	-graphics
+	-palette HUD
+
+	gfxgroup STTNUM {
+		-masked
+		-fontgroup
+		-export_amiga bitplane_interleaved 4bpp header chipmem index
+		gfx STTNUM_ {
+			-export_amiga off
+		}
+		gfx STTNUM0
+		gfx STTNUM1
+		gfx STTNUM2
+		gfx STTNUM3
+		gfx STTNUM4
+		gfx STTNUM5
+		gfx STTNUM6
+		gfx STTNUM7
+		gfx STTNUM8
+		gfx STTNUM9
+	}
+	gfxgroup STYSNUM {
+		-masked
+		-fontgroup
+		-export_amiga bitplane_interleaved 4bpp header chipmem index
+		gfx STYSNUM_ {
+			-export_amiga off
+		}
+		gfx STYSNUM0
+		gfx STYSNUM1
+		gfx STYSNUM2
+		gfx STYSNUM3
+		gfx STYSNUM4
+		gfx STYSNUM5
+		gfx STYSNUM6
+		gfx STYSNUM7
+		gfx STYSNUM8
+		gfx STYSNUM9
+		gfx STGNUM0 {
+			-remap --------2345----
+		}
+		gfx STGNUM1 {
+			-remap --------2345----
+		}
+		gfx STGNUM2 {
+			-remap --------2345----
+		}
+		gfx STGNUM3 {
+			-remap --------2345----
+		}
+		gfx STGNUM4 {
+			-remap --------2345----
+		}
+		gfx STGNUM5 {
+			-remap --------2345----
+		}
+		gfx STGNUM6 {
+			-remap --------2345----
+		}
+		gfx STGNUM7 {
+			-remap --------2345----
+		}
+		gfx STGNUM8 {
+			-remap --------2345----
+		}
+		gfx STGNUM9 {
+			-remap --------2345----
+		}
+	}
+	gfxgroup Misc {
+		-masked
+		-export_amiga bitplane_interleaved 4bpp header chipmem
+		gfx STTPRCNT
+	}
+	gfxgroup STKEYS {
+		-masked
+		-fontgroup
+		-export_amiga bitplane_interleaved 4bpp header chipmem index
+		gfx STKEYS_ {
+			-export_amiga off
+		}
+		gfx STKEYS0
+		gfx STKEYS1
+		gfx STKEYS2
+	}
+	gfxgroup STFACE {
+		-path statbar/faces
+		-fontgroup
+		-export_amiga bitplane_interleaved 4bpp header chipmem index
+		
+		gfx STNOFACE		//  0
+		
+		gfx STFST00			//  1
+		gfx STFST01			//  2
+		gfx STFST02			//  3
+		gfx STFEVL0			//  4
+		gfx STFKILL0		//  5
+		gfx STFOUCH0		//  6
+		
+		gfx STFST10			//  7
+		gfx STFST11			//  8
+		gfx STFST12			//  9
+		gfx STFEVL1			// 10
+		gfx STFKILL1		// 11
+		gfx STFOUCH1		// 12
+		
+		gfx STFST20			// 13
+		gfx STFST21			// 14
+		gfx STFST22			// 15
+		gfx STFEVL2			// 16
+		gfx STFKILL2		// 17
+		gfx STFOUCH2		// 18
+		
+		gfx STFST30			// 19
+		gfx STFST31			// 20
+		gfx STFST32			// 21
+		gfx STFEVL3			// 22
+		gfx STFKILL3		// 23
+		gfx STFOUCH3		// 24
+		
+		gfx STFST40			// 25
+		gfx STFST41			// 26
+		gfx STFST42			// 27
+		gfx STFEVL4			// 28
+		gfx STFKILL4		// 29
+		gfx STFOUCH4		// 30
+
+		gfx STFDEAD0		// 31
+		gfx STFGOD0			// 32
+	}
+
+	group "Face Anims" {
+		anim Normal {
+			frame  900	STFST01
+			frame  200	STFST00
+			frame  400	STFST01
+			frame  200	STFST02
+		}
+		anim 80% {
+			frame  700	STFST11
+			frame  200	STFST12
+			frame  200	STFST10
+			frame  500	STFST11
+			frame  200	STFST10
+			frame  300	STFST11
+			frame  200	STFST12
+		}
+		anim 60% {
+			frame  700	STFST21
+			frame  200	STFST22
+			frame  200	STFST20
+			frame  400	STFST21
+			frame  100	STFST20
+			frame  200	STFST21
+			frame  150	STFST22
+		}
+		anim 40% {
+			frame  300	STFST31
+			frame  100	STFST32
+			frame  100	STFST31
+			frame  100	STFST30
+			frame  200	STFST31
+			frame  100	STFST30
+			frame  200	STFST31
+			frame  100	STFST32
+		}
+		anim 20% {
+			frame  300	STFST41
+			frame  300	STFST42
+			frame  100	STFST41
+			frame  100	STFST42
+		}
+	}
+
+	gfx STBAR0 {
+		-export_amiga bitplane_interleaved 4bpp header chipmem info
+		number STTNUM    6  4 12 player_ammo         200
+		number STTNUM   52  4 12 player_health       200
+		number STTNUM  183  4 12 player_armor        200
+		number STYSNUM 279  6  4 player_bullets      200
+		number STYSNUM 299  6  4 player_bullets_cap  200
+		number STYSNUM 279 14  4 player_shells       200
+		number STYSNUM 299 14  4 player_shells_cap   200
+		number STYSNUM 279 22  4 player_rockets      200
+		number STYSNUM 299 22  4 player_rockets_cap  200
+		frame  STKEYS  239  4    statbar_key_0
+		frame  STKEYS  239 14    statbar_key_1
+		frame  STKEYS  239 24    statbar_key_2
+		frame  STYSNUM 111  3    statbar_weapon_0
+		frame  STYSNUM 123  3    statbar_weapon_1
+		frame  STYSNUM 135  3    statbar_weapon_2
+		frame  STYSNUM 111 13    statbar_weapon_3
+		frame  STFACE  148  1    player_face
+	}
+}
