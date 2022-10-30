@@ -1,0 +1,14 @@
+//	+	 0				Ceil	 -64	Upper	  0			Floor				Ceil  64  0 		front
+//	+	 1				Ceil	-128	Upper	  0			Floor				Ceil 128  0 		front
+//	+	 2				Ceil	-128	Upper	-64 % 0		Floor				Ceil 128 64 Gap		front
+//	+	 3				[Ceil	 -64	Upper	  0			Floor]				Ceil  64  0 		CLIPPED
+//	+	 4				Sky		 -64	Upper	  0			Floor				Sky   64  0 		front
+//	+	 5				Sky		-128	Upper	  0			Floor				Sky	 128  0 		front
+//	+	 6				Sky		-128	Upper	-64 % 0		Floor				Sky  128 64 Gap		front
+//	+	 7				[Ceil	 -64	%		  0			Floor]				Ceil  64 64 Gap		CLIPPED				// floor/ceil of the niche when looking outside
+//	+	 8				[Sky	 -64	Upper	  0			Floor]				Sky   64  0 		CLIPPED				// low walls when seen from the niche
+//	+	 9				[[Sky	-128	[Upper	  0			Floor]				Sky  128  0 		CLIPPED				// high walls when seen from the niche
+//	+	10				[[Sky	-128	[Upper	-64 % 0		Floor]				Sky  128 64 Gap		CLIPPED				// Gap seen across other gap
+//	+	11				[[Ceil	-128	[Upper	  0			Floor]				Ceil 128  0 		CLIPPED
+//	+	12				[[Ceil	-128	[Upper	-64 % 0		Floor]				Ceil 128 64 Gap		CLIPPED				// Gap seen across other gap
+//	+	13				Ceil	 -64	%		  0			Floor				Ceil  64 64 Gap		front

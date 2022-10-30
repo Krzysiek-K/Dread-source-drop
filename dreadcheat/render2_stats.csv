@@ -1,0 +1,32 @@
+,,---,(setup),(outro),Generic,Loop step,Case,Flats,Sky,Texcoord,Texture,Gap
+x000p,Ceil y1 Upper y2 Floor,,1252,36,36,64,62,76,,176,128,32
+x000,Ceil y1 Upper y2 Floor,,1248,36,36,56,62,76,,36,128,32
+x001p,Ceil y1 Upper y2 Lower y4 Floor,,1868,36,42,84,86,76,,228,248,32
+x001,Ceil y1 Upper y2 Lower y4 Floor,,1864,36,42,76,86,76,,88,248,32
+x002p,Sky y1 Upper y2 Floor,,1272,36,36,64,62,38,74,176,128,32
+x002,Sky y1 Upper y2 Floor,,1268,36,36,56,62,38,74,36,128,32
+x003p,Sky y1 Upper y2 Lower y4 Floor,,1876,36,42,84,86,38,74,228,272,32
+x003,Sky y1 Upper y2 Lower y4 Floor,,1872,36,42,76,86,38,74,88,272,32
+x004p,gap y3 Floor,,620,36,36,28,46,38,,,,32
+x005p,gap y3 Lower y4 Floor,,1236,36,36,64,62,38,,176,128,32
+x005,gap y3 Lower y4 Floor,,1232,36,36,56,62,38,,36,128,32
+x006p,Ceil y1 gap,,620,36,36,28,46,42,,,,32
+x007p,Ceil y1 gap y3 Floor,,1152,36,36,48,62,76,,,,60
+x008p,Ceil y1 gap y3 Lower y4 Floor,,1800,36,42,84,86,76,,176,124,60
+x008,Ceil y1 gap y3 Lower y4 Floor,,1796,36,42,76,86,76,,36,124,60
+x009p,Ceil y1 Upper y2 gap,,1236,36,36,64,62,42,,176,128,32
+x009,Ceil y1 Upper y2 gap,,1232,36,36,56,62,42,,36,128,32
+x010p,Ceil y1 Upper y2 gap y3 Floor,,1800,36,42,84,86,76,,176,128,60
+x010,Ceil y1 Upper y2 gap y3 Floor,,1796,36,42,76,86,76,,36,128,60
+x011p,Ceil y1 Upper y2 gap y3 Lower y4 Floor,,2332,36,42,104,100,108,,228,272,60
+x011,Ceil y1 Upper y2 gap y3 Lower y4 Floor,,2328,36,42,96,100,108,,88,272,60
+x012p,Sky y1 gap,,632,36,36,28,46,,74,,,32
+x013p,Sky y1 gap y3 Floor,,1172,36,36,48,62,38,74,,,60
+x014p,Sky y1 gap y3 Lower y4 Floor,,1808,36,42,84,86,38,74,176,136,60
+x014,Sky y1 gap y3 Lower y4 Floor,,1804,36,42,76,86,38,74,36,136,60
+x015p,Sky y1 Upper y2 gap,,1248,36,36,64,62,,74,176,128,32
+x015,Sky y1 Upper y2 gap,,1244,36,36,56,62,,74,36,128,32
+x016p,Sky y1 Upper y2 gap y3 Floor,,1808,36,42,84,86,38,74,176,140,60
+x016,Sky y1 Upper y2 gap y3 Floor,,1804,36,42,76,86,38,74,36,140,60
+x017p,Sky y1 Upper y2 gap y3 Lower y4 Floor,,2368,36,42,104,100,66,78,228,272,60
+x017,Sky y1 Upper y2 gap y3 Lower y4 Floor,,2364,36,42,96,100,66,78,88,272,60

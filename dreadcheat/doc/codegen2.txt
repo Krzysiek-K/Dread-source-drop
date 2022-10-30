@@ -1,0 +1,164 @@
+
+
+
+* Optimizations ToDo:
+
+		+ bra .end_loop													(12 cycles)
+		+ keep sky/fill routine address in Areg							(12 cycles)
+		+ word-sized last tracer										(4 cycles)
+		+ clr.l rc_ymin(a4)												(8 cycles)
+		+ optimize away render column step								(8 cycles)
+		+ load ymin/ymax with a single fetch							(? cycles)
+		- preshift size tracer to avoid LSR								(8 cycles)
+		- optimize jump/fall case ladder sequence						(? cycles)
+		- write absolute jump to .end_loop at the end of floor fill		(4 cycles)
+		- avoid double (a5,d3.w) addressing in texture fill setup		(4 cycles, 1 D-reg)
+		- keep texture fill routine
+		- avoid scale interpolation when not needed
+
+		- implement FRONT alternate renderers (assuming: ymin=0, ymax=MAX)
+		- duplicate .end_loop code after each case to avoid bra
+
+
+		- explicitly set next return label for JMP
+		- compute true worst case scenario timing
+		- assing .b/.w to conditional jumps to compute correct timing
+		- round cycles up to multiple of 4
+		- mark JMP instructions with register mask used by subroutine
+
+
+
+
+
+
+;
+;	New register usage:
+;
+;			Input				Runtime							New										Fail				002
+;
+;	d0	-														-		y0								y0					y0
+;	d1	-														-		y1								y1					y1
+;	d2	-	xmin												-		y2								y2					ymin/ymax
+;	d3	-	xcount												-		y3								y3					(temp)
+;	d4	-	s1													size	(current)						size				size
+;	d5	-						Fill color						fill color								-					floor col
+;	d6	-	u1s													-		ymax							texcoord			texcoord
+;	d7	-	du													-		ymin							-					(temp2)
+;
+;	a0	-														-		render column end
+;	a1	-														-		(colorfill temp)
+;	a2	-						Texture/sky source				-		[unused]
+;	a3	-														-		[unused]
+;	a4	-														render columns table					render columns
+;	a5	-	line												-		[line, then unused]				line
+;	a6	-						Draw return ptr					return ptr								$ return ptr
+;	a7	-						Render destination				draw ptr								$ draw ptr
+;
+;
+;	Draw code:
+;
+;		Textured		MOVE.b	xxx(A2), (A7)+
+;		Color			MOVE.b	D5, (A7)+
+;		Sky				MOVE.b	(A2)+, (A7)+
+;		End				JMP (A6)
+;
+
+
+
+
+;
+;	Register usage:
+;
+;			Input				Runtime							New							Old
+;
+;	d0	-														y0
+;	d1	-														y1
+;	d2	-	xmin												y2
+;	d3	-	xcount												y3
+;	d4	-	s1													temp
+;	d5	-						Fill color
+;	d6	-	u1s													ymin
+;	d7	-	du													ymax
+;
+;	a0	-
+;	a1	-
+;	a2	-						Texture/sky source
+;	a3	-
+;	a4	-														render columns table
+;	a5	-	line																			render columns table
+;	a6	-						Draw return ptr
+;	a7	-						Render destination
+;
+;
+;	Draw code:
+;
+;		Textured		MOVE.b	xxx(A2), (A7)+
+;		Color			MOVE.b	D5, (A7)+
+;		Sky				MOVE.b	(A2)+, (A7)+
+;		End				JMP (A6)
+;
+
+
+
+; ================================================ Texturing ================================================
+
+
+
+    add.l       d7, d6                              ;1 d012----- a01-3----   8   u1s += du;											[32-bit texcoord accumulator]
+
+
+                                                    ;1 d0-2----- a01-3----       === Texcoord										[perspective]
+    move.l      d6, d0                              ;1 d--2----- a01-3----   4   word tx = u1s /divu/ s1;
+    divu.w      d4, d0                              ;1 d--2----- a01-3---- 140   
+    and.w       #$1F80, d0                          ;1 d--2----- a01-3----   8   tx &= $1F80;
+    move.l      _asm_tex_base(pc), a2               ;1 d--2----- a01-3----  16   
+    add.w       d0, a2                              ;1 d--2----- a01-3----   8   void *tex @ a2 = _asm_tex_base + tx;
+
+
+                                                    ;1 d0-2----- a01-3----       === Texcoord										[linear]
+    move.l      d6, d0                              ;1 d--2----- a01-3----   4   word tx = u1s & $1F80;
+    and.w       #$1F80, d0                          ;1 d--2----- a01-3----   8   tx &= $1F80;
+    move.l      _asm_tex_base(pc), a2               ;1 d--2----- a01-3----  16   
+    add.w       d0, a2                              ;1 d--2----- a01-3----   8   void *tex @ a2 = _asm_tex_base + tx;
+
+
+
+
+                                                    ;1 d0-2----- a01-3----       === Upper											[drawing setup code]
+    move.l      lc_upper_start_m128(a4), a0         ;1 d0-2----- a-1-3----  16   void *fn = line_cheat.upper_start_m64;
+    move.w      lc_upper_len_m128_m64(a4), d0       ;1 d--2----- a-1-3----  12   $ fn[line_cheat.upper_len_m64_0] = $4ED6;  (L = -64..0 / -128..0)
+    move.w      #$4ED6, (a0,d0.w)                   ;1 d--2----- a-1-3----  18   
+    lea.l       .upper_ret(pc), a6                  ;1 d--2----- a-1-3----   8   
+    jmp         (a0)                                ;1 d--2----- a-1-3----   8   $ call_a6(fn)	(Z = -64 / -128)
+.upper_ret:                                         ;1 d--2----- a-1-3----       
+    move.w      #$1EEA, (a0,d0.w)                   ;1 d--2----- a-1-3----  18   $ fn[line_cheat.upper_len_m64_0] = $1EEA;
+
+
+
+; ================================================ Test code ================================================
+
+
+
+                                                    ;	=== [[Ceil
+    swap.w      d5                                  ;	
+    lea.l       _FUNC_COLORFILL+ENGINE_Y_MAX*2, a0  ;	Color filler func
+    move.w      rc_ymin(a5), d0                     ;	jsr(fn1, d0) LUT.w:	Ceil length(x2)
+    add.w       d0, a7                              ;	skip ymin
+    add.w       lc_ceil_len_m128(a4), d0            ;	shorten to end at texture edge
+    bge         .skyceil_culled                     ;	
+    lea.l       .ceil_ret(pc), a6                   ;	
+    jmp         (a0,d0.w)                           ;	
+.ceil_ret:                                          ;	
+
+
+
+
+    lea.l       _FUNC_COLORFILL+ENGINE_Y_MAX*2, a0  ;	Color filler func
+    move.w      rc_ymin(a5), d0                     ;		ymin*2
+    add.w       d0, a7                              ;		skip ymin
+													;		length = (y0 - ymin)
+	sub.w		y0, d0								;		offset = -length*2 = -(y0 - ymin)*2 = ymin*2 - y0*2
+	sub.w		y0, d0								;
+    lea.l       .ceil_ret(pc), a6                   ;		DRAW
+    jmp         (a0,d0.w)                           ;	
+.ceil_ret:                                          ;	

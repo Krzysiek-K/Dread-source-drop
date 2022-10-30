@@ -1,0 +1,6 @@
+/.vs/dreadcheat/v14/*.suo
+/Debug
+*.db
+/out
+/*.opendb
+/Release
